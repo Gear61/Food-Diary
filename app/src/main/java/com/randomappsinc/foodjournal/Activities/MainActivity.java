@@ -86,12 +86,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        RestClient.getInstance().refreshToken();
-
-        /* if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-        } */
+        }
     }
 }

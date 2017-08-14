@@ -1,5 +1,8 @@
-package com.randomappsinc.foodjournal.API;
+package com.randomappsinc.foodjournal.API.Callbacks;
 
+import com.randomappsinc.foodjournal.API.ApiConstants;
+import com.randomappsinc.foodjournal.API.Models.TokenResponse;
+import com.randomappsinc.foodjournal.API.RestClient;
 import com.randomappsinc.foodjournal.Persistence.PreferencesManager;
 
 import retrofit2.Call;
@@ -13,7 +16,7 @@ import retrofit2.Response;
 public class FetchTokenCallback implements Callback<TokenResponse> {
     @Override
     public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
-        if (response.code() == APIConstants.HTTP_STATUS_OK &&
+        if (response.code() == ApiConstants.HTTP_STATUS_OK &&
             response.body() != null &&
             response.body().getAccessToken() != null) {
             PreferencesManager.get().setBearerToken(response.body().getAccessToken());

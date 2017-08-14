@@ -1,7 +1,9 @@
 package com.randomappsinc.foodjournal.API;
 
+import com.randomappsinc.foodjournal.API.Callbacks.FetchRestaurantsCallback;
+import com.randomappsinc.foodjournal.API.Callbacks.FetchTokenCallback;
+
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -21,14 +23,12 @@ public class RestClient {
     }
 
     private RestClient() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(logging)
+                .addInterceptor(new AuthInterceptor())
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(APIConstants.BASE_URL)
+                .baseUrl(ApiConstants.BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -37,7 +37,12 @@ public class RestClient {
     }
 
     public void refreshToken() {
-        mYelpService.fetchToken(YelpToken.CLIENT_ID, YelpToken.CLIENT_SECRET, APIConstants.GRANT_TYPE)
+        mYelpService.fetchToken(YelpToken.CLIENT_ID, YelpToken.CLIENT_SECRET, ApiConstants.GRANT_TYPE)
                 .enqueue(new FetchTokenCallback());
+    }
+
+    public void fetchRestaurants() {
+        mYelpService.fetchRestaurants("Food", "San Francisco")
+                .enqueue(new FetchRestaurantsCallback());
     }
 }

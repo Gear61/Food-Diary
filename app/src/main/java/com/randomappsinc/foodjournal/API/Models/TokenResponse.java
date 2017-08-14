@@ -1,4 +1,4 @@
-package com.randomappsinc.foodjournal.API;
+package com.randomappsinc.foodjournal.API.Models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
