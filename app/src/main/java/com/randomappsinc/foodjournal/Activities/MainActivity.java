@@ -14,6 +14,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
+import com.randomappsinc.foodjournal.API.RestClient;
 import com.randomappsinc.foodjournal.Adapters.IconItemsAdapter;
 import com.randomappsinc.foodjournal.R;
 
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 IoniconsIcons.ion_android_camera).colorRes(R.color.white));
         mFilesPicker.setImageDrawable(new IconDrawable(this,
                 IoniconsIcons.ion_android_folder).colorRes(R.color.white));
+
+        RestClient restClient = RestClient.getInstance();
     }
 
     @OnItemClick(R.id.nav_options)
@@ -83,10 +86,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+        RestClient.getInstance().refreshToken();
+
+        /* if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-        }
+        } */
     }
 }

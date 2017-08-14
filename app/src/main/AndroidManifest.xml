@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.randomappsinc.foodjournal">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".Utils.MyApplication"
         android:allowBackup="true"

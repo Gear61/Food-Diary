@@ -29,4 +29,8 @@ dependencies {
     compile 'com.joanzapata.iconify:android-iconify-ionicons:2.2.2'
     compile 'com.afollestad.material-dialogs:core:0.9.4.6'
     compile 'com.github.clans:fab:1.6.4'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
 }
