@@ -21,4 +21,8 @@
         <item>@string/restaurant_icon</item>
         <item>@string/settings_icon</item>
     </string-array>
+
+    <string name="pick_source">Pick source</string>
+    <string name="camera">Camera</string>
+    <string name="files">Files</string>
 </resources>

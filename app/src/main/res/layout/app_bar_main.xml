@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,11 +23,33 @@
 
     <include layout="@layout/content_main"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/pick_source"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email"/>
+        android:layout_marginRight="@dimen/default_activity_margin"
+        android:layout_marginBottom="@dimen/default_activity_margin"
+        android:layout_marginLeft="@dimen/default_activity_margin"
+        fab:fab_colorNormal="@color/app_red"
+        fab:fab_colorPressed="@color/light_red">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/from_files"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_label="@string/files"
+            fab:fab_colorNormal="@color/app_red"
+            fab:fab_colorPressed="@color/light_red"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/from_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_label="@string/camera"
+            fab:fab_colorNormal="@color/app_red"
+            fab:fab_colorPressed="@color/light_red"/>
+    </com.github.clans.fab.FloatingActionMenu>
 </android.support.design.widget.CoordinatorLayout>
