@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="send_feedback">Send feedback</string>
+    <string name="my_other_apps">My other apps</string>
+    <string name="rate_this_app">Rate this app</string>
+    <string name="source_code">Source code</string>
+    <array name="settings_options">
+        <item>@string/send_feedback</item>
+        <item>@string/my_other_apps</item>
+        <item>@string/rate_this_app</item>
+        <item>@string/source_code</item>
+    </array>
+
+    <string name="play_store_error">Unable to open the Play Store.</string>
+    <string name="feedback_subject">Food Journal Feedback</string>
+    <string name="send_email">Send email</string>
+
+    <string name="email_icon">{ion-email}</string>
+    <string name="android_icon">{ion-social-android}</string>
+    <string name="rate_icon">{ion-thumbsup}</string>
+    <string name="github_icon">{ion-social-github}</string>
+    <array name="settings_icons">
+        <item>@string/email_icon</item>
+        <item>@string/android_icon</item>
+        <item>@string/rate_icon</item>
+        <item>@string/github_icon</item>
+    </array>
+</resources>
