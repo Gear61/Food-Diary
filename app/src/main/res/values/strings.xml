@@ -25,4 +25,6 @@
     <string name="pick_source">Pick source</string>
     <string name="camera">Camera</string>
     <string name="files">Files</string>
+
+    <string name="choose_image_from">Choose image from</string>
 </resources>

@@ -4,6 +4,8 @@
     package="com.randomappsinc.foodjournal">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name=".Utils.MyApplication"
@@ -26,9 +28,26 @@
         </activity>
 
         <activity
+            android:name=".Activities.DishesActivity"
+            android:label="@string/dishes"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".Activities.RestaurantsActivity"
+            android:label="@string/restaurants"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name=".Activities.SettingsActivity"
             android:label="@string/settings"
             android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".Activities.CameraActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 </manifest>

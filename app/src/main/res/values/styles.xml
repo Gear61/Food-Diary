@@ -1,3 +1,10 @@
 <resources>
-
+    <style name="fab_menu_option">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fab_size">mini</item>
+        <item name="fab_colorNormal">@color/app_red</item>
+        <item name="fab_colorPressed">@color/light_red</item>
+        <item name="fab_colorRipple">@color/light_red</item>
+    </style>
 </resources>

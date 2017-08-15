@@ -31,25 +31,18 @@
         android:layout_marginRight="@dimen/default_activity_margin"
         android:layout_marginBottom="@dimen/default_activity_margin"
         android:layout_marginLeft="@dimen/default_activity_margin"
-        fab:fab_colorNormal="@color/app_red"
-        fab:fab_colorPressed="@color/light_red">
+        fab:menu_colorNormal="@color/app_red"
+        fab:menu_colorPressed="@color/light_red"
+        fab:menu_colorRipple="@color/light_red">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/from_files"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_size="mini"
             fab:fab_label="@string/files"
-            fab:fab_colorNormal="@color/app_red"
-            fab:fab_colorPressed="@color/light_red"/>
+            style="@style/fab_menu_option"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/from_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_size="mini"
-            fab:fab_label="@string/camera"
-            fab:fab_colorNormal="@color/app_red"
-            fab:fab_colorPressed="@color/light_red"/>
+            app:fab_label="@string/camera"
+            style="@style/fab_menu_option"/>
     </com.github.clans.fab.FloatingActionMenu>
 </android.support.design.widget.CoordinatorLayout>

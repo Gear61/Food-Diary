@@ -42,7 +42,7 @@ public class RestClient {
     }
 
     public void fetchRestaurants() {
-        mYelpService.fetchRestaurants("Food", "San Francisco")
+        mYelpService.fetchRestaurants("Food", "San Francisco", ApiConstants.DEFAULT_NUM_RESTAURANTS)
                 .enqueue(new FetchRestaurantsCallback());
     }
 }
