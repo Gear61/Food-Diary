@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_dish">Add Dish</string>
+    <string name="edit_dish">Edit Dish</string>
+</resources>

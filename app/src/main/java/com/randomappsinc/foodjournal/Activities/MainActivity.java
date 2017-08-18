@@ -3,9 +3,11 @@ package com.randomappsinc.foodjournal.Activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,8 +22,9 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.Adapters.IconItemsAdapter;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.Utils.PermissionUtils;
+import com.randomappsinc.foodjournal.Utils.PictureUtils;
 
-import java.io.InputStream;
+import java.io.File;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -33,9 +36,10 @@ public class MainActivity extends StandardActivity {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
     private static final int FILES_PERMISSION_REQUEST_CODE = 2;
 
-    private static final int CAMERA_SOURCE_CODE = 1;
-    private static final int FILES_SOURCE_CODE = 2;
+    public static final int CAMERA_SOURCE_CODE = 1;
+    public static final int FILES_SOURCE_CODE = 2;
 
+    @BindView(R.id.parent) View parent;
     @BindView(R.id.nav_options) ListView mNavOptions;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
@@ -43,6 +47,8 @@ public class MainActivity extends StandardActivity {
     @BindView(R.id.from_camera) FloatingActionButton mCameraPicker;
     @BindView(R.id.from_files) FloatingActionButton mFilesPicker;
     @BindString(R.string.choose_image_from) String mChooseImageFrom;
+
+    private Uri mTakenPhotoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +118,17 @@ public class MainActivity extends StandardActivity {
     }
 
     private void startCameraPage() {
-        startActivity(new Intent(this, CameraActivity.class));
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = PictureUtils.createImageFile(parent);
+            if (photoFile != null) {
+                mTakenPhotoUri = FileProvider.getUriForFile(this,
+                        "com.randomappsinc.foodjournal.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakenPhotoUri);
+                startActivityForResult(takePictureIntent, CAMERA_SOURCE_CODE);
+            }
+        }
     }
 
     private void openFilePicker() {
@@ -124,10 +140,22 @@ public class MainActivity extends StandardActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FILES_SOURCE_CODE && resultCode == RESULT_OK) {
-            String imageUri = data.getDataString();
-
-            // TODO: Open dish creation activity and pass URI to it
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case CAMERA_SOURCE_CODE:
+                    Intent cameraIntent = new Intent(this, AddOrEditDishActivity.class);
+                    cameraIntent.putExtra(AddOrEditDishActivity.NEW_DISH_KEY, true);
+                    cameraIntent.putExtra(AddOrEditDishActivity.URI_KEY, mTakenPhotoUri.toString());
+                    startActivity(cameraIntent);
+                    break;
+                case FILES_SOURCE_CODE:
+                    String imageUri = data.getDataString();
+                    Intent filesIntent = new Intent(this, AddOrEditDishActivity.class);
+                    filesIntent.putExtra(AddOrEditDishActivity.NEW_DISH_KEY, true);
+                    filesIntent.putExtra(AddOrEditDishActivity.URI_KEY, imageUri);
+                    startActivity(filesIntent);
+                    break;
+            }
         }
     }
 

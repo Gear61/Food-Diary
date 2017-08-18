@@ -31,5 +31,6 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.github.google:cameraview:-SNAPSHOT'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support:percent:25.3.1'
 }
