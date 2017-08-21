@@ -1,6 +1,6 @@
 package com.randomappsinc.foodjournal.API;
 
-import com.randomappsinc.foodjournal.API.Models.SearchResults;
+import com.randomappsinc.foodjournal.API.Models.RestaurantResults;
 import com.randomappsinc.foodjournal.API.Models.TokenResponse;
 
 import retrofit2.Call;
@@ -22,7 +22,7 @@ public interface YelpService {
                                    @Field("grant_type") String last);
 
     @GET("v3/businesses/search")
-    Call<SearchResults> fetchRestaurants(@Query("term") String term,
-                                         @Query("location") String location,
-                                         @Query("limit") int limit);
+    Call<RestaurantResults> fetchRestaurants(@Query("term") String term,
+                                             @Query("location") String location,
+                                             @Query("limit") int limit);
 }

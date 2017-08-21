@@ -9,7 +9,7 @@ import java.util.List;
  * Created by alexanderchiou on 8/13/17.
  */
 
-public class SearchResults {
+public class RestaurantResults {
     @SerializedName("businesses")
     @Expose
     private List<Business> businesses;
@@ -26,5 +26,9 @@ public class SearchResults {
         @SerializedName("image_url")
         @Expose
         private String businessImageUrl;
+
+        @SerializedName("display_phone")
+        @Expose
+        private String phoneNumber;
     }
 }

@@ -12,6 +12,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RestClient {
+    public interface RestaurantResultsHandler {
+        void processResults();
+    }
+
     private static RestClient mInstance;
     private YelpService mYelpService;
 
@@ -41,8 +45,12 @@ public class RestClient {
                 .enqueue(new FetchTokenCallback());
     }
 
-    public void fetchRestaurants() {
-        mYelpService.fetchRestaurants("Food", "San Francisco", ApiConstants.DEFAULT_NUM_RESTAURANTS)
+    public void fetchRestaurants(String searchTerm, String location) {
+        mYelpService.fetchRestaurants(searchTerm, location, ApiConstants.DEFAULT_NUM_RESTAURANTS)
                 .enqueue(new FetchRestaurantsCallback());
+    }
+
+    public void processResults() {
+
     }
 }
