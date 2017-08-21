@@ -17,18 +17,40 @@ public class RestaurantResults {
     public class Business {
         @SerializedName("id")
         @Expose
-        private String businessId;
+        private String id;
 
         @SerializedName("name")
         @Expose
-        private String businessName;
+        private String name;
 
         @SerializedName("image_url")
         @Expose
-        private String businessImageUrl;
+        private String imageUrl;
 
         @SerializedName("display_phone")
         @Expose
         private String phoneNumber;
+
+        public class Location {
+            @SerializedName("city")
+            @Expose
+            private String city;
+
+            @SerializedName("zip_code")
+            @Expose
+            private String zipCode;
+
+            @SerializedName("country")
+            @Expose
+            private String country;
+
+            @SerializedName("state")
+            @Expose
+            private String state;
+
+            @SerializedName("display_address")
+            @Expose
+            private List<String> displayAddress;
+        }
     }
 }

@@ -7,4 +7,33 @@
         <item name="fab_colorPressed">@color/light_red</item>
         <item name="fab_colorRipple">@color/light_red</item>
     </style>
+
+    <style name="input_icon">
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:textColor">@color/app_red</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="clear_icon" parent="input_icon">
+        <item name="android:text">@string/clear_icon</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="text_input">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:background">@drawable/text_input_border</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:imeOptions">actionDone</item>
+    </style>
 </resources>

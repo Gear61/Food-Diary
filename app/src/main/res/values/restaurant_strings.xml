@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Find restaurant -->
+    <string name="find_restaurant">Find Restaurant</string>
+    <string name="search">Search</string>
+    <string name="search_icon">{ion-android-search}</string>
+    <string name="clear_icon">{ion-android-close}</string>
+</resources>

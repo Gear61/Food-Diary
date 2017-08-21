@@ -1,10 +1,12 @@
 package com.randomappsinc.foodjournal.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
+import com.randomappsinc.foodjournal.Models.Restaurant;
 import com.randomappsinc.foodjournal.R;
 
 import butterknife.BindView;
@@ -30,6 +32,14 @@ public class RestaurantsActivity extends StandardActivity {
 
     @OnClick(R.id.add_restaurant)
     public void addRestaurant() {
+        startActivityForResult(new Intent(this, FindRestaurantActivity.class), 1);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Restaurant restaurant = data.getParcelableExtra(FindRestaurantActivity.RESTAURANT_KEY);
+        }
     }
 }

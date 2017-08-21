@@ -2,6 +2,11 @@ package com.randomappsinc.foodjournal.API;
 
 import com.randomappsinc.foodjournal.API.Callbacks.FetchRestaurantsCallback;
 import com.randomappsinc.foodjournal.API.Callbacks.FetchTokenCallback;
+import com.randomappsinc.foodjournal.Models.Restaurant;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -13,11 +18,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
     public interface RestaurantResultsHandler {
-        void processResults();
+        void processResults(List<Restaurant> results);
     }
 
     private static RestClient mInstance;
     private YelpService mYelpService;
+    private Set<RestaurantResultsHandler> mRestaurantResultsHandlers;
 
     public static RestClient getInstance() {
         if (mInstance == null) {
@@ -38,6 +44,7 @@ public class RestClient {
                 .build();
 
         mYelpService = retrofit.create(YelpService.class);
+        mRestaurantResultsHandlers = new HashSet<>();
     }
 
     public void refreshToken() {
@@ -45,12 +52,22 @@ public class RestClient {
                 .enqueue(new FetchTokenCallback());
     }
 
+    public void registerRestaurantResultsHandler(RestaurantResultsHandler handler) {
+        mRestaurantResultsHandlers.add(handler);
+    }
+
+    public void unregisterRestaurantResultsHandler(RestaurantResultsHandler handler) {
+        mRestaurantResultsHandlers.remove(handler);
+    }
+
     public void fetchRestaurants(String searchTerm, String location) {
         mYelpService.fetchRestaurants(searchTerm, location, ApiConstants.DEFAULT_NUM_RESTAURANTS)
                 .enqueue(new FetchRestaurantsCallback());
     }
 
-    public void processResults() {
-
+    public void processResults(List<Restaurant> restaurants) {
+        for (RestaurantResultsHandler handler : mRestaurantResultsHandlers) {
+            handler.processResults(restaurants);
+        }
     }
 }

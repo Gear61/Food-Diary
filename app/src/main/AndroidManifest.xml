@@ -67,5 +67,11 @@
             android:label="@string/settings"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".Activities.FindRestaurantActivity"
+            android:label="@string/restaurants"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>

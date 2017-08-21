@@ -1,8 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/parent"
+    android:background="@color/white"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</LinearLayout>
+        <FrameLayout
+            android:id="@+id/search_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <EditText
+                android:id="@+id/search_input"
+                android:hint="@string/search"
+                android:paddingRight="40dp"
+                android:paddingLeft="40dp"
+                style="@style/text_input"/>
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:text="@string/search_icon"
+                style="@style/input_icon"/>
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:id="@+id/clear_search"
+                style="@style/clear_icon"/>
+        </FrameLayout>
+
+        <ListView
+            android:id="@+id/restaurants"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
