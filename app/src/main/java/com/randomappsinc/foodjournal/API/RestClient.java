@@ -1,7 +1,11 @@
 package com.randomappsinc.foodjournal.API;
 
+import android.os.Handler;
+import android.os.HandlerThread;
+
 import com.randomappsinc.foodjournal.API.Callbacks.FetchRestaurantsCallback;
 import com.randomappsinc.foodjournal.API.Callbacks.FetchTokenCallback;
+import com.randomappsinc.foodjournal.API.Models.RestaurantResults;
 import com.randomappsinc.foodjournal.Models.Restaurant;
 
 import java.util.HashSet;
@@ -9,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -24,6 +29,16 @@ public class RestClient {
     private static RestClient mInstance;
     private YelpService mYelpService;
     private Set<RestaurantResultsHandler> mRestaurantResultsHandlers;
+    private Handler mHandler;
+    private Call<RestaurantResults> mCurrentRestaurantsCall;
+    private final Runnable mCancelRestaurantsCallTask = new Runnable() {
+        @Override
+        public void run() {
+            if (mCurrentRestaurantsCall != null) {
+                mCurrentRestaurantsCall.cancel();
+            }
+        }
+    };
 
     public static RestClient getInstance() {
         if (mInstance == null) {
@@ -45,6 +60,9 @@ public class RestClient {
 
         mYelpService = retrofit.create(YelpService.class);
         mRestaurantResultsHandlers = new HashSet<>();
+        HandlerThread backgroundThread = new HandlerThread("");
+        backgroundThread.start();
+        mHandler = new Handler(backgroundThread.getLooper());
     }
 
     public void refreshToken() {
@@ -61,13 +79,21 @@ public class RestClient {
     }
 
     public void fetchRestaurants(String searchTerm, String location) {
-        mYelpService.fetchRestaurants(searchTerm, location, ApiConstants.DEFAULT_NUM_RESTAURANTS)
-                .enqueue(new FetchRestaurantsCallback());
+        cancelRestaurantFetch();
+        mCurrentRestaurantsCall = mYelpService.fetchRestaurants(
+                searchTerm.isEmpty() ? ApiConstants.DEFAULT_SEARCH_TERM : searchTerm,
+                location,
+                ApiConstants.DEFAULT_NUM_RESTAURANTS);
+        mCurrentRestaurantsCall.enqueue(new FetchRestaurantsCallback());
     }
 
     public void processResults(List<Restaurant> restaurants) {
         for (RestaurantResultsHandler handler : mRestaurantResultsHandlers) {
             handler.processResults(restaurants);
         }
+    }
+
+    public void cancelRestaurantFetch() {
+        mHandler.post(mCancelRestaurantsCallTask);
     }
 }

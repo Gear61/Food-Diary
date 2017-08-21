@@ -18,6 +18,8 @@ public class Restaurant implements Parcelable {
     private String state;
     private String address;
 
+    public Restaurant() {}
+
     public String getId() {
         return id;
     }

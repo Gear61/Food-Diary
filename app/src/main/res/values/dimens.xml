@@ -4,4 +4,7 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="default_cell_padding">12dp</dimen>
+    <dimen name="restaurant_search_cell_side">80dp</dimen>
 </resources>
