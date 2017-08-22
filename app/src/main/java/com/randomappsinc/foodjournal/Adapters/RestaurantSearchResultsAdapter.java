@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.Adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.Models.Restaurant;
 import com.randomappsinc.foodjournal.R;
 import com.squareup.picasso.Picasso;
@@ -58,7 +61,19 @@ public class RestaurantSearchResultsAdapter extends BaseAdapter {
 
         public void loadItem(int position) {
             Restaurant restaurant = getItem(position);
-            Picasso.with(mContext).load(restaurant.getImageUrl()).fit().centerCrop().into(thumbnail);
+
+            Drawable defaultThumbnail = new IconDrawable(
+                    mContext,
+                    IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
+            if (!restaurant.getImageUrl().isEmpty()) {
+                Picasso.with(mContext)
+                        .load(restaurant.getImageUrl())
+                        .error(defaultThumbnail)
+                        .fit().centerCrop()
+                        .into(thumbnail);
+            } else {
+                thumbnail.setImageDrawable(defaultThumbnail);
+            }
             name.setText(restaurant.getName());
             address.setText(restaurant.getAddress());
         }

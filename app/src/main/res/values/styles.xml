@@ -36,4 +36,16 @@
         <item name="android:singleLine">true</item>
         <item name="android:imeOptions">actionDone</item>
     </style>
+
+    <style name="no_content">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">48dp</item>
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginRight">24dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

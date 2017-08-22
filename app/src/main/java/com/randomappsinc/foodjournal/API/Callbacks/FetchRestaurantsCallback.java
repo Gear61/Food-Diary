@@ -23,7 +23,5 @@ public class FetchRestaurantsCallback implements Callback<RestaurantResults> {
     }
 
     @Override
-    public void onFailure(Call<RestaurantResults> call, Throwable t) {
-        RestClient.getInstance().refreshToken();
-    }
+    public void onFailure(Call<RestaurantResults> call, Throwable t) {}
 }

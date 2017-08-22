@@ -70,7 +70,7 @@
 
         <activity
             android:name=".Activities.FindRestaurantActivity"
-            android:label="@string/restaurants"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
         </activity>
     </application>

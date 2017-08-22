@@ -5,4 +5,6 @@
     <string name="search">Search</string>
     <string name="search_icon">{ion-android-search}</string>
     <string name="clear_icon">{ion-android-close}</string>
+    <string name="no_restaurants">No restaurants match your input.</string>
+    <string name="powered_by_yelp">Powered by Yelp</string>
 </resources>

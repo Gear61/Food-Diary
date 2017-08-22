@@ -31,14 +31,6 @@ public class RestClient {
     private Set<RestaurantResultsHandler> mRestaurantResultsHandlers;
     private Handler mHandler;
     private Call<RestaurantResults> mCurrentRestaurantsCall;
-    private final Runnable mCancelRestaurantsCallTask = new Runnable() {
-        @Override
-        public void run() {
-            if (mCurrentRestaurantsCall != null) {
-                mCurrentRestaurantsCall.cancel();
-            }
-        }
-    };
 
     public static RestClient getInstance() {
         if (mInstance == null) {
@@ -78,13 +70,20 @@ public class RestClient {
         mRestaurantResultsHandlers.remove(handler);
     }
 
-    public void fetchRestaurants(String searchTerm, String location) {
-        cancelRestaurantFetch();
-        mCurrentRestaurantsCall = mYelpService.fetchRestaurants(
-                searchTerm.isEmpty() ? ApiConstants.DEFAULT_SEARCH_TERM : searchTerm,
-                location,
-                ApiConstants.DEFAULT_NUM_RESTAURANTS);
-        mCurrentRestaurantsCall.enqueue(new FetchRestaurantsCallback());
+    public void fetchRestaurants(final String searchTerm, final String location) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mCurrentRestaurantsCall != null) {
+                    mCurrentRestaurantsCall.cancel();
+                }
+                mCurrentRestaurantsCall = mYelpService.fetchRestaurants(
+                        searchTerm.isEmpty() ? ApiConstants.DEFAULT_SEARCH_TERM : searchTerm,
+                        location,
+                        ApiConstants.DEFAULT_NUM_RESTAURANTS);
+                mCurrentRestaurantsCall.enqueue(new FetchRestaurantsCallback());
+            }
+        });
     }
 
     public void processResults(List<Restaurant> restaurants) {
@@ -94,6 +93,13 @@ public class RestClient {
     }
 
     public void cancelRestaurantFetch() {
-        mHandler.post(mCancelRestaurantsCallTask);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mCurrentRestaurantsCall != null) {
+                    mCurrentRestaurantsCall.cancel();
+                }
+            }
+        });
     }
 }

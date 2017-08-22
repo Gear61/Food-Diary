@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.Activities;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
@@ -21,9 +22,13 @@ import butterknife.OnTextChanged;
 public class FindRestaurantActivity extends StandardActivity implements RestClient.RestaurantResultsHandler {
     public static final String RESTAURANT_KEY = "restaurant";
 
-    @BindView(R.id.search_input) EditText searchInput;
-    @BindView(R.id.clear_search) View clearSearch;
+    @BindView(R.id.parent) View mParent;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.search_input) EditText mSearchInput;
+    @BindView(R.id.clear_search) View mClearSearch;
     @BindView(R.id.restaurants) ListView mRestaurants;
+    @BindView(R.id.loading) View mLoading;
+    @BindView(R.id.no_results) View mNoResults;
 
     private RestClient mRestClient;
     private RestaurantSearchResultsAdapter mAdapter;
@@ -33,7 +38,10 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_restaurant);
         ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mRestClient = RestClient.getInstance();
         mRestClient.registerRestaurantResultsHandler(this);
@@ -44,17 +52,20 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void afterTextChanged(Editable input) {
+        mRestaurants.setVisibility(View.GONE);
+        mNoResults.setVisibility(View.GONE);
+        mLoading.setVisibility(View.VISIBLE);
         fetchRestaurants(input.toString());
         if (input.length() == 0) {
-            clearSearch.setVisibility(View.GONE);
+            mClearSearch.setVisibility(View.GONE);
         } else {
-            clearSearch.setVisibility(View.VISIBLE);
+            mClearSearch.setVisibility(View.VISIBLE);
         }
     }
 
     @OnClick(R.id.clear_search)
     public void clearSearch() {
-        searchInput.setText("");
+        mSearchInput.setText("");
     }
 
     private void fetchRestaurants(String searchTerm) {
@@ -63,7 +74,13 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
     @Override
     public void processResults(List<Restaurant> results) {
-        mAdapter.setRestaurants(results);
+        mLoading.setVisibility(View.GONE);
+        if (results.isEmpty()) {
+            mNoResults.setVisibility(View.VISIBLE);
+        } else {
+            mAdapter.setRestaurants(results);
+            mRestaurants.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
