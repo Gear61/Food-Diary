@@ -22,11 +22,15 @@
             android:id="@+id/restaurant_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_cell_padding"/>
+            android:textColor="@color/black"
+            android:textSize="@dimen/restaurant_title_size"
+            android:layout_marginBottom="@dimen/restaurant_info_spacing"/>
 
         <TextView
             android:id="@+id/restaurant_address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/restaurant_address_size"/>
     </LinearLayout>
 </LinearLayout>

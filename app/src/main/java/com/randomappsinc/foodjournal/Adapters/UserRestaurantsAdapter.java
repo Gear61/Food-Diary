@@ -12,25 +12,25 @@ import android.widget.TextView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.Models.Restaurant;
+import com.randomappsinc.foodjournal.Persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RestaurantSearchResultsAdapter extends BaseAdapter {
-    private List<Restaurant> mRestaurants = new ArrayList<>();
+public class UserRestaurantsAdapter extends BaseAdapter {
+    private List<Restaurant> mRestaurants = DatabaseManager.get().getUserRestaurants();
     private Context mContext;
 
-    public RestaurantSearchResultsAdapter(Context context) {
+    public UserRestaurantsAdapter(Context context) {
         mContext = context;
     }
 
-    public void setRestaurants(List<Restaurant> restaurants) {
-        mRestaurants = restaurants;
+    public void resyncWithDB() {
+        mRestaurants = DatabaseManager.get().getUserRestaurants();
         notifyDataSetChanged();
     }
 

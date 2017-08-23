@@ -78,7 +78,9 @@ public class RestClient {
                     mCurrentRestaurantsCall.cancel();
                 }
                 mCurrentRestaurantsCall = mYelpService.fetchRestaurants(
-                        searchTerm.isEmpty() ? ApiConstants.DEFAULT_SEARCH_TERM : searchTerm,
+                        searchTerm.isEmpty()
+                                ? ApiConstants.DEFAULT_SEARCH_TERM
+                                : searchTerm + " " + ApiConstants.DEFAULT_SEARCH_TERM,
                         location,
                         ApiConstants.DEFAULT_NUM_RESTAURANTS);
                 mCurrentRestaurantsCall.enqueue(new FetchRestaurantsCallback());

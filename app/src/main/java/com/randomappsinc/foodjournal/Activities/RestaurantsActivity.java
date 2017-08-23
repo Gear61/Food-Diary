@@ -3,10 +3,11 @@ package com.randomappsinc.foodjournal.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.widget.ListView;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
-import com.randomappsinc.foodjournal.Models.Restaurant;
+import com.randomappsinc.foodjournal.Adapters.UserRestaurantsAdapter;
 import com.randomappsinc.foodjournal.R;
 
 import butterknife.BindView;
@@ -18,7 +19,11 @@ import butterknife.OnClick;
  */
 
 public class RestaurantsActivity extends StandardActivity {
+
     @BindView(R.id.add_restaurant) FloatingActionButton addRestaurant;
+    @BindView(R.id.restaurants) ListView mRestaurantsList;
+
+    private final UserRestaurantsAdapter mAdapter = new UserRestaurantsAdapter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,8 @@ public class RestaurantsActivity extends StandardActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         addRestaurant.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_add).colorRes(R.color.white));
+
+        mRestaurantsList.setAdapter(mAdapter);
     }
 
     @OnClick(R.id.add_restaurant)
@@ -39,7 +46,7 @@ public class RestaurantsActivity extends StandardActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            Restaurant restaurant = data.getParcelableExtra(FindRestaurantActivity.RESTAURANT_KEY);
+            mAdapter.resyncWithDB();
         }
     }
 }

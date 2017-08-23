@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.randomappsinc.foodjournal.API.RestClient;
 import com.randomappsinc.foodjournal.Adapters.RestaurantSearchResultsAdapter;
 import com.randomappsinc.foodjournal.Models.Restaurant;
+import com.randomappsinc.foodjournal.Persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.R;
 
 import java.util.List;
@@ -17,10 +18,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
 
 public class FindRestaurantActivity extends StandardActivity implements RestClient.RestaurantResultsHandler {
-    public static final String RESTAURANT_KEY = "restaurant";
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.toolbar) Toolbar mToolbar;
@@ -48,6 +49,8 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
         mAdapter = new RestaurantSearchResultsAdapter(this);
         mRestaurants.setAdapter(mAdapter);
+
+        mSearchInput.setText("");
     }
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -81,6 +84,13 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
             mAdapter.setRestaurants(results);
             mRestaurants.setVisibility(View.VISIBLE);
         }
+    }
+
+    @OnItemClick(R.id.restaurants)
+    public void onRestaurantClicked(int position) {
+        DatabaseManager.get().addRestaurant(mAdapter.getItem(position));
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override

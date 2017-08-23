@@ -3,6 +3,8 @@ package com.randomappsinc.foodjournal.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.randomappsinc.foodjournal.Persistence.Models.RestaurantDO;
+
 /**
  * Created by alexanderchiou on 8/20/17.
  */
@@ -90,6 +92,20 @@ public class Restaurant implements Parcelable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public RestaurantDO toRestaurantDO() {
+        RestaurantDO restaurantDO = new RestaurantDO();
+        restaurantDO.setId(id);
+        restaurantDO.setName(name);
+        restaurantDO.setImageUrl(imageUrl);
+        restaurantDO.setPhoneNumber(phoneNumber);
+        restaurantDO.setCity(city);
+        restaurantDO.setZipCode(zipCode);
+        restaurantDO.setCountry(country);
+        restaurantDO.setState(state);
+        restaurantDO.setAddress(address);
+        return restaurantDO;
     }
 
     protected Restaurant(Parcel in) {
