@@ -1,5 +1,6 @@
 package com.randomappsinc.foodjournal.Persistence.Models;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -10,6 +11,7 @@ import io.realm.annotations.PrimaryKey;
 public class RestaurantDO extends RealmObject {
     @PrimaryKey
     private String id;
+
     private String name;
     private String imageUrl;
     private String phoneNumber;
@@ -18,6 +20,9 @@ public class RestaurantDO extends RealmObject {
     private String country;
     private String state;
     private String address;
+    private long timeAdded;
+    private RealmList<DishDO> dishes;
+    private RealmList<CheckInDO> checkIns;
 
     public String getId() {
         return id;
@@ -89,5 +94,29 @@ public class RestaurantDO extends RealmObject {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public long getTimeAdded() {
+        return timeAdded;
+    }
+
+    public void setTimeAdded(long timeAdded) {
+        this.timeAdded = timeAdded;
+    }
+
+    public RealmList<DishDO> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(RealmList<DishDO> dishes) {
+        this.dishes = dishes;
+    }
+
+    public RealmList<CheckInDO> getCheckIns() {
+        return checkIns;
+    }
+
+    public void setCheckIns(RealmList<CheckInDO> checkIns) {
+        this.checkIns = checkIns;
     }
 }

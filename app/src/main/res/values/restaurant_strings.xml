@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- User restaurants -->
+    <string name="checkin_icon">{ion-android-checkmark-circle}</string>
+    <string name="num_checkins">%d check-ins</string>
+    <string name="num_dishes">%d dishes attached</string>
+
     <!-- Find restaurant -->
     <string name="find_restaurant">Find Restaurant</string>
     <string name="search">Search</string>

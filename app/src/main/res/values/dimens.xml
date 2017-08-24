@@ -7,6 +7,12 @@
 
     <dimen name="default_cell_padding">8dp</dimen>
 
+    <!-- User restaurants -->
+    <dimen name="restaurant_icon_size">28dp</dimen>
+    <dimen name="restaurant_icon_text_size">22dp</dimen>
+    <dimen name="restaurant_user_text_size">15dp</dimen>
+    <dimen name="user_restaurant_item_spacing">2dp</dimen>
+
     <!-- Find restaurant -->
     <dimen name="restaurant_search_cell_side">80dp</dimen>
     <dimen name="restaurant_title_size">19sp</dimen>

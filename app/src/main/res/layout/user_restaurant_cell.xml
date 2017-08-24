@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="SpUsage, RtlHardcoded">
+
+    <include layout="@layout/base_restaurant_cell"/>
+
+    <LinearLayout
+        android:baselineAligned="false"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/restaurant_icon_size"
+        android:paddingLeft="2dp"
+        android:paddingRight="@dimen/default_cell_padding"
+        android:paddingBottom="@dimen/default_cell_padding">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:text="@string/dish_icon"
+                android:textColor="@color/app_red"
+                style="@style/user_restaurant_icon"/>
+
+            <TextView
+                android:id="@+id/num_dishes"
+                style="@style/user_restaurant_stats_text"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:text="@string/checkin_icon"
+                android:textColor="@color/blue"
+                style="@style/user_restaurant_icon"/>
+
+            <TextView
+                android:id="@+id/num_checkins"
+                style="@style/user_restaurant_stats_text"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

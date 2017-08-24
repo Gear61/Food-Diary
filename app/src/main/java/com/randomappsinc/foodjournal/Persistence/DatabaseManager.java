@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.Sort;
 
 public class DatabaseManager {
     private static DatabaseManager instance;
@@ -38,7 +39,7 @@ public class DatabaseManager {
         List<Restaurant> locations = new ArrayList<>();
         List<RestaurantDO> restaurantDOs = getRealm()
                 .where(RestaurantDO.class)
-                .findAll();
+                .findAllSorted("timeAdded", Sort.DESCENDING);
         for (RestaurantDO restaurantDO : restaurantDOs) {
             locations.add(DBConverter.getRestaurantFromDO(restaurantDO));
         }
@@ -49,6 +50,8 @@ public class DatabaseManager {
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+                RestaurantDO restaurantDO = restaurant.toRestaurantDO();
+                restaurantDO.setTimeAdded(System.currentTimeMillis());
                 realm.insert(restaurant.toRestaurantDO());
             }
         });

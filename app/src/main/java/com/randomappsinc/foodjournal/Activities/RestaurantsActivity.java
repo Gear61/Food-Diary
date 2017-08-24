@@ -23,7 +23,7 @@ public class RestaurantsActivity extends StandardActivity {
     @BindView(R.id.add_restaurant) FloatingActionButton addRestaurant;
     @BindView(R.id.restaurants) ListView mRestaurantsList;
 
-    private final UserRestaurantsAdapter mAdapter = new UserRestaurantsAdapter(this);
+    private UserRestaurantsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class RestaurantsActivity extends StandardActivity {
 
         addRestaurant.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_add).colorRes(R.color.white));
 
+        mAdapter = new UserRestaurantsAdapter(this);
         mRestaurantsList.setAdapter(mAdapter);
     }
 

@@ -82,7 +82,7 @@ public class RestaurantSearchResultsAdapter extends BaseAdapter {
         RestaurantViewHolder holder;
         if (view == null) {
             LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = vi.inflate(R.layout.restaurant_search_result, parent, false);
+            view = vi.inflate(R.layout.base_restaurant_cell, parent, false);
             holder = new RestaurantViewHolder(view);
             view.setTag(holder);
         } else {

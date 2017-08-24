@@ -24,9 +24,13 @@ import butterknife.ButterKnife;
 public class UserRestaurantsAdapter extends BaseAdapter {
     private List<Restaurant> mRestaurants = DatabaseManager.get().getUserRestaurants();
     private Context mContext;
+    private String numDishesTemplate;
+    private String numCheckInsTemplate;
 
     public UserRestaurantsAdapter(Context context) {
         mContext = context;
+        numDishesTemplate = mContext.getString(R.string.num_dishes);
+        numCheckInsTemplate = mContext.getString(R.string.num_checkins);
     }
 
     public void resyncWithDB() {
@@ -53,6 +57,8 @@ public class UserRestaurantsAdapter extends BaseAdapter {
         @BindView(R.id.restaurant_thumbnail) ImageView thumbnail;
         @BindView(R.id.restaurant_name) TextView name;
         @BindView(R.id.restaurant_address) TextView address;
+        @BindView(R.id.num_dishes) TextView numDishes;
+        @BindView(R.id.num_checkins) TextView numCheckIns;
 
         public RestaurantViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -75,6 +81,8 @@ public class UserRestaurantsAdapter extends BaseAdapter {
             }
             name.setText(restaurant.getName());
             address.setText(restaurant.getAddress());
+            numDishes.setText(String.format(numDishesTemplate, restaurant.getDishes().size()));
+            numCheckIns.setText(String.format(numCheckInsTemplate, restaurant.getCheckIns().size()));
         }
     }
 
@@ -82,7 +90,7 @@ public class UserRestaurantsAdapter extends BaseAdapter {
         RestaurantViewHolder holder;
         if (view == null) {
             LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = vi.inflate(R.layout.restaurant_search_result, parent, false);
+            view = vi.inflate(R.layout.user_restaurant_cell, parent, false);
             holder = new RestaurantViewHolder(view);
             view.setTag(holder);
         } else {
