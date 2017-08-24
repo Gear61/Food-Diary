@@ -52,7 +52,7 @@ public class DatabaseManager {
             public void execute(Realm realm) {
                 RestaurantDO restaurantDO = restaurant.toRestaurantDO();
                 restaurantDO.setTimeAdded(System.currentTimeMillis());
-                realm.insert(restaurant.toRestaurantDO());
+                realm.insert(restaurantDO);
             }
         });
     }
