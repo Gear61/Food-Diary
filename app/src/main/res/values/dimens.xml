@@ -6,6 +6,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="default_cell_padding">8dp</dimen>
+    <dimen name="list_fab_offset">88dp</dimen>
 
     <!-- User restaurants -->
     <dimen name="restaurant_icon_size">28dp</dimen>

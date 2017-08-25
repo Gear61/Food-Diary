@@ -22,19 +22,26 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class UserRestaurantsAdapter extends BaseAdapter {
-    private List<Restaurant> mRestaurants = DatabaseManager.get().getUserRestaurants();
+    private List<Restaurant> mRestaurants;
     private Context mContext;
-    private String numDishesTemplate;
-    private String numCheckInsTemplate;
+    private TextView mNoResults;
 
-    public UserRestaurantsAdapter(Context context) {
+    public UserRestaurantsAdapter(Context context, TextView noResults) {
         mContext = context;
-        numDishesTemplate = mContext.getString(R.string.num_dishes);
-        numCheckInsTemplate = mContext.getString(R.string.num_checkins);
+        mNoResults = noResults;
+        resyncWithDB("");
     }
 
-    public void resyncWithDB() {
-        mRestaurants = DatabaseManager.get().getUserRestaurants();
+    public void resyncWithDB(String searchTerm) {
+        mRestaurants = DatabaseManager.get().getUserRestaurants(searchTerm);
+        if (mRestaurants.isEmpty()) {
+            mNoResults.setText(DatabaseManager.get().getNumUserRestaurants() == 0
+                    ? R.string.no_restaurants_added
+                    : R.string.no_restaurants_found);
+            mNoResults.setVisibility(View.VISIBLE);
+        } else {
+            mNoResults.setVisibility(View.GONE);
+        }
         notifyDataSetChanged();
     }
 
@@ -81,8 +88,10 @@ public class UserRestaurantsAdapter extends BaseAdapter {
             }
             name.setText(restaurant.getName());
             address.setText(restaurant.getAddress());
-            numDishes.setText(String.format(numDishesTemplate, restaurant.getDishes().size()));
-            numCheckIns.setText(String.format(numCheckInsTemplate, restaurant.getCheckIns().size()));
+            numDishes.setText(String.format(mContext.getString(R.string.num_dishes), restaurant.getDishes().size()));
+            numCheckIns.setText(String.format(
+                    mContext.getString(R.string.num_checkins),
+                    restaurant.getCheckIns().size()));
         }
     }
 

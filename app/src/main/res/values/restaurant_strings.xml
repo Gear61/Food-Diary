@@ -4,12 +4,19 @@
     <string name="checkin_icon">{ion-android-checkmark-circle}</string>
     <string name="num_checkins">%d check-ins</string>
     <string name="num_dishes">%d dishes attached</string>
+    <string name="restaurant_added">Restaurant added.</string>
+    <string name="restaurant_deleted">Restaurant deleted.</string>
+    <string name="no_restaurants_added">
+        You have not added any restaurant to your Food Journal yet.
+        Hit the {ion-android-add} in the bottom right to get started!
+    </string>
 
     <!-- Find restaurant -->
     <string name="find_restaurant">Find Restaurant</string>
     <string name="search">Search</string>
     <string name="search_icon">{ion-android-search}</string>
     <string name="clear_icon">{ion-android-close}</string>
-    <string name="no_restaurants">No restaurants match your input.</string>
+    <string name="no_restaurants_found">No restaurants match your input.</string>
     <string name="powered_by_yelp">Powered by Yelp</string>
+    <string name="restaurant_already_added">You have already added this restaurant to your Food Journal.</string>
 </resources>

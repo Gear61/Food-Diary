@@ -53,7 +53,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:text="@string/no_restaurants"
+                    android:text="@string/no_restaurants_found"
                     style="@style/no_content"/>
 
                 <ImageView

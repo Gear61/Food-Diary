@@ -12,6 +12,7 @@ import com.randomappsinc.foodjournal.Adapters.RestaurantSearchResultsAdapter;
 import com.randomappsinc.foodjournal.Models.Restaurant;
 import com.randomappsinc.foodjournal.Persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.Utils.UIUtils;
 
 import java.util.List;
 
@@ -88,9 +89,14 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
     @OnItemClick(R.id.restaurants)
     public void onRestaurantClicked(int position) {
-        DatabaseManager.get().addRestaurant(mAdapter.getItem(position));
-        setResult(RESULT_OK);
-        finish();
+        Restaurant restaurant = mAdapter.getItem(position);
+        if (DatabaseManager.get().userAlreadyHasRestaurant(restaurant)) {
+            UIUtils.showSnackbar(mParent, getString(R.string.restaurant_already_added));
+        } else {
+            DatabaseManager.get().addRestaurant(mAdapter.getItem(position));
+            setResult(RESULT_OK);
+            finish();
+        }
     }
 
     @Override
