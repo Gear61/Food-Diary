@@ -73,5 +73,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".Activities.RestaurantViewActivity"
+            android:label="@string/restaurants"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>

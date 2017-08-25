@@ -19,4 +19,12 @@
     <string name="no_restaurants_found">No restaurants match your input.</string>
     <string name="powered_by_yelp">Powered by Yelp</string>
     <string name="restaurant_already_added">You have already added this restaurant to your Food Journal.</string>
+
+    <!-- Restaurant view -->
+    <string name="restaurant_view">Restaurant View</string>
+    <string name="check_ins">Check-ins</string>
+    <string-array name="restaurant_tabs">
+        <item>@string/dishes</item>
+        <item>@string/check_ins</item>
+    </string-array>
 </resources>

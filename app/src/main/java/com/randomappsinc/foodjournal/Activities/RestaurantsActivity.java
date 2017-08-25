@@ -12,18 +12,22 @@ import android.widget.TextView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.Adapters.UserRestaurantsAdapter;
+import com.randomappsinc.foodjournal.Models.Restaurant;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.Utils.UIUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
 
 public class RestaurantsActivity extends StandardActivity {
 
+    public static final String MODE_KEY = "mode";
+
     public static final int ADD_RESTAURANT_CODE = 1;
-    public static final int VIEW_RESTAURANT_CODE = 2;
+    public static final int RESTAURANT_VIEW_CODE = 2;
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.search_input) EditText mSearchInput;
@@ -33,6 +37,7 @@ public class RestaurantsActivity extends StandardActivity {
     @BindView(R.id.add_restaurant) FloatingActionButton mAddRestaurant;
 
     private UserRestaurantsAdapter mAdapter;
+    private boolean mPickerMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,8 @@ public class RestaurantsActivity extends StandardActivity {
         setContentView(R.layout.restaurants);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mPickerMode = getIntent().getBooleanExtra(MODE_KEY, false);
 
         mAddRestaurant.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_add).colorRes(R.color.white));
 
@@ -60,6 +67,18 @@ public class RestaurantsActivity extends StandardActivity {
     @OnClick(R.id.clear_search)
     public void clearSearch() {
         mSearchInput.setText("");
+    }
+
+    @OnItemClick(R.id.restaurants)
+    public void onRestaurantSelected(int position) {
+        Restaurant restaurant = mAdapter.getItem(position);
+        if (mPickerMode) {
+            // TODO: Return to dish creation page
+        } else {
+            Intent intent = new Intent(this, RestaurantViewActivity.class);
+            intent.putExtra(RestaurantViewActivity.RESTAURANT_KEY, restaurant);
+            startActivityForResult(intent, RESTAURANT_VIEW_CODE);
+        }
     }
 
     @OnClick(R.id.add_restaurant)
