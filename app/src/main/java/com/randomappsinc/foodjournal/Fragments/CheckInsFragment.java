@@ -19,6 +19,7 @@ public class CheckInsFragment extends Fragment {
 
     @BindView(R.id.add_check_in) FloatingActionButton mAddCheckIn;
 
+    private String mRestaurantId;
     private Unbinder mUnbinder;
 
     @Override

@@ -70,4 +70,13 @@ public class DatabaseManager {
             }
         });
     }
+
+    public void addCheckIn(Restaurant restaurant, String message) {
+        getRealm().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+
+            }
+        });
+    }
 }

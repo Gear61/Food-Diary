@@ -51,12 +51,6 @@
         </activity>
 
         <activity
-            android:name=".Activities.DishesActivity"
-            android:label="@string/dishes"
-            android:screenOrientation="portrait">
-        </activity>
-
-        <activity
             android:name=".Activities.RestaurantsActivity"
             android:label="@string/restaurants"
             android:screenOrientation="portrait">
@@ -77,6 +71,12 @@
         <activity
             android:name=".Activities.RestaurantViewActivity"
             android:label="@string/restaurants"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".Activities.MyLocationsActivity"
+            android:label="@string/my_locations"
             android:screenOrientation="portrait">
         </activity>
     </application>

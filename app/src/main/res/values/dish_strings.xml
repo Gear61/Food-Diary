@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="dish_icon">{ion-pizza}</string>
     <string name="add_dish">Add Dish</string>
     <string name="edit_dish">Edit Dish</string>
 </resources>
