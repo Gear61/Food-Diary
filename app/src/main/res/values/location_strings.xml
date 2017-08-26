@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="automatic">Automatic</string>
     <string name="location">Location</string>
     <string name="no_locations">You don\'t have any saved locations.</string>
     <string name="delete_title">Confirm Location Deletion</string>
@@ -20,4 +21,6 @@
     <string name="set_as_current">Set as current location</string>
     <string name="edit_location">Edit location</string>
     <string name="delete_location">Delete location</string>
+
+    <string name="current_location_set">Your current location has been set.</string>
 </resources>
