@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/pick_source"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/clan_fab_margin"
+        fab:menu_colorNormal="@color/app_red"
+        fab:menu_colorPressed="@color/light_red"
+        fab:menu_colorRipple="@color/light_red">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/from_files"
+            fab:fab_label="@string/files"
+            style="@style/fab_menu_option"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/from_camera"
+            fab:fab_label="@string/camera"
+            style="@style/fab_menu_option"/>
+    </com.github.clans.fab.FloatingActionMenu>
+</android.support.design.widget.CoordinatorLayout>

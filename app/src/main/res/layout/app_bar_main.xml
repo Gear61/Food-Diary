@@ -2,7 +2,6 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent"
     android:layout_width="match_parent"
@@ -22,28 +21,9 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main"/>
-
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/pick_source"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="@dimen/default_activity_margin"
-        android:layout_marginBottom="@dimen/default_activity_margin"
-        android:layout_marginLeft="@dimen/default_activity_margin"
-        fab:menu_colorNormal="@color/app_red"
-        fab:menu_colorPressed="@color/light_red"
-        fab:menu_colorRipple="@color/light_red">
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/from_files"
-            fab:fab_label="@string/files"
-            style="@style/fab_menu_option"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/from_camera"
-            app:fab_label="@string/camera"
-            style="@style/fab_menu_option"/>
-    </com.github.clans.fab.FloatingActionMenu>
+    <fragment
+        android:name="com.randomappsinc.foodjournal.Fragments.DishesFragment"
+        android:id="@+id/dishes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </android.support.design.widget.CoordinatorLayout>

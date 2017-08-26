@@ -8,6 +8,9 @@
     <dimen name="default_cell_padding">8dp</dimen>
     <dimen name="list_fab_offset">88dp</dimen>
 
+    <!-- There's some weird built-in margin for the clan FAB library that we need to deal with -->
+    <dimen name="clan_fab_margin">11dp</dimen>
+
     <!-- User restaurants -->
     <dimen name="restaurant_icon_size">28dp</dimen>
     <dimen name="restaurant_icon_text_size">22dp</dimen>
