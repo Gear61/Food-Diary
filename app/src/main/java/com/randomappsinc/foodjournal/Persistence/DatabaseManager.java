@@ -1,6 +1,8 @@
 package com.randomappsinc.foodjournal.Persistence;
 
+import com.randomappsinc.foodjournal.Models.CheckIn;
 import com.randomappsinc.foodjournal.Models.Restaurant;
+import com.randomappsinc.foodjournal.Persistence.Models.CheckInDO;
 import com.randomappsinc.foodjournal.Persistence.Models.RestaurantDO;
 import com.randomappsinc.foodjournal.Utils.MyApplication;
 
@@ -71,12 +73,37 @@ public class DatabaseManager {
         });
     }
 
-    public void addCheckIn(Restaurant restaurant, String message) {
+    public void addCheckIn(String restaurantId, final String message) {
+        final RestaurantDO restaurantDO = getRealm()
+                .where(RestaurantDO.class)
+                .equalTo("id", restaurantId)
+                .findFirst();
+
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-
+                CheckInDO checkInDO = new CheckInDO();
+                checkInDO.setMessage(message);
+                checkInDO.setTimeAdded(System.currentTimeMillis());
+                restaurantDO.getCheckIns().add(checkInDO);
             }
         });
+    }
+
+    public List<CheckIn> getCheckIns(String restaurantId) {
+        RestaurantDO restaurantDO = getRealm()
+                .where(RestaurantDO.class)
+                .equalTo("id", restaurantId)
+                .findFirst();
+
+        if (restaurantDO != null) {
+            List<CheckIn> checkIns = new ArrayList<>();
+            for (CheckInDO checkInDO : restaurantDO.getCheckIns()) {
+                checkIns.add(DBConverter.getCheckInFromDO(checkInDO));
+            }
+            return checkIns;
+        } else {
+            return new ArrayList<>();
+        }
     }
 }

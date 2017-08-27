@@ -19,6 +19,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.Activities.AddOrEditDishActivity;
+import com.randomappsinc.foodjournal.Activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.Utils.PermissionUtils;
 import com.randomappsinc.foodjournal.Utils.PictureUtils;
@@ -45,14 +46,26 @@ public class DishesFragment extends Fragment {
     @BindView(R.id.from_files) FloatingActionButton mFilesPicker;
     @BindString(R.string.choose_image_from) String mChooseImageFrom;
 
+    private String mRestaurantId;
     private Uri mTakenPhotoUri;
     private Unbinder mUnbinder;
+
+    public static DishesFragment newInstance(String restaurantId) {
+        DishesFragment fragment = new DishesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(RestaurantsActivity.ID_KEY, restaurantId);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dishes, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
+        if (getArguments() != null) {
+            mRestaurantId = getArguments().getString(RestaurantsActivity.ID_KEY);
+        }
         mCameraPicker.setImageDrawable(new IconDrawable(getActivity(),
                 IoniconsIcons.ion_android_camera).colorRes(R.color.white));
         mFilesPicker.setImageDrawable(new IconDrawable(getActivity(),

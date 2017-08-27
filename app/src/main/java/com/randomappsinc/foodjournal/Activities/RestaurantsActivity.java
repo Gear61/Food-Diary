@@ -25,6 +25,7 @@ import butterknife.OnTextChanged;
 public class RestaurantsActivity extends StandardActivity {
 
     public static final String MODE_KEY = "mode";
+    public static final String ID_KEY = "id";
 
     public static final int ADD_RESTAURANT_CODE = 1;
     public static final int RESTAURANT_VIEW_CODE = 2;

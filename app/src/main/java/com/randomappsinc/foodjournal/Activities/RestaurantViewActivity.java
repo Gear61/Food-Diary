@@ -52,7 +52,7 @@ public class RestaurantViewActivity extends StandardActivity {
         mName.setText(mRestaurant.getName());
         mAddress.setText(mRestaurant.getAddress());
 
-        mOptionsPager.setAdapter(new RestaurantTabsAdapter(getFragmentManager()));
+        mOptionsPager.setAdapter(new RestaurantTabsAdapter(getFragmentManager(), mRestaurant.getId()));
         mRestaurantOptions.setupWithViewPager(mOptionsPager);
     }
 }
