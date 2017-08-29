@@ -55,6 +55,12 @@ public class RestaurantsActivity extends StandardActivity {
         mRestaurantsList.setAdapter(mAdapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdapter.resyncWithDB(mSearchInput.getText().toString());
+    }
+
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void onSearchTermChanged(Editable input) {
         mAdapter.resyncWithDB(input.toString());

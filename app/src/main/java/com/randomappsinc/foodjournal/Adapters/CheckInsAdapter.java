@@ -10,12 +10,15 @@ import android.widget.TextView;
 import com.randomappsinc.foodjournal.Models.CheckIn;
 import com.randomappsinc.foodjournal.Persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.Utils.TimeUtils;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class CheckInsAdapter extends BaseAdapter {
+
     private List<CheckIn> mCheckIns;
     private Context mContext;
     private TextView mNoResults;
@@ -55,13 +58,26 @@ public class CheckInsAdapter extends BaseAdapter {
 
     public class CheckInViewHolder {
 
+        @BindView(R.id.check_in_time) TextView checkInTime;
+        @BindView(R.id.check_in_message) TextView checkInMessage;
 
         public CheckInViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
 
         public void loadItem(int position) {
+            CheckIn checkIn = getItem(position);
 
+            checkInTime.setText(String.format(
+                    mContext.getString(R.string.check_in_time),
+                    TimeUtils.getDateText(checkIn.getTimeAdded())));
+
+            if (checkIn.getMessage().isEmpty()) {
+                checkInMessage.setVisibility(View.GONE);
+            } else {
+                checkInMessage.setText("\"" + checkIn.getMessage() + "\"");
+                checkInMessage.setVisibility(View.VISIBLE);
+            }
         }
     }
 

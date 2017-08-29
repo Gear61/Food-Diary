@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
@@ -61,20 +60,12 @@ public class CheckInsFragment extends Fragment {
                 .input(getString(R.string.check_in_prompt), "", new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        boolean submitEnabled = input.toString().trim().isEmpty();
-                        dialog.getActionButton(DialogAction.POSITIVE).setEnabled(submitEnabled);
-                    }
-                })
-                .alwaysCallInputCallback()
-                .negativeText(android.R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        String message = dialog.getInputEditText().getText().toString();
+                        String message = input.toString().trim();
                         DatabaseManager.get().addCheckIn(mRestaurantId, message);
                         mCheckInsAdapter.resyncWithDB();
                     }
                 })
+                .negativeText(android.R.string.no)
                 .build();
 
         return rootView;
@@ -82,6 +73,9 @@ public class CheckInsFragment extends Fragment {
 
     @OnClick(R.id.add_check_in)
     public void addCheckIn() {
+        if (mCheckInDialog.getInputEditText() != null) {
+            mCheckInDialog.getInputEditText().setText("");
+        }
         mCheckInDialog.show();
     }
 
