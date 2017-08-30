@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.realm.Case;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -94,8 +95,10 @@ public class DatabaseManager {
                 .findFirst();
 
         if (restaurantDO != null) {
+            RealmResults<CheckInDO> checkInDOs = restaurantDO.getCheckIns().sort("timeAdded", Sort.DESCENDING);
+
             List<CheckIn> checkIns = new ArrayList<>();
-            for (CheckInDO checkInDO : restaurantDO.getCheckIns()) {
+            for (CheckInDO checkInDO : checkInDOs) {
                 checkIns.add(DBConverter.getCheckInFromDO(checkInDO));
             }
             return checkIns;

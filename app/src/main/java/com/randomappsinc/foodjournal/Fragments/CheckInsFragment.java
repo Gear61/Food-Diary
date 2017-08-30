@@ -16,6 +16,7 @@ import com.randomappsinc.foodjournal.Adapters.CheckInsAdapter;
 import com.randomappsinc.foodjournal.Models.CheckIn;
 import com.randomappsinc.foodjournal.Persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.Utils.UIUtils;
 import com.randomappsinc.foodjournal.Views.CheckInAdder;
 
 import butterknife.BindView;
@@ -26,6 +27,7 @@ import butterknife.Unbinder;
 
 public class CheckInsFragment extends Fragment {
 
+    @BindView(R.id.parent) View mParent;
     @BindView(R.id.no_results) TextView mNoResults;
     @BindView(R.id.check_ins) ListView mCheckInsList;
     @BindView(R.id.add_check_in) FloatingActionButton mAddCheckIn;
@@ -35,6 +37,7 @@ public class CheckInsFragment extends Fragment {
         public void onCheckInCreated(CheckIn checkIn) {
             DatabaseManager.get().addCheckIn(mRestaurantId, checkIn);
             mCheckInsAdapter.resyncWithDB();
+            UIUtils.showSnackbar(mParent, getString(R.string.check_in_added));
         }
     };
 
