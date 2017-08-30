@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Check-ins -->
+    <string name="no_check_ins">
+        Hit the {ion-android-add} in the bottom right to add your first check-in!
+    </string>
+    <string name="add_check_in">Add Check-In</string>
+    <string name="check_in_prompt">How was your experience here?</string>
+    <string name="check_in_time">You checked in here on %s.</string>
+    <string name="check_in_added">Check-in added.</string>
+    <string name="edit_check_in">Edit Check-In</string>
+</resources>

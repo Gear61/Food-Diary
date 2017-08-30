@@ -90,10 +90,10 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     @OnItemClick(R.id.restaurants)
     public void onRestaurantClicked(int position) {
         Restaurant restaurant = mAdapter.getItem(position);
-        if (DatabaseManager.get().userAlreadyHasRestaurant(restaurant)) {
+        if (DatabaseManager.get().getRestaurantsDBManager().userAlreadyHasRestaurant(restaurant)) {
             UIUtils.showSnackbar(mParent, getString(R.string.restaurant_already_added));
         } else {
-            DatabaseManager.get().addRestaurant(mAdapter.getItem(position));
+            DatabaseManager.get().getRestaurantsDBManager().addRestaurant(restaurant);
             setResult(RESULT_OK);
             finish();
         }

@@ -79,5 +79,11 @@
             android:label="@string/my_locations"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".Activities.EditCheckInActivity"
+            android:label="@string/edit_check_in"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>

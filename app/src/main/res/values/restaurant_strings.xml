@@ -7,7 +7,7 @@
     <string name="restaurant_added">Restaurant added.</string>
     <string name="restaurant_deleted">Restaurant deleted.</string>
     <string name="no_restaurants_added">
-        Hit the {ion-android-add} in the bottom right to add the first restaurant to your Food Journal!
+        Hit the {ion-android-add} in the bottom right to add your first restaurant!
     </string>
 
     <!-- Find restaurant -->
@@ -27,13 +27,4 @@
         <item>@string/dishes</item>
         <item>@string/check_ins</item>
     </string-array>
-
-    <!-- Check-ins -->
-    <string name="no_check_ins">
-        Hit the {ion-android-add} in the bottom right to add your first check-in!
-    </string>
-    <string name="add_check_in">Add Check-In</string>
-    <string name="check_in_prompt">How was your experience here?</string>
-    <string name="check_in_time">You checked in here on %s.</string>
-    <string name="check_in_added">Check-in added.</string>
 </resources>

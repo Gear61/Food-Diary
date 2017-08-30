@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.Fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
+import com.randomappsinc.foodjournal.Activities.EditCheckInActivity;
 import com.randomappsinc.foodjournal.Activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.Adapters.CheckInsAdapter;
 import com.randomappsinc.foodjournal.Models.CheckIn;
@@ -35,7 +37,7 @@ public class CheckInsFragment extends Fragment {
     private final CheckInAdder.Listener mCheckInListener = new CheckInAdder.Listener() {
         @Override
         public void onCheckInCreated(CheckIn checkIn) {
-            DatabaseManager.get().addCheckIn(mRestaurantId, checkIn);
+            DatabaseManager.get().getCheckInsDBManager().addCheckIn(mRestaurantId, checkIn);
             mCheckInsAdapter.resyncWithDB();
             UIUtils.showSnackbar(mParent, getString(R.string.check_in_added));
         }
@@ -78,6 +80,9 @@ public class CheckInsFragment extends Fragment {
     @OnItemClick(R.id.check_ins)
     public void onCheckInSelected(int position) {
         CheckIn checkIn = mCheckInsAdapter.getItem(position);
+        Intent intent = new Intent(getActivity(), EditCheckInActivity.class);
+        intent.putExtra(EditCheckInActivity.CHECK_IN_KEY, checkIn);
+        startActivity(intent);
     }
 
     @Override

@@ -6,10 +6,19 @@ import android.os.Parcelable;
 import com.randomappsinc.foodjournal.Persistence.Models.CheckInDO;
 
 public class CheckIn implements Parcelable {
+    private int checkInId;
     private String message;
     private long timeAdded;
 
     public CheckIn() {}
+
+    public int getCheckInId() {
+        return checkInId;
+    }
+
+    public void setCheckInId(int checkInId) {
+        this.checkInId = checkInId;
+    }
 
     public String getMessage() {
         return message;
@@ -29,12 +38,14 @@ public class CheckIn implements Parcelable {
 
     public CheckInDO toCheckInDO() {
         CheckInDO checkInDO = new CheckInDO();
+        checkInDO.setCheckInId(checkInId);
         checkInDO.setMessage(message);
         checkInDO.setTimeAdded(timeAdded);
         return checkInDO;
     }
 
     protected CheckIn(Parcel in) {
+        checkInId = in.readInt();
         message = in.readString();
         timeAdded = in.readLong();
     }
@@ -46,6 +57,7 @@ public class CheckIn implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(checkInId);
         dest.writeString(message);
         dest.writeLong(timeAdded);
     }

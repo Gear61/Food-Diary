@@ -33,9 +33,9 @@ public class UserRestaurantsAdapter extends BaseAdapter {
     }
 
     public void resyncWithDB(String searchTerm) {
-        mRestaurants = DatabaseManager.get().getUserRestaurants(searchTerm);
+        mRestaurants = DatabaseManager.get().getRestaurantsDBManager().getUserRestaurants(searchTerm);
         if (mRestaurants.isEmpty()) {
-            mNoResults.setText(DatabaseManager.get().getNumUserRestaurants() == 0
+            mNoResults.setText(DatabaseManager.get().getRestaurantsDBManager().getNumUserRestaurants() == 0
                     ? R.string.no_restaurants_added
                     : R.string.no_restaurants_found);
             mNoResults.setVisibility(View.VISIBLE);
