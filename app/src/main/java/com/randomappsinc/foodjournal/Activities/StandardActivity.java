@@ -7,10 +7,6 @@ import android.view.MenuItem;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.Utils.UIUtils;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public class StandardActivity extends AppCompatActivity {
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {

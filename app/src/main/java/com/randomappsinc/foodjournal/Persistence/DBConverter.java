@@ -52,6 +52,7 @@ public class DBConverter {
 
     public static CheckIn getCheckInFromDO(CheckInDO checkInDO) {
         CheckIn checkIn = new CheckIn();
+        checkIn.setCheckInId(checkInDO.getCheckInId());
         checkIn.setMessage(checkInDO.getMessage());
         checkIn.setTimeAdded(checkInDO.getTimeAdded());
         return checkIn;

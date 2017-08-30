@@ -29,6 +29,11 @@ import butterknife.Unbinder;
 
 public class CheckInsFragment extends Fragment {
 
+    public static final int EDIT_REQUEST_CODE = 1;
+
+    public static final int EDIT_RESULT_CODE = 1;
+    public static final int DELETED_RESULT_CODE = 2;
+
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.no_results) TextView mNoResults;
     @BindView(R.id.check_ins) ListView mCheckInsList;
@@ -82,7 +87,31 @@ public class CheckInsFragment extends Fragment {
         CheckIn checkIn = mCheckInsAdapter.getItem(position);
         Intent intent = new Intent(getActivity(), EditCheckInActivity.class);
         intent.putExtra(EditCheckInActivity.CHECK_IN_KEY, checkIn);
-        startActivity(intent);
+        startActivityForResult(intent, EDIT_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_REQUEST_CODE) {
+            switch (resultCode) {
+                case EDIT_REQUEST_CODE:
+                    mCheckInsAdapter.resyncWithDB();
+                    UIUtils.showSnackbar(mParent, getString(R.string.check_in_edited));
+                    break;
+                case DELETED_RESULT_CODE:
+                    mCheckInsAdapter.resyncWithDB();
+                    UIUtils.showSnackbar(mParent, getString(R.string.check_in_deleted));
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        UIUtils.hideKeyboard(getActivity());
+        super.startActivityForResult(intent, requestCode);
+        getActivity().overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
     }
 
     @Override
