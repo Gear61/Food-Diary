@@ -73,7 +73,7 @@ public class DatabaseManager {
         });
     }
 
-    public void addCheckIn(String restaurantId, final String message) {
+    public void addCheckIn(String restaurantId, final CheckIn checkIn) {
         final RestaurantDO restaurantDO = getRealm()
                 .where(RestaurantDO.class)
                 .equalTo("id", restaurantId)
@@ -82,10 +82,7 @@ public class DatabaseManager {
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                CheckInDO checkInDO = new CheckInDO();
-                checkInDO.setMessage(message);
-                checkInDO.setTimeAdded(System.currentTimeMillis());
-                restaurantDO.getCheckIns().add(checkInDO);
+                restaurantDO.getCheckIns().add(checkIn.toCheckInDO());
             }
         });
     }

@@ -2,7 +2,6 @@ package com.randomappsinc.foodjournal.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.Activities.RestaurantsActivity;
@@ -18,6 +16,7 @@ import com.randomappsinc.foodjournal.Adapters.CheckInsAdapter;
 import com.randomappsinc.foodjournal.Models.CheckIn;
 import com.randomappsinc.foodjournal.Persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.Views.CheckInAdder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +30,16 @@ public class CheckInsFragment extends Fragment {
     @BindView(R.id.check_ins) ListView mCheckInsList;
     @BindView(R.id.add_check_in) FloatingActionButton mAddCheckIn;
 
+    private final CheckInAdder.Listener mCheckInListener = new CheckInAdder.Listener() {
+        @Override
+        public void onCheckInCreated(CheckIn checkIn) {
+            DatabaseManager.get().addCheckIn(mRestaurantId, checkIn);
+            mCheckInsAdapter.resyncWithDB();
+        }
+    };
+
     private CheckInsAdapter mCheckInsAdapter;
-    private MaterialDialog mCheckInDialog;
+    private CheckInAdder mCheckInAdder;
     private String mRestaurantId;
     private Unbinder mUnbinder;
 
@@ -55,28 +62,14 @@ public class CheckInsFragment extends Fragment {
         mCheckInsAdapter = new CheckInsAdapter(getActivity(), mNoResults, mRestaurantId);
         mCheckInsList.setAdapter(mCheckInsAdapter);
 
-        mCheckInDialog = new MaterialDialog.Builder(getActivity())
-                .title(R.string.add_check_in)
-                .input(getString(R.string.check_in_prompt), "", new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                        String message = input.toString().trim();
-                        DatabaseManager.get().addCheckIn(mRestaurantId, message);
-                        mCheckInsAdapter.resyncWithDB();
-                    }
-                })
-                .negativeText(android.R.string.no)
-                .build();
+        mCheckInAdder = new CheckInAdder(getActivity(), mCheckInListener);
 
         return rootView;
     }
 
     @OnClick(R.id.add_check_in)
     public void addCheckIn() {
-        if (mCheckInDialog.getInputEditText() != null) {
-            mCheckInDialog.getInputEditText().setText("");
-        }
-        mCheckInDialog.show();
+        mCheckInAdder.show();
     }
 
     @OnItemClick(R.id.check_ins)
