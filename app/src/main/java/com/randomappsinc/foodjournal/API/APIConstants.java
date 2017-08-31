@@ -1,4 +1,4 @@
-package com.randomappsinc.foodjournal.API;
+package com.randomappsinc.foodjournal.api;
 
 /**
  * Created by alexanderchiou on 8/13/17.

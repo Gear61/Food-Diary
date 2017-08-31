@@ -6,7 +6,7 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.randomappsinc.foodjournal.Activities.MainActivity">
+    tools:context="com.randomappsinc.foodjournal.activities.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <fragment
-        android:name="com.randomappsinc.foodjournal.Fragments.DishesFragment"
+        android:name="com.randomappsinc.foodjournal.fragments.DishesFragment"
         android:id="@+id/dishes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
