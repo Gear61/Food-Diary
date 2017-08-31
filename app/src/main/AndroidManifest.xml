@@ -83,6 +83,7 @@
         <activity
             android:name=".Activities.EditCheckInActivity"
             android:label="@string/edit_check_in"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
         </activity>
     </application>

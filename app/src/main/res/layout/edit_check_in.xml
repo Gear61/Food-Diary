@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/default_activity_margin"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
+    <EditText
+        android:id="@+id/experience_input"
+        android:hint="@string/check_in_prompt"
+        android:singleLine="false"
+        android:minLines="3"
+        android:gravity="top"
+        style="@style/text_input"/>
+
+    <TextView
+        android:id="@+id/date_input"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:layout_marginTop="@dimen/default_activity_margin"
+        style="@style/text_input"/>
+
+    <com.rey.material.widget.Button
+        android:id="@+id/save"
+        android:text="@string/save"
+        android:layout_marginTop="@dimen/default_activity_margin"
+        style="@style/ripple_button_style"
+        app:rd_style="@style/button_ripple_attributes"/>
 </LinearLayout>
