@@ -68,7 +68,9 @@
             <ListView
                 android:id="@+id/restaurants"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/list_fab_offset"
+                android:clipToPadding="false"/>
 
             <com.rey.material.widget.ProgressView
                 android:id="@+id/loading"
@@ -83,4 +85,11 @@
                 app:pv_progressMode="indeterminate"/>
         </android.support.percent.PercentRelativeLayout>
     </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/set_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"/>
 </android.support.design.widget.CoordinatorLayout>

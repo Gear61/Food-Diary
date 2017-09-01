@@ -1,12 +1,15 @@
 package com.randomappsinc.foodjournal.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.RestaurantSearchResultsAdapter;
 import com.randomappsinc.foodjournal.api.RestClient;
@@ -31,6 +34,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     @BindView(R.id.restaurants) ListView mRestaurants;
     @BindView(R.id.loading) View mLoading;
     @BindView(R.id.no_results) View mNoResults;
+    @BindView(R.id.set_location) FloatingActionButton mSetLocation;
 
     private RestClient mRestClient;
     private RestaurantSearchResultsAdapter mAdapter;
@@ -52,6 +56,8 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         mRestaurants.setAdapter(mAdapter);
 
         mSearchInput.setText("");
+
+        mSetLocation.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_map).colorRes(R.color.white));
     }
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -97,6 +103,11 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
             setResult(RESULT_OK);
             finish();
         }
+    }
+
+    @OnClick(R.id.set_location)
+    public void setLocation() {
+        // TODO: Set location here
     }
 
     @Override
