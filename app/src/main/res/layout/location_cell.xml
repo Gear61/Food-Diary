@@ -3,10 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:padding="@dimen/default_cell_padding">
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/list_icon"
@@ -22,7 +19,18 @@
         style="@style/action_icon"/>
 
     <TextView
-        android:id="@+id/location"
-        android:layout_toLeftOf="@+id/check_icon"
-        style="@style/action_item"/>
+        android:id="@+id/location_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/location_info_spacing"
+        android:textColor="@color/black"
+        android:textSize="@dimen/location_name_size"/>
+
+    <TextView
+        android:id="@+id/location_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/location_name"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/location_address_size"/>
 </RelativeLayout>

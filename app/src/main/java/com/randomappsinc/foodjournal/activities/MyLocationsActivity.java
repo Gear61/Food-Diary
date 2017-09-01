@@ -1,17 +1,16 @@
 package com.randomappsinc.foodjournal.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
-import com.randomappsinc.foodjournal.adapters.LocationsAdapter;
-import com.randomappsinc.foodjournal.persistence.PreferencesManager;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.adapters.LocationsAdapter;
 import com.randomappsinc.foodjournal.utils.UIUtils;
+import com.randomappsinc.foodjournal.views.LocationAdder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,12 +20,20 @@ import butterknife.OnItemClick;
 public class MyLocationsActivity extends StandardActivity {
 
     @BindView(R.id.parent) View mParent;
-    @BindView(R.id.location_input) EditText mLocationInput;
-    @BindView(R.id.plus_icon) ImageView mPlusIcon;
     @BindView(R.id.locations) ListView mLocations;
     @BindView(R.id.no_locations) View mNoLocations;
+    @BindView(R.id.add_location) FloatingActionButton mAddLocation;
+
+    private final LocationAdder.Callback mLocationCallback = new LocationAdder.Callback() {
+        @Override
+        public void onLocationAdded() {
+            mLocationsAdapter.resyncWithDB();
+            UIUtils.showSnackbar(mParent, getString(R.string.location_added));
+        }
+    };
 
     private LocationsAdapter mLocationsAdapter;
+    private LocationAdder mLocationAdder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,24 +42,17 @@ public class MyLocationsActivity extends StandardActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mPlusIcon.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_add).colorRes(R.color.white));
+        mAddLocation.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_add).colorRes(R.color.white));
 
         mLocationsAdapter = new LocationsAdapter(this, mNoLocations, mParent);
         mLocations.setAdapter(mLocationsAdapter);
+
+        mLocationAdder = new LocationAdder(this, mLocationCallback);
     }
 
     @OnClick(R.id.add_location)
     public void addLocation() {
-        UIUtils.hideKeyboard(this);
-        String location = mLocationInput.getText().toString();
-        mLocationInput.setText("");
-        if (location.isEmpty()) {
-            UIUtils.showSnackbar(mParent, getString(R.string.empty_location));
-        } else if (PreferencesManager.get().alreadyHasLocation(location)) {
-            UIUtils.showSnackbar(mParent, getString(R.string.duplicate_location));
-        } else {
-            mLocationsAdapter.addLocation(location);
-        }
+        mLocationAdder.show();
     }
 
     @OnItemClick(R.id.locations)

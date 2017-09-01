@@ -9,8 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 
-import com.randomappsinc.foodjournal.adapters.IconItemsAdapter;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.adapters.IconItemsAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

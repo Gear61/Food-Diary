@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
-import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 
 import java.util.List;

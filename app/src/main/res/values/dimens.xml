@@ -22,4 +22,9 @@
     <dimen name="restaurant_title_size">19sp</dimen>
     <dimen name="restaurant_address_size">15sp</dimen>
     <dimen name="restaurant_info_spacing">4dp</dimen>
+
+    <!-- My Locations -->
+    <dimen name="location_name_size">19sp</dimen>
+    <dimen name="location_address_size">15sp</dimen>
+    <dimen name="location_info_spacing">4dp</dimen>
 </resources>

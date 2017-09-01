@@ -10,11 +10,11 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
+import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.CheckInsFragment;
 import com.randomappsinc.foodjournal.fragments.DatePickerFragment;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
-import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 

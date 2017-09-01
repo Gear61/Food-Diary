@@ -12,12 +12,12 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
+import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.EditCheckInActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.CheckInsAdapter;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
-import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.CheckInAdder;
 

@@ -1,8 +1,8 @@
 package com.randomappsinc.foodjournal.api.callbacks;
 
 import com.randomappsinc.foodjournal.api.ApiConstants;
-import com.randomappsinc.foodjournal.api.models.TokenResponse;
 import com.randomappsinc.foodjournal.api.RestClient;
+import com.randomappsinc.foodjournal.api.models.TokenResponse;
 import com.randomappsinc.foodjournal.persistence.PreferencesManager;
 
 import retrofit2.Call;

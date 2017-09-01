@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
+import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.UserRestaurantsAdapter;
 import com.randomappsinc.foodjournal.models.Restaurant;
-import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import butterknife.BindView;

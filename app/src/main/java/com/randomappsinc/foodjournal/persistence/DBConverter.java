@@ -2,15 +2,18 @@ package com.randomappsinc.foodjournal.persistence;
 
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.models.Location;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
+import com.randomappsinc.foodjournal.persistence.models.LocationDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DBConverter {
+
     public static Restaurant getRestaurantFromDO(RestaurantDO restaurantDO) {
         Restaurant restaurant = new Restaurant();
         restaurant.setId(restaurantDO.getId());
@@ -56,5 +59,14 @@ public class DBConverter {
         checkIn.setMessage(checkInDO.getMessage());
         checkIn.setTimeAdded(checkInDO.getTimeAdded());
         return checkIn;
+    }
+
+    public static Location getLocationFromDO(LocationDO locationDO) {
+        Location location = new Location();
+        location.setId(locationDO.getId());
+        location.setName(locationDO.getName());
+        location.setAddress(locationDO.getAddress());
+        location.setIsCurrentLocation(locationDO.isCurrentLocation());
+        return location;
     }
 }

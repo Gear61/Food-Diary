@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.persistence;
 
 import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
+import com.randomappsinc.foodjournal.persistence.dbmanagers.LocationsDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.RestaurantsDBManager;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 
@@ -26,11 +27,13 @@ public class DatabaseManager {
 
     private CheckInsDBManager mCheckInsDBManager;
     private RestaurantsDBManager mRestaurantsDBManager;
+    private LocationsDBManager mLocationsDBManager;
 
     private DatabaseManager() {
         Realm.init(MyApplication.getAppContext());
         mCheckInsDBManager = CheckInsDBManager.get();
         mRestaurantsDBManager = RestaurantsDBManager.get();
+        mLocationsDBManager = LocationsDBManager.get();
     }
 
     public CheckInsDBManager getCheckInsDBManager() {
@@ -39,5 +42,9 @@ public class DatabaseManager {
 
     public RestaurantsDBManager getRestaurantsDBManager() {
         return mRestaurantsDBManager;
+    }
+
+    public LocationsDBManager getLocationsDBManager() {
+        return mLocationsDBManager;
     }
 }

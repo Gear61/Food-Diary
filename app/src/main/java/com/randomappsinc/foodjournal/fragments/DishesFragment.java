@@ -18,9 +18,9 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
+import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.AddOrEditDishActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
-import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
 

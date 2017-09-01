@@ -30,8 +30,9 @@
     <string name="image_file_failed">Unable to create a file for your camera to save to.</string>
 
     <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
     <string name="delete">Delete</string>
-
     <string name="yes">Yes</string>
     <string name="save">Save</string>
 </resources>

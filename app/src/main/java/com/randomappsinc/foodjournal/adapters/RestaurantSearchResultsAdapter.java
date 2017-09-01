@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
-import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.models.Restaurant;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

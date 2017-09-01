@@ -1,8 +1,8 @@
 package com.randomappsinc.foodjournal.api.callbacks;
 
 import com.randomappsinc.foodjournal.api.ApiConstants;
-import com.randomappsinc.foodjournal.api.models.RestaurantResults;
 import com.randomappsinc.foodjournal.api.RestClient;
+import com.randomappsinc.foodjournal.api.models.RestaurantResults;
 
 import retrofit2.Call;
 import retrofit2.Callback;

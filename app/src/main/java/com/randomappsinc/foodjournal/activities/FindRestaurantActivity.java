@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.randomappsinc.foodjournal.api.RestClient;
+import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.RestaurantSearchResultsAdapter;
+import com.randomappsinc.foodjournal.api.RestClient;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
-import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import java.util.List;

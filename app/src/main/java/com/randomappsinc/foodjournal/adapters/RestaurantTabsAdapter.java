@@ -4,9 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
+import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.CheckInsFragment;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
-import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 
 public class RestaurantTabsAdapter extends FragmentStatePagerAdapter {
