@@ -6,81 +6,93 @@ import android.os.Parcelable;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
 
 public class Dish implements Parcelable {
-    private String uriString;
-    private String restaurantId;
-    private String title;
-    private int rating;
-    private String description;
-    private long timeAdded;
+
+    private int mId;
+    private String mUriString;
+    private String mRestaurantId;
+    private String mTitle;
+    private int mRating;
+    private String mDescription;
+    private long mTimeAdded;
 
     public Dish() {}
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
     public String getUriString() {
-        return uriString;
+        return mUriString;
     }
 
     public void setUriString(String uriString) {
-        this.uriString = uriString;
+        mUriString = uriString;
     }
 
     public String getRestaurantId() {
-        return restaurantId;
+        return mRestaurantId;
     }
 
     public void setRestaurantId(String restaurantId) {
-        this.restaurantId = restaurantId;
+        mRestaurantId = restaurantId;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        mTitle = title;
     }
 
     public int getRating() {
-        return rating;
+        return mRating;
     }
 
     public void setRating(int rating) {
-        this.rating = rating;
+        mRating = rating;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        mDescription = description;
     }
 
     public long getTimeAdded() {
-        return timeAdded;
+        return mTimeAdded;
     }
 
     public void setTimeAdded(long timeAdded) {
-        this.timeAdded = timeAdded;
+        mTimeAdded = timeAdded;
     }
 
     public DishDO toDishDO() {
         DishDO dishDO = new DishDO();
-        dishDO.setUriString(uriString);
-        dishDO.setRestaurantId(restaurantId);
-        dishDO.setTitle(title);
-        dishDO.setRating(rating);
-        dishDO.setDescription(description);
-        dishDO.setTimeAdded(timeAdded);
+        dishDO.setId(mId);
+        dishDO.setUriString(mUriString);
+        dishDO.setRestaurantId(mRestaurantId);
+        dishDO.setTitle(mTitle);
+        dishDO.setRating(mRating);
+        dishDO.setDescription(mDescription);
+        dishDO.setTimeAdded(mTimeAdded);
         return dishDO;
     }
 
     protected Dish(Parcel in) {
-        uriString = in.readString();
-        restaurantId = in.readString();
-        title = in.readString();
-        rating = in.readInt();
-        description = in.readString();
-        timeAdded = in.readLong();
+        mId = in.readInt();
+        mUriString = in.readString();
+        mRestaurantId = in.readString();
+        mTitle = in.readString();
+        mRating = in.readInt();
+        mDescription = in.readString();
+        mTimeAdded = in.readLong();
     }
 
     @Override
@@ -90,12 +102,13 @@ public class Dish implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(uriString);
-        dest.writeString(restaurantId);
-        dest.writeString(title);
-        dest.writeInt(rating);
-        dest.writeString(description);
-        dest.writeLong(timeAdded);
+        dest.writeInt(mId);
+        dest.writeString(mUriString);
+        dest.writeString(mRestaurantId);
+        dest.writeString(mTitle);
+        dest.writeInt(mRating);
+        dest.writeString(mDescription);
+        dest.writeLong(mTimeAdded);
     }
 
     @SuppressWarnings("unused")

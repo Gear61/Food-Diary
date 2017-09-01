@@ -44,6 +44,7 @@ public class DBConverter {
 
     public static Dish getDishFromDO(DishDO dishDO) {
         Dish dish = new Dish();
+        dish.setId(dishDO.getId());
         dish.setUriString(dishDO.getUriString());
         dish.setRestaurantId(dishDO.getRestaurantId());
         dish.setTitle(dishDO.getTitle());
