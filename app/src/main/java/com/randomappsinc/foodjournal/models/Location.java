@@ -54,8 +54,8 @@ public class Location {
         if (!mIsCurrentLocation) {
             options.add(context.getString(R.string.set_as_current));
         }
-        options.add(context.getString(R.string.edit_name));
-        options.add(context.getString(R.string.edit_address));
+        options.add(context.getString(R.string.edit_location_name));
+        options.add(context.getString(R.string.edit_location_address));
         options.add(context.getString(R.string.delete_location));
         return options.toArray(new String[options.size()]);
     }

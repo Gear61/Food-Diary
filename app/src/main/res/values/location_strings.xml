@@ -3,10 +3,8 @@
     <string name="automatic">Automatic</string>
     <string name="location">Location</string>
     <string name="no_locations">Hit the {ion-android-add} in the bottom right to add your first location!</string>
-    <string name="delete_title">Confirm Location Deletion</string>
+    <string name="delete_location_title">Confirm Location Deletion</string>
     <string name="location_delete_confirmation">Are you sure you want to delete the location:&#160;</string>
-    <string name="change_location_title">Change Location</string>
-    <string name="add_location">Add location</string>
 
     <string name="set_location_name">Set Location Name</string>
     <string name="name">Name</string>
@@ -20,12 +18,13 @@
     <string name="location_deleted">Location deleted.</string>
     <string name="location_edited">Location edited.</string>
 
-    <string name="duplicate_location">You already have this location.</string>
-
     <string name="set_as_current">Set as current location</string>
-    <string name="edit_name">Edit name</string>
-    <string name="edit_address">Edit address</string>
+    <string name="edit_location_name">Edit location name</string>
+    <string name="edit_location_address">Edit location address</string>
     <string name="delete_location">Delete location</string>
 
     <string name="current_location_set">Your current location has been set.</string>
+
+    <string name="edit_location_name_title">Edit Location Name</string>
+    <string name="edit_location_address_title">Edit Location Address</string>
 </resources>
