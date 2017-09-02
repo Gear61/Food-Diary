@@ -109,6 +109,8 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                                 String address = LocationUtils.getAddressFromLocation(location);
                                 mCurrentLocation.setId(0);
                                 mCurrentLocation.setAddress(address);
+                                String searchTerm = mSearchInput.getText().toString();
+                                fetchRestaurants(searchTerm);
                             }
                         });
                 mLocationChecker.postDelayed(mLocationCheckTask, 10000L);

@@ -81,17 +81,20 @@ public class UserRestaurantsAdapter extends BaseAdapter {
                 Picasso.with(mContext)
                         .load(restaurant.getImageUrl())
                         .error(defaultThumbnail)
-                        .fit().centerCrop()
+                        .fit()
+                        .centerCrop()
                         .into(thumbnail);
             } else {
                 thumbnail.setImageDrawable(defaultThumbnail);
             }
             name.setText(restaurant.getName());
             address.setText(restaurant.getAddress());
-            numDishes.setText(String.format(mContext.getString(R.string.num_dishes), restaurant.getDishes().size()));
-            numCheckIns.setText(String.format(
-                    mContext.getString(R.string.num_checkins),
-                    restaurant.getCheckIns().size()));
+            numDishes.setText(restaurant.getDishes().size() == 1
+                    ? mContext.getString(R.string.one_dish)
+                    : String.format(mContext.getString(R.string.num_dishes), restaurant.getDishes().size()));
+            numCheckIns.setText(restaurant.getCheckIns().size()== 1
+                    ? mContext.getString(R.string.one_check_in)
+                    : String.format(mContext.getString(R.string.num_check_ins), restaurant.getCheckIns().size()));
         }
     }
 
