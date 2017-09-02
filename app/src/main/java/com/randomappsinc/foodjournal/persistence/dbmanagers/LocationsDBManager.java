@@ -14,6 +14,8 @@ import io.realm.Realm;
 
 public class LocationsDBManager {
 
+    public static final int AUTOMATIC_LOCATION_ID = -1;
+
     private static LocationsDBManager instance;
 
     public static LocationsDBManager get() {
@@ -32,11 +34,18 @@ public class LocationsDBManager {
 
     private LocationsDBManager() {
         if (PreferencesManager.get().isFirstTime()) {
-            SavedLocation automaticSavedLocation = new SavedLocation();
-            automaticSavedLocation.setId(-1);
+            final SavedLocationDO automaticSavedLocation = new SavedLocationDO();
+            automaticSavedLocation.setId(AUTOMATIC_LOCATION_ID);
             automaticSavedLocation.setName(MyApplication.getAppContext().getString(R.string.automatic));
             automaticSavedLocation.setAddress(MyApplication.getAppContext().getString(R.string.automatic));
-            addLocation(automaticSavedLocation);
+            automaticSavedLocation.setIsCurrentLocation(true);
+
+            getRealm().executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    getRealm().insert(automaticSavedLocation);
+                }
+            });
         }
     }
 
@@ -46,7 +55,7 @@ public class LocationsDBManager {
 
     public void addLocation(final SavedLocation savedLocation) {
         Number number = getRealm().where(SavedLocationDO.class).findAll().max("id");
-        final int locationId = number == null ? 1 : number.intValue() + 1;
+        final int locationId = number.intValue() == AUTOMATIC_LOCATION_ID ? 1 : number.intValue() + 1;
 
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
@@ -108,5 +117,12 @@ public class LocationsDBManager {
                         .deleteFromRealm();
             }
         });
+    }
+
+    public SavedLocation getCurrentLocation() {
+        SavedLocationDO savedLocationDO = getRealm().where(SavedLocationDO.class)
+                .equalTo("isCurrentLocation", true)
+                .findFirst();
+        return DBConverter.getLocationFromDO(savedLocationDO);
     }
 }

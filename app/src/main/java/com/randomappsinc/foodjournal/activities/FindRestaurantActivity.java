@@ -1,7 +1,9 @@
 package com.randomappsinc.foodjournal.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -21,7 +23,11 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.RestaurantSearchResultsAdapter;
 import com.randomappsinc.foodjournal.api.RestClient;
 import com.randomappsinc.foodjournal.models.Restaurant;
+import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.persistence.dbmanagers.LocationsDBManager;
+import com.randomappsinc.foodjournal.utils.LocationUtils;
+import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import java.util.List;
@@ -31,6 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
+import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
 
 public class FindRestaurantActivity extends StandardActivity implements RestClient.RestaurantResultsHandler {
@@ -46,10 +53,10 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
     private RestClient mRestClient;
     private RestaurantSearchResultsAdapter mAdapter;
-    private MaterialDialog mProgressDialog;
     private boolean mLocationFetched;
     private Handler mLocationChecker;
     private Runnable mLocationCheckTask;
+    private SavedLocation mCurrentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,24 +82,42 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
             public void run() {
                 SmartLocation.with(getBaseContext()).location().stop();
                 if (!mLocationFetched) {
-                    mProgressDialog.dismiss();
                     UIUtils.showSnackbar(mParent, getString(R.string.auto_location_fail));
                 }
             }
         };
 
-        mProgressDialog = new MaterialDialog.Builder(this)
-                .content(R.string.getting_your_location)
-                .progress(true, 0)
-                .cancelable(false)
-                .build();
-
-
-        mSearchInput.setText("");
+        mCurrentLocation = DatabaseManager.get().getLocationsDBManager().getCurrentLocation();
+        if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID) {
+            fetchCurrentLocation();
+        } else {
+            mSearchInput.setText("");
+        }
     }
 
     private void fetchCurrentLocation() {
-
+        if (PermissionUtils.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (SmartLocation.with(this).location().state().locationServicesEnabled()) {
+                mLocationFetched = false;
+                SmartLocation.with(this).location()
+                        .oneFix()
+                        .start(new OnLocationUpdatedListener() {
+                            @Override
+                            public void onLocationUpdated(Location location) {
+                                mLocationChecker.removeCallbacks(mLocationCheckTask);
+                                mLocationFetched = true;
+                                String address = LocationUtils.getAddressFromLocation(location);
+                                mCurrentLocation.setId(0);
+                                mCurrentLocation.setAddress(address);
+                            }
+                        });
+                mLocationChecker.postDelayed(mLocationCheckTask, 10000L);
+            } else {
+                showLocationServicesDialog();
+            }
+        } else {
+            PermissionUtils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, 1);
+        }
     }
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -100,7 +125,11 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         mRestaurants.setVisibility(View.GONE);
         mNoResults.setVisibility(View.GONE);
         mLoading.setVisibility(View.VISIBLE);
-        fetchRestaurants(input.toString());
+
+        if (mCurrentLocation.getId() != LocationsDBManager.AUTOMATIC_LOCATION_ID) {
+            fetchRestaurants(input.toString());
+        }
+
         if (input.length() == 0) {
             mClearSearch.setVisibility(View.GONE);
         } else {
@@ -114,7 +143,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     }
 
     private void fetchRestaurants(String searchTerm) {
-        mRestClient.fetchRestaurants(searchTerm, "Fremont, CA");
+        mRestClient.fetchRestaurants(searchTerm, mCurrentLocation.getAddress());
     }
 
     @Override
@@ -148,6 +177,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            fetchCurrentLocation();
         }
     }
 

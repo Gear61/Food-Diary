@@ -14,7 +14,7 @@
 
         <com.joanzapata.iconify.widget.IconTextView
             android:id="@+id/no_locations"
-            android:text="@string/no_check_ins"
+            android:text="@string/no_locations"
             style="@style/no_content"/>
 
         <ListView

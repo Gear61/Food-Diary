@@ -73,7 +73,7 @@ public class LocationsAdapter extends BaseAdapter {
     private void showRenameDialog(final SavedLocation savedLocation) {
         new MaterialDialog.Builder(context)
                 .title(R.string.edit_location_name_title)
-                .input(context.getString(R.string.name), savedLocation.getName(), new MaterialDialog.InputCallback() {
+                .input(context.getString(R.string.location_name_hint), savedLocation.getName(), new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         boolean enableNext = input.length() > 0;

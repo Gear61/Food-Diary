@@ -26,7 +26,7 @@ public class LocationAdder {
 
         mNameDialog = new MaterialDialog.Builder(context)
                 .title(R.string.set_location_name)
-                .input(context.getString(R.string.name), "", new MaterialDialog.InputCallback() {
+                .input(context.getString(R.string.location_name_hint), "", new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         boolean enableNext = input.length() > 0;
