@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.models.Location;
+import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 
 public class LocationAdder {
@@ -15,13 +15,13 @@ public class LocationAdder {
         void onLocationAdded();
     }
 
-    private Location mLocation;
+    private SavedLocation mSavedLocation;
     private Callback mCallback;
     private MaterialDialog mNameDialog;
     private MaterialDialog mAddressDialog;
 
     public LocationAdder(Context context, Callback callback) {
-        mLocation = new Location();
+        mSavedLocation = new SavedLocation();
         mCallback = callback;
 
         mNameDialog = new MaterialDialog.Builder(context)
@@ -39,7 +39,7 @@ public class LocationAdder {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         String name = dialog.getInputEditText().getText().toString().trim();
-                        mLocation.setName(name);
+                        mSavedLocation.setName(name);
                         mAddressDialog.show();
                     }
                 })
@@ -61,8 +61,8 @@ public class LocationAdder {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         String address = dialog.getInputEditText().getText().toString().trim();
-                        mLocation.setAddress(address);
-                        DatabaseManager.get().getLocationsDBManager().addLocation(mLocation);
+                        mSavedLocation.setAddress(address);
+                        DatabaseManager.get().getLocationsDBManager().addLocation(mSavedLocation);
                         mCallback.onLocationAdded();
                     }
                 })
@@ -78,9 +78,9 @@ public class LocationAdder {
     }
 
     public void show() {
-        mLocation.setName("");
+        mSavedLocation.setName("");
         mNameDialog.getInputEditText().setText("");
-        mLocation.setAddress("");
+        mSavedLocation.setAddress("");
         mAddressDialog.getInputEditText().setText("");
 
         mNameDialog.show();

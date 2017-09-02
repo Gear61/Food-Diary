@@ -3,7 +3,7 @@ package com.randomappsinc.foodjournal.persistence.models;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class LocationDO extends RealmObject {
+public class SavedLocationDO extends RealmObject {
 
     @PrimaryKey
     private int id;

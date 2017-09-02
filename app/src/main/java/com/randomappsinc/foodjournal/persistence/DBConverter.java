@@ -2,12 +2,12 @@ package com.randomappsinc.foodjournal.persistence;
 
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
-import com.randomappsinc.foodjournal.models.Location;
 import com.randomappsinc.foodjournal.models.Restaurant;
+import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
-import com.randomappsinc.foodjournal.persistence.models.LocationDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
+import com.randomappsinc.foodjournal.persistence.models.SavedLocationDO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,12 +62,12 @@ public class DBConverter {
         return checkIn;
     }
 
-    public static Location getLocationFromDO(LocationDO locationDO) {
-        Location location = new Location();
-        location.setId(locationDO.getId());
-        location.setName(locationDO.getName());
-        location.setAddress(locationDO.getAddress());
-        location.setIsCurrentLocation(locationDO.isCurrentLocation());
-        return location;
+    public static SavedLocation getLocationFromDO(SavedLocationDO savedLocationDO) {
+        SavedLocation savedLocation = new SavedLocation();
+        savedLocation.setId(savedLocationDO.getId());
+        savedLocation.setName(savedLocationDO.getName());
+        savedLocation.setAddress(savedLocationDO.getAddress());
+        savedLocation.setIsCurrentLocation(savedLocationDO.isCurrentLocation());
+        return savedLocation;
     }
 }

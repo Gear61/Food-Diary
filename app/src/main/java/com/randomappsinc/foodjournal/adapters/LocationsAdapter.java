@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.models.Location;
+import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 
 public class LocationsAdapter extends BaseAdapter {
     private Context context;
-    private List<Location> content;
+    private List<SavedLocation> content;
     private View noContent;
     private View parent;
 
@@ -34,7 +34,7 @@ public class LocationsAdapter extends BaseAdapter {
     }
 
     public void resyncWithDB() {
-        content = DatabaseManager.get().getLocationsDBManager().getLocations();
+        content = DatabaseManager.get().getLocationsDBManager().getLocationsList();
         setNoContent();
         notifyDataSetChanged();
     }
@@ -45,7 +45,7 @@ public class LocationsAdapter extends BaseAdapter {
     }
 
     public void showOptionsDialog(final int position) {
-        final Location location = getItem(position);
+        final SavedLocation savedLocation = getItem(position);
 
         new MaterialDialog.Builder(context)
                 .title(getItem(position).getName())
@@ -54,26 +54,26 @@ public class LocationsAdapter extends BaseAdapter {
                     @Override
                     public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         if (text.toString().equals(context.getString(R.string.set_as_current))) {
-                            location.setIsCurrentLocation(true);
-                            DatabaseManager.get().getLocationsDBManager().setCurrentLocation(location);
+                            savedLocation.setIsCurrentLocation(true);
+                            DatabaseManager.get().getLocationsDBManager().setCurrentLocation(savedLocation);
                             resyncWithDB();
                             UIUtils.showSnackbar(parent, context.getString(R.string.current_location_set));
                         } else if (text.toString().equals(context.getString(R.string.edit_location_name))) {
-                            showRenameDialog(location);
+                            showRenameDialog(savedLocation);
                         } else if (text.toString().equals(context.getString(R.string.edit_location_address))) {
-                            showAddressChangeDialog(location);
+                            showAddressChangeDialog(savedLocation);
                         } else if (text.toString().equals(context.getString(R.string.delete_location))) {
-                            showDeleteDialog(location);
+                            showDeleteDialog(savedLocation);
                         }
                     }
                 })
                 .show();
     }
 
-    private void showRenameDialog(final Location location) {
+    private void showRenameDialog(final SavedLocation savedLocation) {
         new MaterialDialog.Builder(context)
                 .title(R.string.edit_location_name_title)
-                .input(context.getString(R.string.name), location.getName(), new MaterialDialog.InputCallback() {
+                .input(context.getString(R.string.name), savedLocation.getName(), new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         boolean enableNext = input.length() > 0;
@@ -86,8 +86,8 @@ public class LocationsAdapter extends BaseAdapter {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         String name = dialog.getInputEditText().getText().toString().trim();
-                        location.setName(name);
-                        DatabaseManager.get().getLocationsDBManager().updateLocation(location);
+                        savedLocation.setName(name);
+                        DatabaseManager.get().getLocationsDBManager().updateLocation(savedLocation);
                         resyncWithDB();
                         UIUtils.showSnackbar(parent, context.getString(R.string.location_edited));
                     }
@@ -96,10 +96,10 @@ public class LocationsAdapter extends BaseAdapter {
                 .show();
     }
 
-    private void showAddressChangeDialog(final Location location) {
+    private void showAddressChangeDialog(final SavedLocation savedLocation) {
         new MaterialDialog.Builder(context)
                 .title(R.string.edit_location_address_title)
-                .input(context.getString(R.string.address), location.getAddress(), new MaterialDialog.InputCallback() {
+                .input(context.getString(R.string.address), savedLocation.getAddress(), new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                         boolean enableNext = input.length() > 0;
@@ -112,8 +112,8 @@ public class LocationsAdapter extends BaseAdapter {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         String address = dialog.getInputEditText().getText().toString().trim();
-                        location.setAddress(address);
-                        DatabaseManager.get().getLocationsDBManager().updateLocation(location);
+                        savedLocation.setAddress(address);
+                        DatabaseManager.get().getLocationsDBManager().updateLocation(savedLocation);
                         resyncWithDB();
                         UIUtils.showSnackbar(parent, context.getString(R.string.location_edited));
                     }
@@ -122,9 +122,9 @@ public class LocationsAdapter extends BaseAdapter {
                 .show();
     }
 
-    private void showDeleteDialog(final Location location) {
+    private void showDeleteDialog(final SavedLocation savedLocation) {
         String template = context.getString(R.string.location_delete_confirmation);
-        String question = template + "\"" + location.getName() + "\"?";
+        String question = template + "\"" + savedLocation.getName() + "\"?";
 
         new MaterialDialog.Builder(context)
                 .title(R.string.delete_location_title)
@@ -133,7 +133,7 @@ public class LocationsAdapter extends BaseAdapter {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        DatabaseManager.get().getLocationsDBManager().deleteLocation(location);
+                        DatabaseManager.get().getLocationsDBManager().deleteLocation(savedLocation);
                         resyncWithDB();
                         UIUtils.showSnackbar(parent, context.getString(R.string.location_deleted));
                     }
@@ -153,11 +153,11 @@ public class LocationsAdapter extends BaseAdapter {
         }
 
         public void loadLocation(int position) {
-            Location location = getItem(position);
+            SavedLocation savedLocation = getItem(position);
 
-            mName.setText(location.getName());
-            mAddress.setText(location.getAddress());
-            if (location.isCurrentLocation()) {
+            mName.setText(savedLocation.getName());
+            mAddress.setText(savedLocation.getAddress());
+            if (savedLocation.isCurrentLocation()) {
                 mCheckIcon.setAlpha(1);
             } else {
                 mCheckIcon.setAlpha(0);
@@ -171,7 +171,7 @@ public class LocationsAdapter extends BaseAdapter {
     }
 
     @Override
-    public Location getItem(int position) {
+    public SavedLocation getItem(int position) {
         return content.get(position);
     }
 

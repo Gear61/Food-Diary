@@ -27,4 +27,18 @@
 
     <string name="edit_location_name_title">Edit Location Name</string>
     <string name="edit_location_address_title">Edit Location Address</string>
+
+    <string name="auto_location_fail">
+        We couldn\'t get your current location.
+        Please try again or reset location services.
+    </string>
+
+    <string name="location_services_needed">
+        Your current location is \"Automatic\",
+        which means that you need to enable location services
+        and then wait a couple seconds before hitting the button.
+        Would you like to do that now?
+    </string>
+
+    <string name="getting_your_location">Getting your location&#8230;</string>
 </resources>

@@ -1,6 +1,11 @@
 package com.randomappsinc.foodjournal.activities;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -8,6 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
@@ -24,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
+import io.nlopez.smartlocation.SmartLocation;
 
 public class FindRestaurantActivity extends StandardActivity implements RestClient.RestaurantResultsHandler {
 
@@ -38,6 +46,10 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
     private RestClient mRestClient;
     private RestaurantSearchResultsAdapter mAdapter;
+    private MaterialDialog mProgressDialog;
+    private boolean mLocationFetched;
+    private Handler mLocationChecker;
+    private Runnable mLocationCheckTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +67,32 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         mAdapter = new RestaurantSearchResultsAdapter(this);
         mRestaurants.setAdapter(mAdapter);
 
-        mSearchInput.setText("");
-
         mSetLocation.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_map).colorRes(R.color.white));
+
+        mLocationChecker = new Handler();
+        mLocationCheckTask = new Runnable() {
+            @Override
+            public void run() {
+                SmartLocation.with(getBaseContext()).location().stop();
+                if (!mLocationFetched) {
+                    mProgressDialog.dismiss();
+                    UIUtils.showSnackbar(mParent, getString(R.string.auto_location_fail));
+                }
+            }
+        };
+
+        mProgressDialog = new MaterialDialog.Builder(this)
+                .content(R.string.getting_your_location)
+                .progress(true, 0)
+                .cancelable(false)
+                .build();
+
+
+        mSearchInput.setText("");
+    }
+
+    private void fetchCurrentLocation() {
+
     }
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -107,7 +142,27 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
     @OnClick(R.id.set_location)
     public void setLocation() {
-        // TODO: Set location here
+        // Show location chooser dialog
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        }
+    }
+
+    private void showLocationServicesDialog() {
+        new MaterialDialog.Builder(this)
+                .content(R.string.location_services_needed)
+                .negativeText(android.R.string.cancel)
+                .positiveText(android.R.string.yes)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .show();
     }
 
     @Override

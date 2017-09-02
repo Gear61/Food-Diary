@@ -3,13 +3,13 @@ package com.randomappsinc.foodjournal.models;
 import android.content.Context;
 
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.persistence.models.LocationDO;
+import com.randomappsinc.foodjournal.persistence.models.SavedLocationDO;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Location {
+public class SavedLocation {
 
     private int mId;
     private String mName = "";
@@ -60,12 +60,12 @@ public class Location {
         return options.toArray(new String[options.size()]);
     }
 
-    public LocationDO toLocationDO() {
-        LocationDO locationDO = new LocationDO();
-        locationDO.setId(mId);
-        locationDO.setName(mName);
-        locationDO.setAddress(mAddress);
-        locationDO.setIsCurrentLocation(mIsCurrentLocation);
-        return locationDO;
+    public SavedLocationDO toLocationDO() {
+        SavedLocationDO savedLocationDO = new SavedLocationDO();
+        savedLocationDO.setId(mId);
+        savedLocationDO.setName(mName);
+        savedLocationDO.setAddress(mAddress);
+        savedLocationDO.setIsCurrentLocation(mIsCurrentLocation);
+        return savedLocationDO;
     }
 }
