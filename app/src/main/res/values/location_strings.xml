@@ -39,5 +39,6 @@
         Would you like to do that now?
     </string>
 
-    <string name="getting_your_location">Getting your location&#8230;</string>
+    <string name="choose_current_location">Choose Current Location</string>
+    <string name="current_instructions">Your current location is where Food Journal searches for restaurants.</string>
 </resources>

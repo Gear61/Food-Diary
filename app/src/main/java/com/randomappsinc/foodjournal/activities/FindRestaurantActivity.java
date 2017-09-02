@@ -29,6 +29,7 @@ import com.randomappsinc.foodjournal.persistence.dbmanagers.LocationsDBManager;
 import com.randomappsinc.foodjournal.utils.LocationUtils;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
+import com.randomappsinc.foodjournal.views.LocationChooser;
 
 import java.util.List;
 
@@ -51,12 +52,21 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     @BindView(R.id.no_results) View mNoResults;
     @BindView(R.id.set_location) FloatingActionButton mSetLocation;
 
+    private final LocationChooser.Callback mLocationChoiceCallback = new LocationChooser.Callback() {
+        @Override
+        public void onLocationChosen(SavedLocation savedLocation) {
+            mCurrentLocation = savedLocation;
+            UIUtils.showSnackbar(mParent, getString(R.string.current_location_set));
+        }
+    };
+
     private RestClient mRestClient;
     private RestaurantSearchResultsAdapter mAdapter;
     private boolean mLocationFetched;
     private Handler mLocationChecker;
     private Runnable mLocationCheckTask;
     private SavedLocation mCurrentLocation;
+    private LocationChooser mLocationChooser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +96,8 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                 }
             }
         };
+
+        mLocationChooser = new LocationChooser(this, mLocationChoiceCallback);
 
         mCurrentLocation = DatabaseManager.get().getLocationsDBManager().getCurrentLocation();
         if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID) {
@@ -173,7 +185,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
     @OnClick(R.id.set_location)
     public void setLocation() {
-        // Show location chooser dialog
+        mLocationChooser.show();
     }
 
     @Override

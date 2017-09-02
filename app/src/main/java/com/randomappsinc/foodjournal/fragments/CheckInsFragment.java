@@ -39,7 +39,7 @@ public class CheckInsFragment extends Fragment {
     @BindView(R.id.check_ins) ListView mCheckInsList;
     @BindView(R.id.add_check_in) FloatingActionButton mAddCheckIn;
 
-    private final CheckInAdder.Listener mCheckInListener = new CheckInAdder.Listener() {
+    private final CheckInAdder.Callback mCheckInCallback = new CheckInAdder.Callback() {
         @Override
         public void onCheckInCreated(CheckIn checkIn) {
             DatabaseManager.get().getCheckInsDBManager().addCheckIn(mRestaurantId, checkIn);
@@ -72,7 +72,7 @@ public class CheckInsFragment extends Fragment {
         mCheckInsAdapter = new CheckInsAdapter(getActivity(), mNoResults, mRestaurantId);
         mCheckInsList.setAdapter(mCheckInsAdapter);
 
-        mCheckInAdder = new CheckInAdder(getActivity(), mCheckInListener);
+        mCheckInAdder = new CheckInAdder(getActivity(), mCheckInCallback);
 
         return rootView;
     }

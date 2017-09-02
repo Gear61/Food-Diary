@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.Sort;
 
 public class LocationsDBManager {
 
@@ -124,5 +125,18 @@ public class LocationsDBManager {
                 .equalTo("isCurrentLocation", true)
                 .findFirst();
         return DBConverter.getLocationFromDO(savedLocationDO);
+    }
+
+    // Gets the list of user locations for current location choice (has automatic)
+    public List<SavedLocation> getLocationOptions() {
+        List<SavedLocationDO> savedLocationDOs = getRealm()
+                .where(SavedLocationDO.class)
+                .findAllSorted("id", Sort.ASCENDING);
+
+        List<SavedLocation> savedLocations = new ArrayList<>();
+        for (SavedLocationDO savedLocationDO : savedLocationDOs) {
+            savedLocations.add(DBConverter.getLocationFromDO(savedLocationDO));
+        }
+        return savedLocations;
     }
 }

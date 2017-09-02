@@ -11,7 +11,7 @@ import com.randomappsinc.foodjournal.models.CheckIn;
 
 public class CheckInAdder {
 
-    public interface Listener {
+    public interface Callback {
         void onCheckInCreated(CheckIn checkIn);
     }
 
@@ -29,14 +29,14 @@ public class CheckInAdder {
     };
 
     private Activity mActivity;
-    private Listener mListener;
+    private Callback mCallback;
     private MaterialDialog mCheckInMessageDialog;
     private DatePickerFragment mDatePickerFragment;
     private long mCheckInTime;
 
-    public CheckInAdder(Activity activity, Listener listener) {
+    public CheckInAdder(Activity activity, Callback callback) {
         mActivity = activity;
-        mListener = listener;
+        mCallback = callback;
 
         mCheckInMessageDialog = new MaterialDialog.Builder(mActivity)
                 .title(R.string.check_in_prompt)
@@ -47,7 +47,7 @@ public class CheckInAdder {
                         CheckIn checkIn = new CheckIn();
                         checkIn.setTimeAdded(mCheckInTime);
                         checkIn.setMessage(message);
-                        mListener.onCheckInCreated(checkIn);
+                        mCallback.onCheckInCreated(checkIn);
                     }
                 })
                 .neutralText(R.string.back)
