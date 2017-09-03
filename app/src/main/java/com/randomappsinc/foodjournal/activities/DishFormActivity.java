@@ -12,6 +12,7 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.Restaurant;
+import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -31,8 +32,10 @@ public class DishFormActivity extends StandardActivity {
     @BindView(R.id.restaurant_name) TextView mRestaurantName;
     @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
     @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
+    @BindView(R.id.rating_widget) View mRatingLayout;
 
     private Restaurant mRestaurant;
+    private RatingView mRatingView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class DishFormActivity extends StandardActivity {
         } else {
             loadRestaurantInfo();
         }
+
+        mRatingView = new RatingView(mRatingLayout);
     }
 
     private void loadRestaurantInfo() {

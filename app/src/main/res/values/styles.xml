@@ -81,14 +81,4 @@
         <item name="rd_rippleAnimDuration">@integer/shorter_anim_length</item>
         <item name="rd_delayClick">untilRelease</item>
     </style>
-
-    <style name="content_card">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/dish_form_card_spacing</item>
-        <item name="contentPadding">8dp</item>
-        <item name="cardUseCompatPadding">true</item>
-        <item name="cardCornerRadius">3dp</item>
-        <item name="cardElevation">2dp</item>
-    </style>
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rating_widget"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/star_1"
+        style="@style/star_icon"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/star_2"
+        style="@style/star_icon"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/star_3"
+        style="@style/star_icon"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/star_4"
+        style="@style/star_icon"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/star_5"
+        style="@style/star_icon"/>
+</LinearLayout>

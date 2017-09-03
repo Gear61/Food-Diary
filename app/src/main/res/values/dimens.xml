@@ -32,5 +32,5 @@
     <dimen name="edit_check_in_padding">8dp</dimen>
 
     <!-- Dish form -->
-    <dimen name="dish_form_card_spacing">12dp</dimen>
+    <dimen name="dish_form_card_spacing">8dp</dimen>
 </resources>
