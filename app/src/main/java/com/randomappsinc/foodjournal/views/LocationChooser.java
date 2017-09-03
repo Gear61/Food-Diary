@@ -1,16 +1,13 @@
 package com.randomappsinc.foodjournal.views;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** Widget for the user to set their current location */

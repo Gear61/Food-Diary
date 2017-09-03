@@ -22,8 +22,8 @@
     </android.support.design.widget.AppBarLayout>
 
     <fragment
-        android:name="com.randomappsinc.foodjournal.fragments.DishesFragment"
         android:id="@+id/dishes"
+        android:name="com.randomappsinc.foodjournal.fragments.DishesFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </android.support.design.widget.CoordinatorLayout>

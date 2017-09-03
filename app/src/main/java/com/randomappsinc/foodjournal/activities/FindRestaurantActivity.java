@@ -26,7 +26,6 @@ import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.LocationsDBManager;
-import com.randomappsinc.foodjournal.utils.LocationUtils;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.LocationChooser;
@@ -55,7 +54,14 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private final LocationChooser.Callback mLocationChoiceCallback = new LocationChooser.Callback() {
         @Override
         public void onLocationChosen(SavedLocation savedLocation) {
-            mCurrentLocation = savedLocation;
+            if (mCurrentLocation.getId() != savedLocation.getId()) {
+                mCurrentLocation = savedLocation;
+                if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID) {
+                    fetchCurrentLocation();
+                } else {
+                    fetchRestaurants();
+                }
+            }
             UIUtils.showSnackbar(mParent, getString(R.string.current_location_set));
         }
     };
@@ -100,10 +106,20 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         mLocationChooser = new LocationChooser(this, mLocationChoiceCallback);
 
         mCurrentLocation = DatabaseManager.get().getLocationsDBManager().getCurrentLocation();
+
+        // Automatically do a search if we have a pre-defined location
+        if (mCurrentLocation.getId() != LocationsDBManager.AUTOMATIC_LOCATION_ID) {
+            fetchRestaurants();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Run this here instead of onCreate() to cover the case where they return from turning on location
         if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID) {
             fetchCurrentLocation();
-        } else {
-            mSearchInput.setText("");
         }
     }
 
@@ -118,11 +134,9 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                             public void onLocationUpdated(Location location) {
                                 mLocationChecker.removeCallbacks(mLocationCheckTask);
                                 mLocationFetched = true;
-                                String address = LocationUtils.getAddressFromLocation(location);
                                 mCurrentLocation.setId(0);
-                                mCurrentLocation.setAddress(address);
-                                String searchTerm = mSearchInput.getText().toString();
-                                fetchRestaurants(searchTerm);
+                                mCurrentLocation.setAddress(String.valueOf(location.getLatitude()) + ", " + String.valueOf(location.getLongitude()));
+                                fetchRestaurants();
                             }
                         });
                 mLocationChecker.postDelayed(mLocationCheckTask, 10000L);
@@ -141,7 +155,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         mLoading.setVisibility(View.VISIBLE);
 
         if (mCurrentLocation.getId() != LocationsDBManager.AUTOMATIC_LOCATION_ID) {
-            fetchRestaurants(input.toString());
+            fetchRestaurants();
         }
 
         if (input.length() == 0) {
@@ -156,8 +170,9 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         mSearchInput.setText("");
     }
 
-    private void fetchRestaurants(String searchTerm) {
-        mRestClient.fetchRestaurants(searchTerm, mCurrentLocation.getAddress());
+    /** Fetches restaurants with the current location and search input */
+    private void fetchRestaurants() {
+        mRestClient.fetchRestaurants(mSearchInput.getText().toString(), mCurrentLocation.getAddress());
     }
 
     @Override

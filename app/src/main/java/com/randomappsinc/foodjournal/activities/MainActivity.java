@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.IconItemsAdapter;
+import com.randomappsinc.foodjournal.fragments.DishesFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +22,8 @@ public class MainActivity extends StandardActivity {
     @BindView(R.id.nav_options) ListView mNavOptions;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+
+    private DishesFragment mDishesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +45,13 @@ public class MainActivity extends StandardActivity {
         toggle.syncState();
 
         mNavOptions.setAdapter(new IconItemsAdapter(this, R.array.nav_drawer_tabs, R.array.nav_drawer_icons));
+
+        mDishesFragment = (DishesFragment) getFragmentManager().findFragmentById(R.id.dishes);
     }
 
     @OnItemClick(R.id.nav_options)
     public void onNavOptionClicked(int position) {
+        mDishesFragment.closeUploadMenu();
         mDrawerLayout.closeDrawer(GravityCompat.START);
 
         Intent intent = null;

@@ -76,7 +76,7 @@ public class DishesFragment extends Fragment {
 
     @OnClick({R.id.from_camera, R.id.from_files})
     public void addPicture(View view) {
-        mSourcePicker.close(true);
+        closeUploadMenu();
 
         switch (view.getId()) {
             case R.id.from_camera:
@@ -100,6 +100,10 @@ public class DishesFragment extends Fragment {
                 }
                 break;
         }
+    }
+
+    public void closeUploadMenu() {
+        mSourcePicker.close(true);
     }
 
     private void startCameraPage() {

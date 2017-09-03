@@ -103,6 +103,7 @@ public class LocationsDBManager {
                     oldCurrentLocation.setIsCurrentLocation(false);
                 }
 
+                savedLocation.setIsCurrentLocation(true);
                 getRealm().insertOrUpdate(savedLocation.toLocationDO());
             }
         });
