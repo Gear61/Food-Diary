@@ -1,6 +1,5 @@
 package com.randomappsinc.foodjournal.utils;
 
-import android.net.Uri;
 import android.os.Environment;
 import android.view.View;
 
@@ -30,17 +29,5 @@ public class PictureUtils {
             UIUtils.showSnackbar(parent, MyApplication.getAppContext().getString(R.string.image_file_failed));
         }
         return imageFile;
-    }
-
-    public static void deleteCameraPicture(String uriString) {
-        Uri uri = Uri.parse(uriString);
-        File fdelete = new File(uri.getPath());
-        if (fdelete.exists()) {
-            if (fdelete.delete()) {
-                System.out.println("file Deleted :" + uri);
-            } else {
-                System.out.println("file not Deleted :" + uri);
-            }
-        }
     }
 }

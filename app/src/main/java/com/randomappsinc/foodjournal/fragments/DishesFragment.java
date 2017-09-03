@@ -47,6 +47,7 @@ public class DishesFragment extends Fragment {
     @BindString(R.string.choose_image_from) String mChooseImageFrom;
 
     private String mRestaurantId;
+    private File mTakenPhotoFile;
     private Uri mTakenPhotoUri;
     private Unbinder mUnbinder;
 
@@ -109,11 +110,11 @@ public class DishesFragment extends Fragment {
     private void startCameraPage() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            File photoFile = PictureUtils.createImageFile(parent);
-            if (photoFile != null) {
+            mTakenPhotoFile = PictureUtils.createImageFile(parent);
+            if (mTakenPhotoFile != null) {
                 mTakenPhotoUri = FileProvider.getUriForFile(getActivity(),
                         "com.randomappsinc.foodjournal.fileprovider",
-                        photoFile);
+                        mTakenPhotoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakenPhotoUri);
                 startActivityForResult(takePictureIntent, CAMERA_SOURCE_CODE);
             }
@@ -135,17 +136,18 @@ public class DishesFragment extends Fragment {
                     Intent cameraIntent = new Intent(getActivity(), DishFormActivity.class);
                     cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
-                    cameraIntent.putExtra(DishFormActivity.CAMERA_MODE_KEY, true);
-                    startActivity(cameraIntent);
+                    startActivityForResult(cameraIntent, CAMERA_SOURCE_CODE);
                     break;
                 case FILES_SOURCE_CODE:
                     String imageUri = data.getDataString();
                     Intent filesIntent = new Intent(getActivity(), DishFormActivity.class);
                     filesIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     filesIntent.putExtra(DishFormActivity.URI_KEY, imageUri);
-                    startActivity(filesIntent);
+                    startActivityForResult(filesIntent, FILES_SOURCE_CODE);
                     break;
             }
+        } else if (resultCode == Activity.RESULT_CANCELED && requestCode == CAMERA_SOURCE_CODE) {
+            mTakenPhotoFile.delete();
         }
     }
 

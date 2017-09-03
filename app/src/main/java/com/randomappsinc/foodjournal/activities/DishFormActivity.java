@@ -17,7 +17,6 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
-import com.randomappsinc.foodjournal.utils.PictureUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
@@ -31,7 +30,6 @@ public class DishFormActivity extends StandardActivity {
     public static final String NEW_DISH_KEY = "newDish";
     public static final String URI_KEY = "uri";
     public static final String RESTAURANT_KEY = "restaurant";
-    public static final String CAMERA_MODE_KEY = "cameraMode";
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.dish_picture) ImageView mDishPicture;
@@ -81,9 +79,7 @@ public class DishFormActivity extends StandardActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if (getIntent().getBooleanExtra(CAMERA_MODE_KEY, false)) {
-                            PictureUtils.deleteCameraPicture(mPictureUri);
-                        }
+                        setResult(RESULT_CANCELED);
                         finish();
                     }
                 })
