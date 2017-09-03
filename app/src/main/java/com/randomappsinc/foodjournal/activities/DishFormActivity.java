@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
+import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
 
@@ -25,6 +27,7 @@ public class DishFormActivity extends StandardActivity {
     public static final String URI_KEY = "uri";
     public static final String RESTAURANT_KEY = "restaurant";
 
+    @BindView(R.id.parent) View mParent;
     @BindView(R.id.dish_picture) ImageView mDishPicture;
     @BindView(R.id.dish_name_input) EditText mDishNameInput;
     @BindView(R.id.base_restaurant_cell) View mRestaurantInfo;
@@ -33,9 +36,11 @@ public class DishFormActivity extends StandardActivity {
     @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
     @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
     @BindView(R.id.rating_widget) View mRatingLayout;
+    @BindView(R.id.dish_description_input) EditText mDishDescriptionInput;
 
     private Restaurant mRestaurant;
     private RatingView mRatingView;
+    private String mPictureUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +54,9 @@ public class DishFormActivity extends StandardActivity {
                 : R.string.edit_dish;
         setTitle(titleId);
 
-        String pictureUri = getIntent().getStringExtra(URI_KEY);
+        mPictureUri = getIntent().getStringExtra(URI_KEY);
         Picasso.with(this)
-                .load(pictureUri)
+                .load(mPictureUri)
                 .fit()
                 .centerCrop()
                 .into(mDishPicture);
@@ -109,5 +114,27 @@ public class DishFormActivity extends StandardActivity {
 
     @OnClick(R.id.save)
     public void saveDish() {
+        int rating = mRatingView.getRating();
+        String title = mDishNameInput.getText().toString().trim();
+
+        if (rating == 0) {
+            UIUtils.showSnackbar(mParent, getString(R.string.dish_rating_needed));
+            return;
+        }
+        if (title.isEmpty()) {
+            UIUtils.showSnackbar(mParent, getString(R.string.dish_title_needed));
+            return;
+        }
+        if (mRestaurant == null) {
+            UIUtils.showSnackbar(mParent, getString(R.string.dish_restaurant_needed));
+            return;
+        }
+
+        Dish dish = new Dish();
+        dish.setUriString(mPictureUri);
+        dish.setRestaurantId(mRestaurant.getId());
+        dish.setTitle(title);
+        dish.setRating(rating);
+        dish.setDescription(mDishDescriptionInput.getText().toString().trim());
     }
 }
