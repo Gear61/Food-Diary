@@ -9,11 +9,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by alexanderchiou on 8/17/17.
- */
+public class DishFormActivity extends StandardActivity {
 
-public class AddOrEditDishActivity extends StandardActivity {
     public static final String NEW_DISH_KEY = "newDish";
     public static final String URI_KEY = "uri";
 
@@ -22,7 +19,7 @@ public class AddOrEditDishActivity extends StandardActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_or_edit_dish_page);
+        setContentView(R.layout.dish_form);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

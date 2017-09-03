@@ -27,4 +27,10 @@
     <dimen name="location_name_size">19sp</dimen>
     <dimen name="location_address_size">15sp</dimen>
     <dimen name="location_info_spacing">4dp</dimen>
+
+    <!-- Edit check-in -->
+    <dimen name="edit_check_in_padding">8dp</dimen>
+
+    <!-- Dish form -->
+    <dimen name="dish_form_card_spacing">12dp</dimen>
 </resources>

@@ -19,7 +19,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.activities.AddOrEditDishActivity;
+import com.randomappsinc.foodjournal.activities.DishFormActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
@@ -132,16 +132,16 @@ public class DishesFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case CAMERA_SOURCE_CODE:
-                    Intent cameraIntent = new Intent(getActivity(), AddOrEditDishActivity.class);
-                    cameraIntent.putExtra(AddOrEditDishActivity.NEW_DISH_KEY, true);
-                    cameraIntent.putExtra(AddOrEditDishActivity.URI_KEY, mTakenPhotoUri.toString());
+                    Intent cameraIntent = new Intent(getActivity(), DishFormActivity.class);
+                    cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
+                    cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
                     startActivity(cameraIntent);
                     break;
                 case FILES_SOURCE_CODE:
                     String imageUri = data.getDataString();
-                    Intent filesIntent = new Intent(getActivity(), AddOrEditDishActivity.class);
-                    filesIntent.putExtra(AddOrEditDishActivity.NEW_DISH_KEY, true);
-                    filesIntent.putExtra(AddOrEditDishActivity.URI_KEY, imageUri);
+                    Intent filesIntent = new Intent(getActivity(), DishFormActivity.class);
+                    filesIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
+                    filesIntent.putExtra(DishFormActivity.URI_KEY, imageUri);
                     startActivity(filesIntent);
                     break;
             }
