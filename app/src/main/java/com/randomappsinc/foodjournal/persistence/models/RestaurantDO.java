@@ -4,10 +4,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-/**
- * Created by alexanderchiou on 8/22/17.
- */
-
 public class RestaurantDO extends RealmObject {
     @PrimaryKey
     private String id;
@@ -20,6 +16,8 @@ public class RestaurantDO extends RealmObject {
     private String country;
     private String state;
     private String address;
+    private double latitude;
+    private double longitude;
     private long timeAdded;
     private RealmList<DishDO> dishes;
     private RealmList<CheckInDO> checkIns;
@@ -94,6 +92,22 @@ public class RestaurantDO extends RealmObject {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public long getTimeAdded() {

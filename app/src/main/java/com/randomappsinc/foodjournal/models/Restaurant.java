@@ -13,6 +13,7 @@ import java.util.List;
 import io.realm.RealmList;
 
 public class Restaurant implements Parcelable {
+
     private String id;
     private String name;
     private String imageUrl;
@@ -22,6 +23,8 @@ public class Restaurant implements Parcelable {
     private String country;
     private String state;
     private String address;
+    private double latitude;
+    private double longitude;
     private long timeAdded;
     private List<Dish> dishes = new ArrayList<>();
     private List<CheckIn> checkIns = new ArrayList<>();
@@ -100,6 +103,22 @@ public class Restaurant implements Parcelable {
         this.address = address;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
     public long getTimeAdded() {
         return timeAdded;
     }
@@ -135,6 +154,8 @@ public class Restaurant implements Parcelable {
         restaurantDO.setCountry(country);
         restaurantDO.setState(state);
         restaurantDO.setAddress(address);
+        restaurantDO.setLatitude(latitude);
+        restaurantDO.setLongitude(longitude);
         restaurantDO.setTimeAdded(timeAdded);
 
         RealmList<DishDO> dishDOs = new RealmList<>();
@@ -162,6 +183,8 @@ public class Restaurant implements Parcelable {
         country = in.readString();
         state = in.readString();
         address = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
         timeAdded = in.readLong();
         if (in.readByte() == 0x01) {
             dishes = new ArrayList<>();
@@ -193,6 +216,8 @@ public class Restaurant implements Parcelable {
         dest.writeString(country);
         dest.writeString(state);
         dest.writeString(address);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
         dest.writeLong(timeAdded);
         if (dishes == null) {
             dest.writeByte((byte) (0x00));

@@ -7,10 +7,6 @@ import com.randomappsinc.foodjournal.models.Restaurant;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public class RestaurantResults {
     @SerializedName("businesses")
     @Expose
@@ -32,6 +28,28 @@ public class RestaurantResults {
         @SerializedName("display_phone")
         @Expose
         private String phoneNumber;
+
+        @SerializedName("coordinates")
+        @Expose
+        private Coordinates coordinates;
+
+        public class Coordinates {
+            @SerializedName("latitude")
+            @Expose
+            private double latitude;
+
+            @SerializedName("longitude")
+            @Expose
+            private double longitude;
+
+            public double getLatitude() {
+                return latitude;
+            }
+
+            public double getLongitude() {
+                return longitude;
+            }
+        }
 
         @SerializedName("location")
         @Expose
@@ -95,7 +113,10 @@ public class RestaurantResults {
             restaurant.setCity(location.getCity());
             restaurant.setZipCode(location.getZipCode());
             restaurant.setState(location.getState());
+            restaurant.setCountry(location.getCountry());
             restaurant.setAddress(location.getAddress());
+            restaurant.setLatitude(coordinates.getLatitude());
+            restaurant.setLongitude(coordinates.getLongitude());
             return restaurant;
         }
     }

@@ -8,10 +8,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public class FetchRestaurantsCallback implements Callback<RestaurantResults> {
     @Override
     public void onResponse(Call<RestaurantResults> call, Response<RestaurantResults> response) {

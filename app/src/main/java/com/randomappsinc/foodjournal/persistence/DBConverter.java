@@ -25,6 +25,8 @@ public class DBConverter {
         restaurant.setCountry(restaurantDO.getCountry());
         restaurant.setState(restaurantDO.getState());
         restaurant.setAddress(restaurantDO.getAddress());
+        restaurant.setLatitude(restaurantDO.getLatitude());
+        restaurant.setLongitude(restaurantDO.getLongitude());
         restaurant.setTimeAdded(restaurantDO.getTimeAdded());
 
         List<Dish> dishes = new ArrayList<>();
