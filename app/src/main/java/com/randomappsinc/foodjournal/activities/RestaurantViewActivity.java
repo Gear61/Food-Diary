@@ -25,6 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RestaurantViewActivity extends StandardActivity {
+
     public static final String RESTAURANT_KEY = "restaurant";
 
     @BindView(R.id.restaurant_thumbnail) ImageView mThumbnail;

@@ -24,7 +24,7 @@ import butterknife.OnTextChanged;
 
 public class RestaurantsActivity extends StandardActivity {
 
-    public static final String MODE_KEY = "mode";
+    public static final String PICKER_MODE_KEY = "pickerMode";
     public static final String ID_KEY = "id";
 
     // Request codes
@@ -51,7 +51,7 @@ public class RestaurantsActivity extends StandardActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mPickerMode = getIntent().getBooleanExtra(MODE_KEY, false);
+        mPickerMode = getIntent().getBooleanExtra(PICKER_MODE_KEY, false);
 
         mAddRestaurant.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_add).colorRes(R.color.white));
 
@@ -84,7 +84,10 @@ public class RestaurantsActivity extends StandardActivity {
     public void onRestaurantSelected(int position) {
         Restaurant restaurant = mAdapter.getItem(position);
         if (mPickerMode) {
-            // TODO: Return to dish creation page
+            Intent returnRestaurant = new Intent();
+            returnRestaurant.putExtra(DishFormActivity.RESTAURANT_KEY, restaurant);
+            setResult(RESULT_OK, returnRestaurant);
+            finish();
         } else {
             Intent intent = new Intent(this, RestaurantViewActivity.class);
             intent.putExtra(RestaurantViewActivity.RESTAURANT_KEY, restaurant);

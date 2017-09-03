@@ -73,6 +73,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private Runnable mLocationCheckTask;
     private SavedLocation mCurrentLocation;
     private LocationChooser mLocationChooser;
+    private MaterialDialog mLocationServicesDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +105,18 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         };
 
         mLocationChooser = new LocationChooser(this, mLocationChoiceCallback);
-
         mCurrentLocation = DatabaseManager.get().getLocationsDBManager().getCurrentLocation();
+        mLocationServicesDialog = new MaterialDialog.Builder(this)
+                .content(R.string.location_services_needed)
+                .negativeText(android.R.string.cancel)
+                .positiveText(android.R.string.yes)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .build();
 
         // Automatically do a search if we have a pre-defined location
         if (mCurrentLocation.getId() != LocationsDBManager.AUTOMATIC_LOCATION_ID) {
@@ -211,17 +222,9 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     }
 
     private void showLocationServicesDialog() {
-        new MaterialDialog.Builder(this)
-                .content(R.string.location_services_needed)
-                .negativeText(android.R.string.cancel)
-                .positiveText(android.R.string.yes)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .show();
+        if (!mLocationServicesDialog.isShowing()) {
+            mLocationServicesDialog.show();
+        }
     }
 
     @Override
