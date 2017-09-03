@@ -76,7 +76,7 @@
 
         <activity
             android:name=".activities.RestaurantViewActivity"
-            android:label="@string/restaurants"
+            android:label="@string/restaurant_view"
             android:screenOrientation="portrait">
         </activity>
 
@@ -89,7 +89,7 @@
         <activity
             android:name=".activities.EditCheckInActivity"
             android:label="@string/edit_check_in"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:screenOrientation="portrait">
         </activity>
     </application>

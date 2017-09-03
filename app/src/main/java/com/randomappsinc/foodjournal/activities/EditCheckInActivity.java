@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class EditCheckInActivity extends StandardActivity {
         }
     };
 
+    @BindView(R.id.parent) View mParent;
     @BindView(R.id.experience_input) EditText mExperienceInput;
     @BindView(R.id.date_input) TextView mDateInput;
 
@@ -74,6 +76,7 @@ public class EditCheckInActivity extends StandardActivity {
 
         mExperienceInput.setText(checkIn.getMessage());
         mDateInput.setText(TimeUtils.getDateText(checkIn.getTimeAdded()));
+        mParent.requestFocus();
     }
 
     @OnClick(R.id.date_input)

@@ -67,4 +67,20 @@ public class RestaurantsDBManager {
             }
         });
     }
+
+    public void deleteRestaurant(final Restaurant restaurant) {
+        final RestaurantDO restaurantDO = getRealm()
+                .where(RestaurantDO.class)
+                .equalTo("id", restaurant.getId())
+                .findFirst();
+
+        getRealm().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                restaurantDO.getDishes().deleteAllFromRealm();
+                restaurantDO.getCheckIns().deleteAllFromRealm();
+                restaurantDO.deleteFromRealm();
+            }
+        });
+    }
 }

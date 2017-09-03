@@ -7,6 +7,7 @@
     android:padding="@dimen/default_activity_margin">
 
     <LinearLayout
+        android:id="@+id/parent"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

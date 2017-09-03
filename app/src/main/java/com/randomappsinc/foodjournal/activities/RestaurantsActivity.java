@@ -27,8 +27,12 @@ public class RestaurantsActivity extends StandardActivity {
     public static final String MODE_KEY = "mode";
     public static final String ID_KEY = "id";
 
+    // Request codes
     public static final int ADD_RESTAURANT_CODE = 1;
     public static final int RESTAURANT_VIEW_CODE = 2;
+
+    // Result codes
+    public static final int RESTAURANT_DELETED_CODE = 1;
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.search_input) EditText mSearchInput;
@@ -100,6 +104,9 @@ public class RestaurantsActivity extends StandardActivity {
         if (requestCode == ADD_RESTAURANT_CODE && resultCode == RESULT_OK) {
             mAdapter.resyncWithDB(mSearchInput.getText().toString());
             UIUtils.showSnackbar(mParent, getString(R.string.restaurant_added));
+        } else if (requestCode == RESTAURANT_VIEW_CODE && resultCode == RESTAURANT_DELETED_CODE) {
+            mAdapter.resyncWithDB(mSearchInput.getText().toString());
+            UIUtils.showSnackbar(mParent, getString(R.string.restaurant_deleted));
         }
     }
 }

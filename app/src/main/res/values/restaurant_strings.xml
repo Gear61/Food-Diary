@@ -29,4 +29,10 @@
         <item>@string/dishes</item>
         <item>@string/check_ins</item>
     </string-array>
+
+    <string name="confirm_restaurant_deletion_title">Confirm Restaurant Deletion</string>
+    <string name="confirm_restaurant_deletion">
+        Are you sure you want to delete this restaurant?
+        All of your attached dishes and check-ins will be deleted too.
+    </string>
 </resources>
