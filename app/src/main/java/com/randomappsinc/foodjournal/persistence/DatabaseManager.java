@@ -51,11 +51,7 @@ public class DatabaseManager {
         return mLocationsDBManager;
     }
 
-    public DishesDBManager getmDishesDBManager() {
+    public DishesDBManager getDishesDBManager() {
         return mDishesDBManager;
-    }
-
-    public void setmDishesDBManager(DishesDBManager mDishesDBManager) {
-        this.mDishesDBManager = mDishesDBManager;
     }
 }

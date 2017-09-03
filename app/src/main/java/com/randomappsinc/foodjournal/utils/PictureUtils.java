@@ -1,5 +1,6 @@
 package com.randomappsinc.foodjournal.utils;
 
+import android.net.Uri;
 import android.os.Environment;
 import android.view.View;
 
@@ -11,11 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by alexanderchiou on 8/17/17.
- */
-
 public class PictureUtils {
+
     public static File createImageFile(View parent) {
         File imageFile = null;
         try {
@@ -32,5 +30,17 @@ public class PictureUtils {
             UIUtils.showSnackbar(parent, MyApplication.getAppContext().getString(R.string.image_file_failed));
         }
         return imageFile;
+    }
+
+    public static void deleteCameraPicture(String uriString) {
+        Uri uri = Uri.parse(uriString);
+        File fdelete = new File(uri.getPath());
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+                System.out.println("file Deleted :" + uri);
+            } else {
+                System.out.println("file not Deleted :" + uri);
+            }
+        }
     }
 }

@@ -135,6 +135,7 @@ public class DishesFragment extends Fragment {
                     Intent cameraIntent = new Intent(getActivity(), DishFormActivity.class);
                     cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
+                    cameraIntent.putExtra(DishFormActivity.CAMERA_MODE_KEY, true);
                     startActivity(cameraIntent);
                     break;
                 case FILES_SOURCE_CODE:

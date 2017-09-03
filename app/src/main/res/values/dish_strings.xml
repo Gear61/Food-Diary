@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="dish_form">Dish Form</string>
     <string name="dish_icon">{ion-pizza}</string>
-    <string name="add_dish">Add Dish</string>
-    <string name="edit_dish">Edit Dish</string>
 
     <string name="dish_name_hint">What is this dish called?</string>
     <string name="dish_restaurant_prompt">Where did you get it?</string>
@@ -14,4 +13,9 @@
     <string name="dish_rating_needed">Please give this dish a rating.</string>
     <string name="dish_title_needed">Please tell us what this dish was called.</string>
     <string name="dish_restaurant_needed">Please tell us where you ate this dish.</string>
+
+    <string name="confirm_dish_exit">Confirm Dish Form Exit</string>
+    <string name="confirm_leaving_dish_form">
+        Are you sure you want to leave? All of your progress will be lost.
+    </string>
 </resources>
