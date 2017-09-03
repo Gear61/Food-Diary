@@ -34,11 +34,11 @@ import butterknife.Unbinder;
 
 public class DishesFragment extends Fragment {
 
-    private static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
-    private static final int FILES_PERMISSION_REQUEST_CODE = 2;
+    private static final int CAMERA_PERMISSION_REQUEST = 1;
+    private static final int FILES_PERMISSION_REQUEST = 2;
 
-    public static final int CAMERA_SOURCE_CODE = 1;
-    public static final int FILES_SOURCE_CODE = 2;
+    public static final int CAMERA_SOURCE = 1;
+    public static final int FILES_SOURCE = 2;
 
     @BindView(R.id.parent) View parent;
     @BindView(R.id.pick_source) FloatingActionMenu mSourcePicker;
@@ -87,7 +87,7 @@ public class DishesFragment extends Fragment {
                     PermissionUtils.requestPermission(
                             this,
                             Manifest.permission.CAMERA,
-                            CAMERA_PERMISSION_REQUEST_CODE);
+                            CAMERA_PERMISSION_REQUEST);
                 }
                 break;
             case R.id.from_files:
@@ -97,7 +97,7 @@ public class DishesFragment extends Fragment {
                     PermissionUtils.requestPermission(
                             this,
                             Manifest.permission.READ_EXTERNAL_STORAGE,
-                            FILES_PERMISSION_REQUEST_CODE);
+                            FILES_PERMISSION_REQUEST);
                 }
                 break;
         }
@@ -116,7 +116,7 @@ public class DishesFragment extends Fragment {
                         "com.randomappsinc.foodjournal.fileprovider",
                         mTakenPhotoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakenPhotoUri);
-                startActivityForResult(takePictureIntent, CAMERA_SOURCE_CODE);
+                startActivityForResult(takePictureIntent, CAMERA_SOURCE);
             }
         }
     }
@@ -124,7 +124,7 @@ public class DishesFragment extends Fragment {
     private void openFilePicker() {
         Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         Intent chooserIntent = Intent.createChooser(getIntent, mChooseImageFrom);
-        startActivityForResult(chooserIntent, FILES_SOURCE_CODE);
+        startActivityForResult(chooserIntent, FILES_SOURCE);
     }
 
     @Override
@@ -132,21 +132,21 @@ public class DishesFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case CAMERA_SOURCE_CODE:
+                case CAMERA_SOURCE:
                     Intent cameraIntent = new Intent(getActivity(), DishFormActivity.class);
                     cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
-                    startActivityForResult(cameraIntent, CAMERA_SOURCE_CODE);
+                    startActivityForResult(cameraIntent, CAMERA_SOURCE);
                     break;
-                case FILES_SOURCE_CODE:
+                case FILES_SOURCE:
                     String imageUri = data.getDataString();
                     Intent filesIntent = new Intent(getActivity(), DishFormActivity.class);
                     filesIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     filesIntent.putExtra(DishFormActivity.URI_KEY, imageUri);
-                    startActivityForResult(filesIntent, FILES_SOURCE_CODE);
+                    startActivityForResult(filesIntent, FILES_SOURCE);
                     break;
             }
-        } else if (resultCode == Activity.RESULT_CANCELED && requestCode == CAMERA_SOURCE_CODE) {
+        } else if (resultCode == Activity.RESULT_CANCELED && requestCode == CAMERA_SOURCE) {
             mTakenPhotoFile.delete();
         }
     }
@@ -155,10 +155,10 @@ public class DishesFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             switch (requestCode) {
-                case CAMERA_PERMISSION_REQUEST_CODE:
+                case CAMERA_PERMISSION_REQUEST:
                     startCameraPage();
                     break;
-                case FILES_PERMISSION_REQUEST_CODE:
+                case FILES_PERMISSION_REQUEST:
                     openFilePicker();
                     break;
                 default:

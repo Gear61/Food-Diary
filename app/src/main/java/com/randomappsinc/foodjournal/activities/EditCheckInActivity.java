@@ -65,7 +65,7 @@ public class EditCheckInActivity extends StandardActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         DatabaseManager.get().getCheckInsDBManager().deleteCheckIn(checkIn);
-                        setResult(CheckInsFragment.DELETED_RESULT_CODE);
+                        setResult(CheckInsFragment.DELETED_RESULT);
                         finish();
                     }
                 })
@@ -88,7 +88,7 @@ public class EditCheckInActivity extends StandardActivity {
     public void onCheckInSaved() {
         checkIn.setMessage(mExperienceInput.getText().toString().trim());
         DatabaseManager.get().getCheckInsDBManager().updateCheckIn(checkIn);
-        setResult(CheckInsFragment.EDIT_RESULT_CODE);
+        setResult(CheckInsFragment.EDIT_RESULT);
         finish();
     }
 

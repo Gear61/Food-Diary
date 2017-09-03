@@ -29,10 +29,10 @@ import butterknife.Unbinder;
 
 public class CheckInsFragment extends Fragment {
 
-    public static final int EDIT_REQUEST_CODE = 1;
+    public static final int EDIT_REQUEST = 1;
 
-    public static final int EDIT_RESULT_CODE = 1;
-    public static final int DELETED_RESULT_CODE = 2;
+    public static final int EDIT_RESULT = 1;
+    public static final int DELETED_RESULT = 2;
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.no_results) TextView mNoResults;
@@ -87,19 +87,19 @@ public class CheckInsFragment extends Fragment {
         CheckIn checkIn = mCheckInsAdapter.getItem(position);
         Intent intent = new Intent(getActivity(), EditCheckInActivity.class);
         intent.putExtra(EditCheckInActivity.CHECK_IN_KEY, checkIn);
-        startActivityForResult(intent, EDIT_REQUEST_CODE);
+        startActivityForResult(intent, EDIT_REQUEST);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EDIT_REQUEST_CODE) {
+        if (requestCode == EDIT_REQUEST) {
             switch (resultCode) {
-                case EDIT_REQUEST_CODE:
+                case EDIT_REQUEST:
                     mCheckInsAdapter.resyncWithDB();
                     UIUtils.showSnackbar(mParent, getString(R.string.check_in_edited));
                     break;
-                case DELETED_RESULT_CODE:
+                case DELETED_RESULT:
                     mCheckInsAdapter.resyncWithDB();
                     UIUtils.showSnackbar(mParent, getString(R.string.check_in_deleted));
                     break;
