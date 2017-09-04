@@ -42,7 +42,8 @@ public class CheckInsFragment extends Fragment {
     private final CheckInAdder.Callback mCheckInCallback = new CheckInAdder.Callback() {
         @Override
         public void onCheckInCreated(CheckIn checkIn) {
-            DatabaseManager.get().getCheckInsDBManager().addCheckIn(mRestaurantId, checkIn);
+            checkIn.setRestaurantId(mRestaurantId);
+            DatabaseManager.get().getCheckInsDBManager().addCheckIn(checkIn);
             mCheckInsAdapter.resyncWithDB();
             UIUtils.showSnackbar(mParent, getString(R.string.check_in_added));
         }

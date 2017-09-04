@@ -34,10 +34,10 @@ public class CheckInsDBManager {
         return Realm.getDefaultInstance();
     }
 
-    public void addCheckIn(String restaurantId, final CheckIn checkIn) {
+    public void addCheckIn(final CheckIn checkIn) {
         final RestaurantDO restaurantDO = getRealm()
                 .where(RestaurantDO.class)
-                .equalTo("id", restaurantId)
+                .equalTo("id", checkIn.getRestaurantId())
                 .findFirst();
 
         if (restaurantDO == null) {
@@ -52,6 +52,7 @@ public class CheckInsDBManager {
             public void execute(Realm realm) {
                 CheckInDO checkInDO = checkIn.toCheckInDO();
                 checkInDO.setCheckInId(checkInId);
+                checkInDO.setRestaurantName(restaurantDO.getName());
                 restaurantDO.getCheckIns().add(checkInDO);
             }
         });

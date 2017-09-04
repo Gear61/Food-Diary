@@ -63,6 +63,8 @@ public class DBConverter {
         checkIn.setCheckInId(checkInDO.getCheckInId());
         checkIn.setMessage(checkInDO.getMessage());
         checkIn.setTimeAdded(checkInDO.getTimeAdded());
+        checkIn.setRestaurantId(checkInDO.getRestaurantId());
+        checkIn.setRestaurantName(checkInDO.getRestaurantName());
         return checkIn;
     }
 

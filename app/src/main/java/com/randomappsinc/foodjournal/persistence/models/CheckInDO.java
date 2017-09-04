@@ -10,6 +10,8 @@ public class CheckInDO extends RealmObject {
 
     private String message;
     private long timeAdded;
+    private String restaurantId;
+    private String restaurantName;
 
     public int getCheckInId() {
         return checkInId;
@@ -33,5 +35,21 @@ public class CheckInDO extends RealmObject {
 
     public void setTimeAdded(long timeAdded) {
         this.timeAdded = timeAdded;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 }

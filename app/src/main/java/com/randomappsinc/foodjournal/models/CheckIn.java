@@ -7,48 +7,70 @@ import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 
 public class CheckIn implements Parcelable {
 
-    private int checkInId;
-    private String message;
-    private long timeAdded;
+    private int mCheckInId;
+    private String mMessage;
+    private long mTimeAdded;
+    private String mRestaurantId;
+    private String mRestaurantName;
 
     public CheckIn() {}
 
     public int getCheckInId() {
-        return checkInId;
+        return mCheckInId;
     }
 
     public void setCheckInId(int checkInId) {
-        this.checkInId = checkInId;
+        mCheckInId = checkInId;
     }
 
     public String getMessage() {
-        return message;
+        return mMessage;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        mMessage = message;
     }
 
     public long getTimeAdded() {
-        return timeAdded;
+        return mTimeAdded;
     }
 
     public void setTimeAdded(long timeAdded) {
-        this.timeAdded = timeAdded;
+        mTimeAdded = timeAdded;
+    }
+
+    public String getRestaurantId() {
+        return mRestaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        mRestaurantId = restaurantId;
+    }
+
+    public String getRestaurantName() {
+        return mRestaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        mRestaurantName = restaurantName;
     }
 
     public CheckInDO toCheckInDO() {
         CheckInDO checkInDO = new CheckInDO();
-        checkInDO.setCheckInId(checkInId);
-        checkInDO.setMessage(message);
-        checkInDO.setTimeAdded(timeAdded);
+        checkInDO.setCheckInId(mCheckInId);
+        checkInDO.setMessage(mMessage);
+        checkInDO.setTimeAdded(mTimeAdded);
+        checkInDO.setRestaurantId(mRestaurantId);
+        checkInDO.setRestaurantName(mRestaurantName);
         return checkInDO;
     }
 
     protected CheckIn(Parcel in) {
-        checkInId = in.readInt();
-        message = in.readString();
-        timeAdded = in.readLong();
+        mCheckInId = in.readInt();
+        mMessage = in.readString();
+        mTimeAdded = in.readLong();
+        mRestaurantId = in.readString();
+        mRestaurantName = in.readString();
     }
 
     @Override
@@ -58,9 +80,11 @@ public class CheckIn implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(checkInId);
-        dest.writeString(message);
-        dest.writeLong(timeAdded);
+        dest.writeInt(mCheckInId);
+        dest.writeString(mMessage);
+        dest.writeLong(mTimeAdded);
+        dest.writeString(mRestaurantId);
+        dest.writeString(mRestaurantName);
     }
 
     @SuppressWarnings("unused")
