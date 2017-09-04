@@ -42,8 +42,12 @@ public class DishesFragment extends Fragment {
     private static final int CAMERA_PERMISSION_REQUEST = 1;
     private static final int FILES_PERMISSION_REQUEST = 2;
 
+    // Requesting picture of dish
     public static final int CAMERA_SOURCE = 1;
     public static final int FILES_SOURCE = 2;
+
+    // Opening dish form
+    public static final int DISH_FORM = 3;
 
     public static final int DISH_ADDED = 1;
 
@@ -160,7 +164,7 @@ public class DishesFragment extends Fragment {
                     cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
                     cameraIntent.putExtra(DishFormActivity.RESTAURANT_KEY, mRestaurant);
-                    startActivityForResult(cameraIntent, CAMERA_SOURCE);
+                    startActivityForResult(cameraIntent, DISH_FORM);
                     break;
                 case FILES_SOURCE:
                     mTakenPhotoFile = PictureUtils.copyGalleryImage(data);
@@ -176,10 +180,10 @@ public class DishesFragment extends Fragment {
                     filesIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     filesIntent.putExtra(DishFormActivity.URI_KEY, imageUri);
                     filesIntent.putExtra(DishFormActivity.RESTAURANT_KEY, mRestaurant);
-                    startActivityForResult(filesIntent, FILES_SOURCE);
+                    startActivityForResult(filesIntent, DISH_FORM);
                     break;
             }
-        } else if (resultCode == Activity.RESULT_CANCELED) {
+        } else if (requestCode == DISH_FORM && resultCode == Activity.RESULT_CANCELED) {
             mTakenPhotoFile.delete();
         }
     }
