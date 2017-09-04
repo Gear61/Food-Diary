@@ -10,6 +10,7 @@
 
     <string name="blank_star">{ion-android-star-outline}</string>
     <string name="filled_star">{ion-android-star}</string>
+    <string name="red_filled_star">{ion-android-star @color/app_red}</string>
 
     <string name="dish_rating_needed">Please give this dish a rating.</string>
     <string name="dish_title_needed">Please tell us what this dish was called.</string>

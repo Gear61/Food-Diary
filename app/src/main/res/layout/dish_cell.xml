@@ -2,14 +2,46 @@
 <android.support.percent.PercentRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:ignore="ContentDescription, RtlHardcoded, SpUsage">
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/dish_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dish_cell_spacing"
+        android:padding="@dimen/dish_cell_spacing"
+        android:gravity="center_vertical"
+        android:textColor="@color/dark_gray"
+        android:textSize="21dp"/>
 
     <ImageView
         android:id="@+id/dish_picture"
-        android:layout_marginTop="@dimen/default_activity_margin"
+        android:layout_below="@id/dish_info_text"
         android:layout_height="0dp"
         android:layout_width="0dp"
         app:layout_aspectRatio="100%"
         app:layout_widthPercent="100%"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/dish_rating_text"
+        android:layout_alignTop="@id/dish_picture"
+        android:layout_alignRight="@id/dish_picture"
+        android:layout_marginTop="@dimen/dish_rating_spacing"
+        android:layout_marginRight="@dimen/dish_rating_spacing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/dark_gray"
+        android:textSize="25dp"/>
+
+    <TextView
+        android:id="@+id/dish_description"
+        android:layout_below="@id/dish_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dish_cell_spacing"
+        android:textColor="@color/gray"
+        android:textSize="18dp"/>
 </android.support.percent.PercentRelativeLayout>

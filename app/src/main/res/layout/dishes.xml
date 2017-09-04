@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/list_fab_offset"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:divider="@null"/>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/pick_source"

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
@@ -65,7 +66,10 @@ public class DishesAdapter extends BaseAdapter {
 
     public class DishViewHolder {
 
+        @BindView(R.id.dish_info_text) TextView mDishInfoText;
+        @BindView(R.id.dish_rating_text) TextView mDishRatingText;
         @BindView(R.id.dish_picture) ImageView mDishPicture;
+        @BindView(R.id.dish_description) TextView mDishDescription;
 
         public DishViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -74,12 +78,20 @@ public class DishesAdapter extends BaseAdapter {
         public void loadItem(int position) {
             Dish dish = getItem(position);
 
+            mDishInfoText.setText(dish.getDishInfoText());
+            mDishRatingText.setText(dish.getRatingText());
             Picasso.with(mContext)
                     .load(dish.getUriString())
                     .error(mDefaultThumbnail)
                     .fit()
                     .centerCrop()
                     .into(mDishPicture);
+            if (dish.getDescription().isEmpty()) {
+                mDishDescription.setVisibility(View.GONE);
+            } else {
+                mDishDescription.setText(dish.getFeedDescription());
+                mDishDescription.setVisibility(View.VISIBLE);
+            }
         }
     }
 
