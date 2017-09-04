@@ -1,6 +1,9 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
+import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.persistence.DBConverter;
+import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 
@@ -8,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class DishesDBManager {
 
@@ -31,10 +37,10 @@ public class DishesDBManager {
         return Realm.getDefaultInstance();
     }
 
-    public void addDish(final Dish dish, String restaurantId) {
+    public void addDish(final Dish dish) {
         final RestaurantDO restaurantDO = getRealm()
                 .where(RestaurantDO.class)
-                .equalTo("id", restaurantId)
+                .equalTo("id", dish.getRestaurantId())
                 .findFirst();
 
         if (restaurantDO == null) {
@@ -55,9 +61,34 @@ public class DishesDBManager {
         });
     }
 
-    /** Fetches all dishes attached to a restaurant. Pass in null to fetch all dishes. */
     public List<Dish> getDishes(String restaurantId) {
+        RestaurantDO restaurantDO = getRealm()
+                .where(RestaurantDO.class)
+                .equalTo("id", restaurantId)
+                .findFirst();
+
+        if (restaurantDO != null) {
+            RealmResults<DishDO> dishDOs = restaurantDO.getDishes().sort("timeLastUpdated", Sort.DESCENDING);
+
+            List<Dish> dishes = new ArrayList<>();
+            for (DishDO dishDO : dishDOs) {
+                dishes.add(DBConverter.getDishFromDO(dishDO));
+            }
+            return dishes;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Dish> getAllDishes() {
+        List<DishDO> dishDOs = getRealm()
+                .where(DishDO.class)
+                .findAllSorted("timeLastUpdated", Sort.DESCENDING);
+
         List<Dish> dishes = new ArrayList<>();
+        for (DishDO dishDO : dishDOs) {
+            dishes.add(DBConverter.getDishFromDO(dishDO));
+        }
         return dishes;
     }
 }

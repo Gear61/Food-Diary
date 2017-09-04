@@ -174,13 +174,20 @@ public class DishFormActivity extends StandardActivity {
             return;
         }
 
+        if (mDateText.getText().equals(getString(R.string.dish_date_prompt))) {
+            UIUtils.showSnackbar(mParent, getString(R.string.dish_date_needed));
+            return;
+        }
+
         Dish dish = new Dish();
         dish.setUriString(mPictureUri);
         dish.setTitle(title);
         dish.setRating(rating);
         dish.setDescription(mDishDescriptionInput.getText().toString().trim());
         dish.setTimeAdded(mDishTime);
-        DatabaseManager.get().getDishesDBManager().addDish(dish, mRestaurant.getId());
+        dish.setRestaurantId(mRestaurant.getId());
+        dish.setRestaurantName(mRestaurant.getName());
+        DatabaseManager.get().getDishesDBManager().addDish(dish);
         setResult(DishesFragment.DISH_ADDED);
         finish();
     }

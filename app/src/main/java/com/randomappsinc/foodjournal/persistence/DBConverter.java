@@ -53,6 +53,8 @@ public class DBConverter {
         dish.setDescription(dishDO.getDescription());
         dish.setTimeAdded(dishDO.getTimeAdded());
         dish.setTimeLastUpdated(dishDO.getTimeLastUpdated());
+        dish.setRestaurantId(dishDO.getRestaurantId());
+        dish.setRestaurantName(dishDO.getRestaurantName());
         return dish;
     }
 

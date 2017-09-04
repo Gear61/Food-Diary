@@ -4,8 +4,8 @@
     <string name="dish_icon">{ion-pizza}</string>
 
     <string name="dish_name_hint">What is this dish called?</string>
-    <string name="dish_restaurant_prompt">Where did you get it?</string>
-    <string name="dish_date_prompt">When did you get it?</string>
+    <string name="dish_restaurant_prompt">Where did you eat it?</string>
+    <string name="dish_date_prompt">When did you eat it?</string>
     <string name="dish_description_prompt">Anything else you want to say?</string>
 
     <string name="blank_star">{ion-android-star-outline}</string>
@@ -14,6 +14,7 @@
     <string name="dish_rating_needed">Please give this dish a rating.</string>
     <string name="dish_title_needed">Please tell us what this dish was called.</string>
     <string name="dish_restaurant_needed">Please tell us where you ate this dish.</string>
+    <string name="dish_date_needed">Please tell us when you ate this dish.</string>
 
     <string name="confirm_dish_exit">Confirm Dish Form Exit</string>
     <string name="confirm_leaving_dish_form">
