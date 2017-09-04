@@ -1,36 +1,45 @@
 package com.randomappsinc.foodjournal.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DishesAdapter extends BaseAdapter {
 
     private List<Dish> mDishes;
     private Context mContext;
-    private TextView mNoResults;
+    private View mNoResults;
     private String mRestaurantId;
+    private Drawable mDefaultThumbnail;
 
-    public DishesAdapter(Context context, TextView noResults, String restaurantId) {
+    public DishesAdapter(Context context, View noResults, String restaurantId) {
         mContext = context;
         mNoResults = noResults;
         mRestaurantId = restaurantId;
+        mDefaultThumbnail = new IconDrawable(context, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         resyncWithDB();
     }
 
     public void resyncWithDB() {
-        mDishes = DatabaseManager.get().getDishesDBManager().getDishes(mRestaurantId);
+        mDishes = mRestaurantId == null
+                ? DatabaseManager.get().getDishesDBManager().getAllDishes()
+                : DatabaseManager.get().getDishesDBManager().getDishes(mRestaurantId);
         if (mDishes.isEmpty()) {
             mNoResults.setVisibility(View.VISIBLE);
         } else {
@@ -56,12 +65,21 @@ public class DishesAdapter extends BaseAdapter {
 
     public class DishViewHolder {
 
+        @BindView(R.id.dish_picture) ImageView mDishPicture;
+
         public DishViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
 
         public void loadItem(int position) {
+            Dish dish = getItem(position);
 
+            Picasso.with(mContext)
+                    .load(dish.getUriString())
+                    .error(mDefaultThumbnail)
+                    .fit()
+                    .centerCrop()
+                    .into(mDishPicture);
         }
     }
 
@@ -69,7 +87,7 @@ public class DishesAdapter extends BaseAdapter {
         DishViewHolder holder;
         if (view == null) {
             LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = vi.inflate(R.layout.check_in_cell, parent, false);
+            view = vi.inflate(R.layout.dish_cell, parent, false);
             holder = new DishViewHolder(view);
             view.setTag(holder);
         } else {

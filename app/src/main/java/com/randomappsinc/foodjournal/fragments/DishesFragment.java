@@ -22,6 +22,7 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
+import com.randomappsinc.foodjournal.adapters.DishesAdapter;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
 
@@ -55,6 +56,7 @@ public class DishesFragment extends Fragment {
     private File mTakenPhotoFile;
     private Uri mTakenPhotoUri;
     private Unbinder mUnbinder;
+    private DishesAdapter mDishesAdapter;
 
     public static DishesFragment newInstance(String restaurantId) {
         DishesFragment fragment = new DishesFragment();
@@ -82,6 +84,9 @@ public class DishesFragment extends Fragment {
         if (mRestaurantId != null) {
             mParent.setPadding(0, 0, 0, 0);
         }
+
+        mDishesAdapter = new DishesAdapter(getActivity(), noDishes, mRestaurantId);
+        mDishesList.setAdapter(mDishesAdapter);
 
         return rootView;
     }
@@ -177,6 +182,12 @@ public class DishesFragment extends Fragment {
                     break;
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mDishesAdapter.resyncWithDB();
     }
 
     @Override
