@@ -33,25 +33,32 @@ public class LocationsDBManager {
         return instance;
     }
 
-    private LocationsDBManager() {
-        if (PreferencesManager.get().isFirstTime()) {
-            final SavedLocationDO automaticSavedLocation = new SavedLocationDO();
-            automaticSavedLocation.setId(AUTOMATIC_LOCATION_ID);
-            automaticSavedLocation.setName(MyApplication.getAppContext().getString(R.string.automatic));
-            automaticSavedLocation.setAddress(MyApplication.getAppContext().getString(R.string.automatic));
-            automaticSavedLocation.setIsCurrentLocation(true);
-
-            getRealm().executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    getRealm().insert(automaticSavedLocation);
-                }
-            });
-        }
-    }
-
     private Realm getRealm() {
         return Realm.getDefaultInstance();
+    }
+
+    public void init() {
+        SavedLocationDO savedLocationDO = getRealm()
+                .where(SavedLocationDO.class)
+                .equalTo("id", AUTOMATIC_LOCATION_ID)
+                .findFirst();
+
+        if (savedLocationDO != null) {
+            return;
+        }
+
+        final SavedLocationDO automaticSavedLocation = new SavedLocationDO();
+        automaticSavedLocation.setId(AUTOMATIC_LOCATION_ID);
+        automaticSavedLocation.setName(MyApplication.getAppContext().getString(R.string.automatic));
+        automaticSavedLocation.setAddress(MyApplication.getAppContext().getString(R.string.automatic));
+        automaticSavedLocation.setIsCurrentLocation(true);
+
+        getRealm().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                getRealm().insert(automaticSavedLocation);
+            }
+        });
     }
 
     public void addLocation(final SavedLocation savedLocation) {
@@ -122,10 +129,20 @@ public class LocationsDBManager {
     }
 
     public SavedLocation getCurrentLocation() {
-        SavedLocationDO savedLocationDO = getRealm().where(SavedLocationDO.class)
+        SavedLocationDO savedLocationDO = getRealm()
+                .where(SavedLocationDO.class)
                 .equalTo("isCurrentLocation", true)
                 .findFirst();
-        return DBConverter.getLocationFromDO(savedLocationDO);
+
+        if (savedLocationDO == null) {
+            SavedLocationDO automatic = getRealm()
+                    .where(SavedLocationDO.class)
+                    .equalTo("id", AUTOMATIC_LOCATION_ID)
+                    .findFirst();
+            return DBConverter.getLocationFromDO(automatic);
+        } else {
+            return DBConverter.getLocationFromDO(savedLocationDO);
+        }
     }
 
     // Gets the list of user locations for current location choice (has automatic)

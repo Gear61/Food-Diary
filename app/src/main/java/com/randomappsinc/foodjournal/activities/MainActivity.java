@@ -16,7 +16,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.IconItemsAdapter;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.PreferencesManager;
+import com.randomappsinc.foodjournal.persistence.dbmanagers.LocationsDBManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import butterknife.BindView;
@@ -36,9 +38,15 @@ public class MainActivity extends StandardActivity {
         super.onCreate(savedInstanceState);
 
         // Kill activity if it's above an existing stack due to launcher bug
-        if (!isTaskRoot() && getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) && getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_MAIN)) {
+        if (!isTaskRoot()
+                && getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)
+                && getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_MAIN)) {
             finish();
             return;
+        }
+
+        if (PreferencesManager.get().isFirstTime()) {
+            DatabaseManager.get().getLocationsDBManager().init();
         }
 
         setContentView(R.layout.activity_main);

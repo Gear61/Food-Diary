@@ -77,10 +77,12 @@ public class DishesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         String restaurantId = getArguments() != null ? getArguments().getString(RestaurantsActivity.ID_KEY) : null;
 
-        View rootView = inflater.inflate(
-                restaurantId == null ? R.layout.dishes_extra_top_margin : R.layout.dishes,
-                container,
-                false);
+        int homepageMode = R.layout.dishes_extra_top_margin;
+        int restaurantMode = R.layout.dishes;
+        int layoutId = restaurantId == null ? homepageMode : restaurantMode;
+
+        // If restaurant ID is null, we are on the homepage and need the extra margin
+        View rootView = inflater.inflate(layoutId, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
         mCameraPicker.setImageDrawable(new IconDrawable(getActivity(),
@@ -209,6 +211,7 @@ public class DishesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mDishesAdapter.resyncWithDB();
+        mDishesList.setSelectionAfterHeaderView();
     }
 
     @Override
