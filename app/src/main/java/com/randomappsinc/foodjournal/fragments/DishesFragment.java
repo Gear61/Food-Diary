@@ -27,6 +27,7 @@ import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
+import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import java.io.File;
 
@@ -129,19 +130,22 @@ public class DishesFragment extends Fragment {
     private void startCameraPage() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            mTakenPhotoFile = PictureUtils.createImageFile(mParent);
+            mTakenPhotoFile = PictureUtils.createImageFile();
             if (mTakenPhotoFile != null) {
                 mTakenPhotoUri = FileProvider.getUriForFile(getActivity(),
                         "com.randomappsinc.foodjournal.fileprovider",
                         mTakenPhotoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakenPhotoUri);
                 startActivityForResult(takePictureIntent, CAMERA_SOURCE);
+            } else {
+                UIUtils.showSnackbar(mParent, getString(R.string.image_file_failed));
             }
         }
     }
 
     private void openFilePicker() {
         Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        getIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         Intent chooserIntent = Intent.createChooser(getIntent, mChooseImageFrom);
         startActivityForResult(chooserIntent, FILES_SOURCE);
     }
@@ -159,7 +163,15 @@ public class DishesFragment extends Fragment {
                     startActivityForResult(cameraIntent, CAMERA_SOURCE);
                     break;
                 case FILES_SOURCE:
-                    String imageUri = data.getDataString();
+                    mTakenPhotoFile = PictureUtils.copyGalleryImage(data);
+                    if (mTakenPhotoFile == null) {
+                        UIUtils.showSnackbar(mParent, getString(R.string.image_file_failed));
+                        return;
+                    }
+
+                    Uri fileUri = Uri.fromFile(mTakenPhotoFile);
+                    String imageUri = fileUri.toString();
+
                     Intent filesIntent = new Intent(getActivity(), DishFormActivity.class);
                     filesIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     filesIntent.putExtra(DishFormActivity.URI_KEY, imageUri);
@@ -167,7 +179,7 @@ public class DishesFragment extends Fragment {
                     startActivityForResult(filesIntent, FILES_SOURCE);
                     break;
             }
-        } else if (resultCode == Activity.RESULT_CANCELED && requestCode == CAMERA_SOURCE) {
+        } else if (resultCode == Activity.RESULT_CANCELED) {
             mTakenPhotoFile.delete();
         }
     }
