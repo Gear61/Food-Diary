@@ -3,7 +3,6 @@ package com.randomappsinc.foodjournal.persistence.dbmanagers;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.DBConverter;
-import com.randomappsinc.foodjournal.persistence.PreferencesManager;
 import com.randomappsinc.foodjournal.persistence.models.SavedLocationDO;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 

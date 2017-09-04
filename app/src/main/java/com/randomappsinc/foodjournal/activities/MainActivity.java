@@ -18,7 +18,6 @@ import com.randomappsinc.foodjournal.adapters.IconItemsAdapter;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.PreferencesManager;
-import com.randomappsinc.foodjournal.persistence.dbmanagers.LocationsDBManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import butterknife.BindView;
