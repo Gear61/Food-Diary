@@ -18,4 +18,8 @@
     <string name="confirm_leaving_dish_form">
         Are you sure you want to leave? All of your progress will be lost.
     </string>
+
+    <string name="no_dishes">
+        Hit the {ion-android-add} in the bottom right to add your first dish!
+    </string>
 </resources>

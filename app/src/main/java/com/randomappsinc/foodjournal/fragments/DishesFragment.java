@@ -13,6 +13,7 @@ import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -40,7 +41,9 @@ public class DishesFragment extends Fragment {
     public static final int CAMERA_SOURCE = 1;
     public static final int FILES_SOURCE = 2;
 
-    @BindView(R.id.parent) View parent;
+    @BindView(R.id.parent) View mParent;
+    @BindView(R.id.dishes) ListView mDishesList;
+    @BindView(R.id.no_dishes) View noDishes;
     @BindView(R.id.pick_source) FloatingActionMenu mSourcePicker;
     @BindView(R.id.from_camera) FloatingActionButton mCameraPicker;
     @BindView(R.id.from_files) FloatingActionButton mFilesPicker;
@@ -71,6 +74,12 @@ public class DishesFragment extends Fragment {
                 IoniconsIcons.ion_android_camera).colorRes(R.color.white));
         mFilesPicker.setImageDrawable(new IconDrawable(getActivity(),
                 IoniconsIcons.ion_android_folder).colorRes(R.color.white));
+
+        mRestaurantId = getArguments() != null ? getArguments().getString(RestaurantsActivity.ID_KEY) : null;
+
+        if (mRestaurantId != null) {
+            mParent.setPadding(0, 0, 0, 0);
+        }
 
         return rootView;
     }
@@ -110,7 +119,7 @@ public class DishesFragment extends Fragment {
     private void startCameraPage() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            mTakenPhotoFile = PictureUtils.createImageFile(parent);
+            mTakenPhotoFile = PictureUtils.createImageFile(mParent);
             if (mTakenPhotoFile != null) {
                 mTakenPhotoUri = FileProvider.getUriForFile(getActivity(),
                         "com.randomappsinc.foodjournal.fileprovider",

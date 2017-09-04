@@ -4,7 +4,20 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="?android:attr/actionBarSize">
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/no_dishes"
+        android:text="@string/no_dishes"
+        style="@style/no_content"/>
+
+    <ListView
+        android:id="@+id/dishes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/list_fab_offset"
+        android:clipToPadding="false"/>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/pick_source"

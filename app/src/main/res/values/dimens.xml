@@ -4,6 +4,8 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="no_content_top_margin">48dp</dimen>
+    <dimen name="no_content_other_margins">24dp</dimen>
 
     <dimen name="default_cell_padding">8dp</dimen>
     <dimen name="list_fab_offset">88dp</dimen>
