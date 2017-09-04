@@ -37,6 +37,7 @@
     <dimen name="dish_form_card_spacing">8dp</dimen>
 
     <!-- Dish cell -->
+    <dimen name="dish_cell_extra_top_margin">16dp</dimen>
     <dimen name="dish_cell_spacing">8dp</dimen>
     <dimen name="dish_rating_spacing">8dp</dimen>
 </resources>

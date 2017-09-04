@@ -81,4 +81,11 @@
         <item name="rd_rippleAnimDuration">@integer/shorter_anim_length</item>
         <item name="rd_delayClick">untilRelease</item>
     </style>
+
+    <style name="content_list">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingBottom">@dimen/list_fab_offset</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
 </resources>

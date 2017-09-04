@@ -23,6 +23,8 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.DishesAdapter;
+import com.randomappsinc.foodjournal.models.Restaurant;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
 
@@ -52,7 +54,7 @@ public class DishesFragment extends Fragment {
     @BindView(R.id.from_files) FloatingActionButton mFilesPicker;
     @BindString(R.string.choose_image_from) String mChooseImageFrom;
 
-    private String mRestaurantId;
+    private Restaurant mRestaurant;
     private File mTakenPhotoFile;
     private Uri mTakenPhotoUri;
     private Unbinder mUnbinder;
@@ -68,24 +70,25 @@ public class DishesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.dishes, container, false);
+        String restaurantId = getArguments() != null ? getArguments().getString(RestaurantsActivity.ID_KEY) : null;
+
+        View rootView = inflater.inflate(
+                restaurantId == null ? R.layout.dishes_extra_top_margin : R.layout.dishes,
+                container,
+                false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
-        if (getArguments() != null) {
-            mRestaurantId = getArguments().getString(RestaurantsActivity.ID_KEY);
-        }
         mCameraPicker.setImageDrawable(new IconDrawable(getActivity(),
                 IoniconsIcons.ion_android_camera).colorRes(R.color.white));
         mFilesPicker.setImageDrawable(new IconDrawable(getActivity(),
                 IoniconsIcons.ion_android_folder).colorRes(R.color.white));
 
-        mRestaurantId = getArguments() != null ? getArguments().getString(RestaurantsActivity.ID_KEY) : null;
-
-        if (mRestaurantId != null) {
-            mParent.setPadding(0, 0, 0, 0);
+        // Remove toolbar top padding because we're not on the homepage
+        if (restaurantId != null) {
+            mRestaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(restaurantId);
         }
 
-        mDishesAdapter = new DishesAdapter(getActivity(), noDishes, mRestaurantId);
+        mDishesAdapter = new DishesAdapter(getActivity(), noDishes, restaurantId);
         mDishesList.setAdapter(mDishesAdapter);
 
         return rootView;
@@ -152,6 +155,7 @@ public class DishesFragment extends Fragment {
                     Intent cameraIntent = new Intent(getActivity(), DishFormActivity.class);
                     cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
+                    cameraIntent.putExtra(DishFormActivity.RESTAURANT_KEY, mRestaurant);
                     startActivityForResult(cameraIntent, CAMERA_SOURCE);
                     break;
                 case FILES_SOURCE:
@@ -159,6 +163,7 @@ public class DishesFragment extends Fragment {
                     Intent filesIntent = new Intent(getActivity(), DishFormActivity.class);
                     filesIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     filesIntent.putExtra(DishFormActivity.URI_KEY, imageUri);
+                    filesIntent.putExtra(DishFormActivity.RESTAURANT_KEY, mRestaurant);
                     startActivityForResult(filesIntent, FILES_SOURCE);
                     break;
             }

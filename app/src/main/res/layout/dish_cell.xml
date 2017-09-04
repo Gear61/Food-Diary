@@ -11,7 +11,7 @@
         android:id="@+id/dish_info_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dish_cell_spacing"
+        android:layout_marginTop="@dimen/dish_cell_extra_top_margin"
         android:padding="@dimen/dish_cell_spacing"
         android:gravity="center_vertical"
         android:textColor="@color/dark_gray"
@@ -41,7 +41,9 @@
         android:layout_below="@id/dish_picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dish_cell_spacing"
+        android:paddingTop="@dimen/dish_cell_spacing"
+        android:paddingLeft="@dimen/dish_cell_spacing"
+        android:paddingRight="@dimen/dish_cell_spacing"
         android:textColor="@color/gray"
         android:textSize="18dp"/>
 </android.support.percent.PercentRelativeLayout>

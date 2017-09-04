@@ -83,4 +83,12 @@ public class RestaurantsDBManager {
             }
         });
     }
+
+    public Restaurant getRestaurant(String restaurantId) {
+        RestaurantDO restaurantDO = getRealm()
+                .where(RestaurantDO.class)
+                .equalTo("id", restaurantId)
+                .findFirst();
+        return DBConverter.getRestaurantFromDO(restaurantDO);
+    }
 }
