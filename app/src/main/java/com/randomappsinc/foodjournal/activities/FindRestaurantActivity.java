@@ -59,6 +59,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                 if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID) {
                     fetchCurrentLocation();
                 } else {
+                    stopFetchingCurrentLocation();
                     fetchRestaurants();
                 }
             }
@@ -227,9 +228,18 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         }
     }
 
+    private void stopFetchingCurrentLocation() {
+        mLocationChecker.removeCallbacks(mLocationCheckTask);
+        SmartLocation.with(this).location().stop();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        stopFetchingCurrentLocation();
+
+        // Stop listening for restaurant search results
         mRestClient.unregisterRestaurantResultsHandler(this);
         mRestClient.cancelRestaurantFetch();
     }

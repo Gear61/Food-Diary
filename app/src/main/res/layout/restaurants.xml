@@ -21,7 +21,7 @@
 
             <EditText
                 android:id="@+id/search_input"
-                android:hint="@string/search"
+                android:hint="@string/filter"
                 android:paddingRight="40dp"
                 android:paddingLeft="40dp"
                 style="@style/text_input"/>
