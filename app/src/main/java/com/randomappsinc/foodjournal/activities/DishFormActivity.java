@@ -15,8 +15,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
@@ -149,6 +151,9 @@ public class DishFormActivity extends StandardActivity {
         dish.setTitle(title);
         dish.setRating(rating);
         dish.setDescription(mDishDescriptionInput.getText().toString().trim());
+        DatabaseManager.get().getDishesDBManager().addDish(dish);
+        setResult(DishesFragment.DISH_ADDED);
+        finish();
     }
 
     @Override

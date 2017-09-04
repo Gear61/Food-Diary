@@ -41,6 +41,8 @@ public class DishesFragment extends Fragment {
     public static final int CAMERA_SOURCE = 1;
     public static final int FILES_SOURCE = 2;
 
+    public static final int DISH_ADDED = 1;
+
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.dishes) ListView mDishesList;
     @BindView(R.id.no_dishes) View noDishes;
