@@ -25,8 +25,6 @@
 
         <TextView
             android:id="@+id/date_input"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:layout_marginTop="@dimen/default_activity_margin"
             style="@style/text_input"/>
 
@@ -34,7 +32,7 @@
             android:id="@+id/save"
             android:text="@string/save"
             android:layout_marginTop="@dimen/default_activity_margin"
-            style="@style/ripple_button_style"
-            app:rd_style="@style/button_ripple_attributes"/>
+            app:rd_style="@style/button_ripple_attributes"
+            style="@style/ripple_button_style"/>
     </LinearLayout>
 </ScrollView>

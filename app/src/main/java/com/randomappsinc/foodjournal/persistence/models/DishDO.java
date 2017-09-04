@@ -9,11 +9,11 @@ public class DishDO extends RealmObject {
     private int id;
 
     private String uriString;
-    private String restaurantId;
     private String title;
     private int rating;
     private String description;
     private long timeAdded;
+    private long timeLastUpdated;
 
     public int getId() {
         return id;
@@ -29,14 +29,6 @@ public class DishDO extends RealmObject {
 
     public void setUriString(String uriString) {
         this.uriString = uriString;
-    }
-
-    public String getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(String restaurantId) {
-        this.restaurantId = restaurantId;
     }
 
     public String getTitle() {
@@ -69,5 +61,13 @@ public class DishDO extends RealmObject {
 
     public void setTimeAdded(long timeAdded) {
         this.timeAdded = timeAdded;
+    }
+
+    public long getTimeLastUpdated() {
+        return timeLastUpdated;
+    }
+
+    public void setTimeLastUpdated(long timeLastUpdated) {
+        this.timeLastUpdated = timeLastUpdated;
     }
 }

@@ -12,12 +12,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/default_activity_margin">
+        android:layout_height="match_parent">
 
         <android.support.percent.PercentRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_activity_margin">
 
             <ImageView
                 android:id="@+id/dish_picture"
@@ -75,8 +75,20 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/dish_description_section"
+                android:id="@+id/date_picker_section"
                 android:layout_below="@id/restaurant_info_section"
+                style="@style/dish_card">
+
+                <TextView
+                    android:id="@+id/date_text"
+                    android:text="@string/dish_date_prompt"
+                    android:textColor="@color/gray"
+                    style="@style/dish_form_input"/>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/dish_description_section"
+                android:layout_below="@id/date_picker_section"
                 style="@style/dish_card">
 
                 <EditText

@@ -5,6 +5,7 @@
 
     <string name="dish_name_hint">What is this dish called?</string>
     <string name="dish_restaurant_prompt">Where did you get it?</string>
+    <string name="dish_date_prompt">When did you get it?</string>
     <string name="dish_description_prompt">Anything else you want to say?</string>
 
     <string name="blank_star">{ion-android-star-outline}</string>

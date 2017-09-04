@@ -2,6 +2,10 @@ package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
+import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 
@@ -27,7 +31,16 @@ public class DishesDBManager {
         return Realm.getDefaultInstance();
     }
 
-    public void addDish(final Dish dish) {
+    public void addDish(final Dish dish, String restaurantId) {
+        final RestaurantDO restaurantDO = getRealm()
+                .where(RestaurantDO.class)
+                .equalTo("id", restaurantId)
+                .findFirst();
+
+        if (restaurantDO == null) {
+            return;
+        }
+
         Number number = getRealm().where(DishDO.class).findAll().max("id");
         final int dishId = number == null ? 1 : number.intValue() + 1;
 
@@ -36,9 +49,15 @@ public class DishesDBManager {
             public void execute(Realm realm) {
                 DishDO dishDO = dish.toDishDO();
                 dishDO.setId(dishId);
-                dishDO.setTimeAdded(System.currentTimeMillis());
-                getRealm().insert(dishDO);
+                dishDO.setTimeLastUpdated(System.currentTimeMillis());
+                restaurantDO.getDishes().add(dishDO);
             }
         });
+    }
+
+    /** Fetches all dishes attached to a restaurant. Pass in null to fetch all dishes. */
+    public List<Dish> getDishes(String restaurantId) {
+        List<Dish> dishes = new ArrayList<>();
+        return dishes;
     }
 }

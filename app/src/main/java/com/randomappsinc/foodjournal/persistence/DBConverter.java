@@ -48,11 +48,11 @@ public class DBConverter {
         Dish dish = new Dish();
         dish.setId(dishDO.getId());
         dish.setUriString(dishDO.getUriString());
-        dish.setRestaurantId(dishDO.getRestaurantId());
         dish.setTitle(dishDO.getTitle());
         dish.setRating(dishDO.getRating());
         dish.setDescription(dishDO.getDescription());
         dish.setTimeAdded(dishDO.getTimeAdded());
+        dish.setTimeLastUpdated(dishDO.getTimeLastUpdated());
         return dish;
     }
 

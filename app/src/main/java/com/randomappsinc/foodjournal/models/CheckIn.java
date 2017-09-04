@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 
 public class CheckIn implements Parcelable {
+
     private int checkInId;
     private String message;
     private long timeAdded;

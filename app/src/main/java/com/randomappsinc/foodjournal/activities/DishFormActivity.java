@@ -15,14 +15,17 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.fragments.DatePickerFragment;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,19 +38,37 @@ public class DishFormActivity extends StandardActivity {
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.dish_picture) ImageView mDishPicture;
+    @BindView(R.id.rating_widget) View mRatingLayout;
     @BindView(R.id.dish_name_input) EditText mDishNameInput;
     @BindView(R.id.base_restaurant_cell) View mRestaurantInfo;
     @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
     @BindView(R.id.restaurant_name) TextView mRestaurantName;
     @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
     @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
-    @BindView(R.id.rating_widget) View mRatingLayout;
+    @BindView(R.id.date_text) TextView mDateText;
     @BindView(R.id.dish_description_input) EditText mDishDescriptionInput;
+    @BindColor(R.color.dark_gray) int darkGray;
+
+    private final DatePickerFragment.Listener mDateListener = new DatePickerFragment.Listener() {
+        @Override
+        public void onDateChosen(long dateTimeInMillis) {
+            mDishTime = dateTimeInMillis;
+            mDateText.setText(TimeUtils.getDateText(mDishTime));
+            mDateText.setTextColor(darkGray);
+        }
+
+        @Override
+        public long getCurrentTime() {
+            return mDishTime;
+        }
+    };
 
     private Restaurant mRestaurant;
     private RatingView mRatingView;
     private String mPictureUri;
     private MaterialDialog mLeaveDialog;
+    private DatePickerFragment mDatePickerFragment;
+    private long mDishTime = System.currentTimeMillis();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +107,9 @@ public class DishFormActivity extends StandardActivity {
                     }
                 })
                 .build();
+
+        mDatePickerFragment = new DatePickerFragment();
+        mDatePickerFragment.setListener(mDateListener);
     }
 
     private void loadRestaurantInfo() {
@@ -118,6 +142,11 @@ public class DishFormActivity extends StandardActivity {
         startActivityForResult(intent, 1);
     }
 
+    @OnClick(R.id.date_text)
+    public void selectDate() {
+        mDatePickerFragment.show(getFragmentManager(), "datePicker");
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -147,11 +176,11 @@ public class DishFormActivity extends StandardActivity {
 
         Dish dish = new Dish();
         dish.setUriString(mPictureUri);
-        dish.setRestaurantId(mRestaurant.getId());
         dish.setTitle(title);
         dish.setRating(rating);
         dish.setDescription(mDishDescriptionInput.getText().toString().trim());
-        DatabaseManager.get().getDishesDBManager().addDish(dish);
+        dish.setTimeAdded(mDishTime);
+        DatabaseManager.get().getDishesDBManager().addDish(dish, mRestaurant.getId());
         setResult(DishesFragment.DISH_ADDED);
         finish();
     }

@@ -4,6 +4,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class CheckInDO extends RealmObject {
+
     @PrimaryKey
     private int checkInId;
 

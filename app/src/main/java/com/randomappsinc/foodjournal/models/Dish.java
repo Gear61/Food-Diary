@@ -9,11 +9,11 @@ public class Dish implements Parcelable {
 
     private int mId;
     private String mUriString;
-    private String mRestaurantId;
     private String mTitle;
     private int mRating;
     private String mDescription;
     private long mTimeAdded;
+    private long mTimeLastUpdated;
 
     public Dish() {}
 
@@ -31,14 +31,6 @@ public class Dish implements Parcelable {
 
     public void setUriString(String uriString) {
         mUriString = uriString;
-    }
-
-    public String getRestaurantId() {
-        return mRestaurantId;
-    }
-
-    public void setRestaurantId(String restaurantId) {
-        mRestaurantId = restaurantId;
     }
 
     public String getTitle() {
@@ -73,26 +65,34 @@ public class Dish implements Parcelable {
         mTimeAdded = timeAdded;
     }
 
+    public long getTimeLastUpdated() {
+        return mTimeLastUpdated;
+    }
+
+    public void setTimeLastUpdated(long timeLastUpdated) {
+        mTimeLastUpdated = mTimeLastUpdated;
+    }
+
     public DishDO toDishDO() {
         DishDO dishDO = new DishDO();
         dishDO.setId(mId);
         dishDO.setUriString(mUriString);
-        dishDO.setRestaurantId(mRestaurantId);
         dishDO.setTitle(mTitle);
         dishDO.setRating(mRating);
         dishDO.setDescription(mDescription);
         dishDO.setTimeAdded(mTimeAdded);
+        dishDO.setTimeLastUpdated(mTimeLastUpdated);
         return dishDO;
     }
 
     protected Dish(Parcel in) {
         mId = in.readInt();
         mUriString = in.readString();
-        mRestaurantId = in.readString();
         mTitle = in.readString();
         mRating = in.readInt();
         mDescription = in.readString();
         mTimeAdded = in.readLong();
+        mTimeLastUpdated = in.readLong();
     }
 
     @Override
@@ -104,11 +104,11 @@ public class Dish implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mId);
         dest.writeString(mUriString);
-        dest.writeString(mRestaurantId);
         dest.writeString(mTitle);
         dest.writeInt(mRating);
         dest.writeString(mDescription);
         dest.writeLong(mTimeAdded);
+        dest.writeLong(mTimeLastUpdated);
     }
 
     @SuppressWarnings("unused")
