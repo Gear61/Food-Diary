@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ public class DishFormActivity extends StandardActivity {
     public static final String NEW_DISH_KEY = "newDish";
     public static final String URI_KEY = "uri";
     public static final String RESTAURANT_KEY = "restaurant";
+    public static final String DISH_KEY = "dish";
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.dish_picture) ImageView mDishPicture;
@@ -52,23 +54,24 @@ public class DishFormActivity extends StandardActivity {
     private final DatePickerFragment.Listener mDateListener = new DatePickerFragment.Listener() {
         @Override
         public void onDateChosen(long dateTimeInMillis) {
-            mDishTime = dateTimeInMillis;
-            mDateText.setText(TimeUtils.getDateText(mDishTime));
+            mDish.setTimeAdded(dateTimeInMillis);
+            mDateText.setText(TimeUtils.getDateText(dateTimeInMillis));
             mDateText.setTextColor(darkGray);
         }
 
         @Override
         public long getCurrentTime() {
-            return mDishTime;
+            return mDish.getTimeAdded();
         }
     };
 
+    private Dish mDish;
     private Restaurant mRestaurant;
     private RatingView mRatingView;
-    private String mPictureUri;
     private MaterialDialog mLeaveDialog;
+    private MaterialDialog mDeleteDialog;
     private DatePickerFragment mDatePickerFragment;
-    private long mDishTime = System.currentTimeMillis();
+    private boolean mNewDishMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +79,6 @@ public class DishFormActivity extends StandardActivity {
         setContentView(R.layout.dish_form);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mPictureUri = getIntent().getStringExtra(URI_KEY);
-        Picasso.with(this)
-                .load(mPictureUri)
-                .fit()
-                .centerCrop()
-                .into(mDishPicture);
-
-        mRestaurant = getIntent().getParcelableExtra(RESTAURANT_KEY);
-
-        if (mRestaurant == null) {
-            mRestaurantInfo.setVisibility(View.INVISIBLE);
-            mChooseRestaurantPrompt.setVisibility(View.VISIBLE);
-        } else {
-            loadRestaurantInfo();
-        }
 
         mRatingView = new RatingView(mRatingLayout);
         mLeaveDialog = new MaterialDialog.Builder(this)
@@ -110,6 +97,49 @@ public class DishFormActivity extends StandardActivity {
 
         mDatePickerFragment = new DatePickerFragment();
         mDatePickerFragment.setListener(mDateListener);
+
+        mNewDishMode = getIntent().getBooleanExtra(NEW_DISH_KEY, false);
+
+        // Adding a new dish in 1 of 2 ways
+        if (mNewDishMode) {
+            mDish = new Dish();
+            mDish.setTimeAdded(System.currentTimeMillis());
+
+            String pictureUri = getIntent().getStringExtra(URI_KEY);
+            mDish.setUriString(pictureUri);
+
+            mRestaurant = getIntent().getParcelableExtra(RESTAURANT_KEY);
+            // From the app homepage
+            if (mRestaurant == null) {
+                mRestaurantInfo.setVisibility(View.INVISIBLE);
+                mChooseRestaurantPrompt.setVisibility(View.VISIBLE);
+            }
+            // From a restaurant's dishes feed
+            else {
+                loadRestaurantInfo();
+            }
+        }
+        // Editing an existing dish
+        else {
+            mDish = getIntent().getParcelableExtra(DISH_KEY);
+            mRestaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(mDish.getRestaurantId());
+            loadDishInfo();
+        }
+
+        Picasso.with(this)
+                .load(mDish.getUriString())
+                .fit()
+                .centerCrop()
+                .into(mDishPicture);
+    }
+
+    private void loadDishInfo() {
+        mRatingView.loadRating(mDish.getRating());
+        mDishNameInput.setText(mDish.getTitle());
+        loadRestaurantInfo();
+        mDateText.setText(TimeUtils.getDateText(mDish.getTimeAdded()));
+        mDateText.setTextColor(darkGray);
+        mDishDescriptionInput.setText(mDish.getDescription());
     }
 
     private void loadRestaurantInfo() {
@@ -179,25 +209,44 @@ public class DishFormActivity extends StandardActivity {
             return;
         }
 
-        Dish dish = new Dish();
-        dish.setUriString(mPictureUri);
-        dish.setTitle(title);
-        dish.setRating(rating);
-        dish.setDescription(mDishDescriptionInput.getText().toString().trim());
-        dish.setTimeAdded(mDishTime);
-        dish.setRestaurantId(mRestaurant.getId());
-        dish.setRestaurantName(mRestaurant.getName());
-        DatabaseManager.get().getDishesDBManager().addDish(dish);
-        setResult(DishesFragment.DISH_ADDED);
+        mDish.setTitle(title);
+        mDish.setRating(rating);
+        mDish.setDescription(mDishDescriptionInput.getText().toString().trim());
+        mDish.setRestaurantId(mRestaurant.getId());
+        mDish.setRestaurantName(mRestaurant.getName());
+
+        if (mNewDishMode) {
+            DatabaseManager.get().getDishesDBManager().addDish(mDish);
+            setResult(DishesFragment.DISH_ADDED);
+        } else {
+            // Edit data object
+        }
         finish();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            mLeaveDialog.show();
-            return true;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!mNewDishMode) {
+            getMenuInflater().inflate(R.menu.content_menu, menu);
+            UIUtils.loadMenuIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
         }
-        return super.onOptionsItemSelected(item);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (mNewDishMode) {
+                    mLeaveDialog.show();
+                    return true;
+                } else {
+                    return super.onOptionsItemSelected(item);
+                }
+            case R.id.delete:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

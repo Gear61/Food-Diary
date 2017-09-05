@@ -24,9 +24,9 @@
         <item>@string/settings_icon</item>
     </string-array>
 
-    <string name="pick_source">Pick source</string>
-    <string name="camera">Camera</string>
-    <string name="files">Files</string>
+    <string name="add_a_dish">Add a dish</string>
+    <string name="take_a_picture">Take a picture</string>
+    <string name="upload_from_gallery">Upload from gallery</string>
 
     <string name="choose_image_from">Choose image from</string>
     <string name="image_file_failed">Unable to create a file to save your dish picture to.</string>

@@ -25,4 +25,7 @@
     <string name="no_dishes">
         Hit the {ion-android-add} in the bottom right to add your first dish!
     </string>
+    
+    <string name="confirm_dish_delete_title">Confirm Dish Deletion</string>
+    <string name="confirm_dish_delete">Are you sure you want to delete this dish?</string>
 </resources>

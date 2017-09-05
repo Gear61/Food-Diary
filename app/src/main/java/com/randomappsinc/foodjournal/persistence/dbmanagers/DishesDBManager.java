@@ -88,4 +88,8 @@ public class DishesDBManager {
         }
         return dishes;
     }
+
+    public void updateDish(Dish dish) {
+
+    }
 }

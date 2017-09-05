@@ -23,6 +23,7 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.DishesAdapter;
+import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
@@ -35,6 +36,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import butterknife.Unbinder;
 
 public class DishesFragment extends Fragment {
@@ -47,7 +49,8 @@ public class DishesFragment extends Fragment {
     public static final int FILES_SOURCE = 2;
 
     // Opening dish form
-    public static final int DISH_FORM = 3;
+    public static final int DISH_FORM_ADD = 3;
+    public static final int DISH_FORM_EDIT = 4;
 
     public static final int DISH_ADDED = 1;
 
@@ -99,6 +102,15 @@ public class DishesFragment extends Fragment {
         mDishesList.setAdapter(mDishesAdapter);
 
         return rootView;
+    }
+
+    @OnItemClick(R.id.dishes)
+    public void onDishSelected(int position) {
+        Dish dish = mDishesAdapter.getItem(position);
+        Intent editDish = new Intent(getActivity(), DishFormActivity.class);
+        editDish.putExtra(DishFormActivity.NEW_DISH_KEY, false);
+        editDish.putExtra(DishFormActivity.DISH_KEY, dish);
+        startActivityForResult(editDish, DISH_FORM_EDIT);
     }
 
     @OnClick({R.id.from_camera, R.id.from_files})
@@ -166,7 +178,7 @@ public class DishesFragment extends Fragment {
                     cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
                     cameraIntent.putExtra(DishFormActivity.RESTAURANT_KEY, mRestaurant);
-                    startActivityForResult(cameraIntent, DISH_FORM);
+                    startActivityForResult(cameraIntent, DISH_FORM_ADD);
                     break;
                 case FILES_SOURCE:
                     mTakenPhotoFile = PictureUtils.copyGalleryImage(data);
@@ -182,10 +194,10 @@ public class DishesFragment extends Fragment {
                     filesIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     filesIntent.putExtra(DishFormActivity.URI_KEY, imageUri);
                     filesIntent.putExtra(DishFormActivity.RESTAURANT_KEY, mRestaurant);
-                    startActivityForResult(filesIntent, DISH_FORM);
+                    startActivityForResult(filesIntent, DISH_FORM_ADD);
                     break;
             }
-        } else if (requestCode == DISH_FORM && resultCode == Activity.RESULT_CANCELED) {
+        } else if (requestCode == DISH_FORM_ADD && resultCode == Activity.RESULT_CANCELED) {
             mTakenPhotoFile.delete();
         }
     }
@@ -212,6 +224,13 @@ public class DishesFragment extends Fragment {
         super.onResume();
         mDishesAdapter.resyncWithDB();
         mDishesList.setSelectionAfterHeaderView();
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        UIUtils.hideKeyboard(getActivity());
+        super.startActivityForResult(intent, requestCode);
+        getActivity().overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
     }
 
     @Override
