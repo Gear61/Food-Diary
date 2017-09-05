@@ -69,7 +69,7 @@ public class DishFormActivity extends StandardActivity {
     private Restaurant mRestaurant;
     private RatingView mRatingView;
     private MaterialDialog mLeaveDialog;
-    private MaterialDialog mDeleteDialog;
+    private MaterialDialog mDeleteConfirmationDialog;
     private DatePickerFragment mDatePickerFragment;
     private boolean mNewDishMode;
 
@@ -90,6 +90,21 @@ public class DishFormActivity extends StandardActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         setResult(RESULT_CANCELED);
+                        finish();
+                    }
+                })
+                .build();
+
+        mDeleteConfirmationDialog = new MaterialDialog.Builder(this)
+                .title(R.string.confirm_dish_delete_title)
+                .content(R.string.confirm_dish_delete)
+                .negativeText(android.R.string.no)
+                .positiveText(R.string.yes)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        DatabaseManager.get().getDishesDBManager().deleteDish(mDish);
+                        setResult(DishesFragment.DISH_DELETED);
                         finish();
                     }
                 })
@@ -244,6 +259,7 @@ public class DishFormActivity extends StandardActivity {
                     return super.onOptionsItemSelected(item);
                 }
             case R.id.delete:
+                mDeleteConfirmationDialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

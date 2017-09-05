@@ -52,7 +52,10 @@ public class DishesFragment extends Fragment {
     public static final int DISH_FORM_ADD = 3;
     public static final int DISH_FORM_EDIT = 4;
 
+    // Result codes
     public static final int DISH_ADDED = 1;
+    public static final int DISH_EDITED = 2;
+    public static final int DISH_DELETED = 3;
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.dishes) ListView mDishesList;

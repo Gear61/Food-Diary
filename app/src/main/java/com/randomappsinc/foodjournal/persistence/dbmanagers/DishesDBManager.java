@@ -89,6 +89,18 @@ public class DishesDBManager {
         return dishes;
     }
 
+    public void deleteDish(final Dish dish) {
+        getRealm().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.where(DishDO.class)
+                        .equalTo("id", dish.getId())
+                        .findFirst()
+                        .deleteFromRealm();
+            }
+        });
+    }
+
     public void updateDish(Dish dish) {
 
     }
