@@ -234,7 +234,8 @@ public class DishFormActivity extends StandardActivity {
             DatabaseManager.get().getDishesDBManager().addDish(mDish);
             setResult(DishesFragment.DISH_ADDED);
         } else {
-            // Edit data object
+            DatabaseManager.get().getDishesDBManager().updateDish(mDish);
+            setResult(DishesFragment.DISH_EDITED);
         }
         finish();
     }
