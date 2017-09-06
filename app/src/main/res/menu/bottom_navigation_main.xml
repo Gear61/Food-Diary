@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:checked="true"
+        android:title="@string/home"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/restaurants"
+        android:checked="false"
+        android:title="@string/restaurants"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/check_ins"
+        android:checked="false"
+        android:title="@string/check_ins"
+        app:showAsAction="ifRoom"/>
+</menu>

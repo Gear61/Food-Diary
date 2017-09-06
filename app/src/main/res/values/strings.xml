@@ -6,7 +6,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="home">Home</string>
     <string name="restaurants">Restaurants</string>
+    <string name="check_ins">Check-Ins</string>
     <string name="my_locations">My Locations</string>
     <string name="settings">Settings</string>
     <string-array name="nav_drawer_tabs">

@@ -83,7 +83,7 @@ public class RestaurantViewActivity extends StandardActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.content_menu, menu);
-        UIUtils.loadMenuIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
+        UIUtils.loadActionBarIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
         return true;
     }
 

@@ -24,7 +24,6 @@
     <!-- Restaurant view -->
     <string name="restaurant_view">Restaurant View</string>
     <string name="dishes">Dishes</string>
-    <string name="check_ins">Check-ins</string>
     <string-array name="restaurant_tabs">
         <item>@string/dishes</item>
         <item>@string/check_ins</item>
