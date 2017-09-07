@@ -124,7 +124,7 @@ public class DishFormActivity extends StandardActivity {
             mDish.setUriString(pictureUri);
 
             mRestaurant = getIntent().getParcelableExtra(RESTAURANT_KEY);
-            // From the app homepage
+            // From the app activity_main
             if (mRestaurant == null) {
                 mRestaurantInfo.setVisibility(View.INVISIBLE);
                 mChooseRestaurantPrompt.setVisibility(View.VISIBLE);

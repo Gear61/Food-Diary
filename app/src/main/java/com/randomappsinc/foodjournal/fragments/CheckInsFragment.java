@@ -59,6 +59,7 @@ public class CheckInsFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(RestaurantsActivity.ID_KEY, restaurantId);
         fragment.setArguments(bundle);
+        fragment.setRetainInstance(true);
         return fragment;
     }
 

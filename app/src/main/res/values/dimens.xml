@@ -8,10 +8,6 @@
     <dimen name="default_cell_padding">8dp</dimen>
     <dimen name="list_fab_offset">88dp</dimen>
 
-    <!-- Nav drawer -->
-    <dimen name="nav_text_top_spacing">4dp</dimen>
-    <dimen name="nav_header_vertical_spacing">20dp</dimen>
-
     <!-- There's some weird built-in margin for the clan FAB library that we need to deal with -->
     <dimen name="clan_fab_margin">11dp</dimen>
 

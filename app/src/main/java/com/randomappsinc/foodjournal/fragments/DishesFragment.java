@@ -76,19 +76,14 @@ public class DishesFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(RestaurantsActivity.ID_KEY, restaurantId);
         fragment.setArguments(bundle);
+        fragment.setRetainInstance(true);
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        String restaurantId = getArguments() != null ? getArguments().getString(RestaurantsActivity.ID_KEY) : null;
+        View rootView = inflater.inflate(R.layout.dishes, container, false);
 
-        int homepageMode = R.layout.dishes_extra_top_margin;
-        int restaurantMode = R.layout.dishes;
-        int layoutId = restaurantId == null ? homepageMode : restaurantMode;
-
-        // If restaurant ID is null, we are on the homepage and need the extra margin
-        View rootView = inflater.inflate(layoutId, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
         mCameraPicker.setImageDrawable(new IconDrawable(getActivity(),
@@ -96,7 +91,7 @@ public class DishesFragment extends Fragment {
         mFilesPicker.setImageDrawable(new IconDrawable(getActivity(),
                 IoniconsIcons.ion_android_folder).colorRes(R.color.white));
 
-        // Remove toolbar top padding because we're not on the homepage
+        String restaurantId = getArguments() != null ? getArguments().getString(RestaurantsActivity.ID_KEY) : null;
         if (restaurantId != null) {
             mRestaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(restaurantId);
         }

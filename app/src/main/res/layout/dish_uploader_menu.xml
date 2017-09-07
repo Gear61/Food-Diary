@@ -10,7 +10,10 @@
     fab:menu_fab_label="@string/add_a_dish"
     fab:menu_colorNormal="@color/app_red"
     fab:menu_colorPressed="@color/light_red"
-    fab:menu_colorRipple="@color/light_red">
+    fab:menu_colorRipple="@color/light_red"
+    fab:menu_shadowRadius="1dp"
+    fab:menu_shadowXOffset="1dp"
+    fab:menu_shadowYOffset="1dp">
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/from_files"

@@ -1,36 +1,37 @@
 package com.randomappsinc.foodjournal.activities;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ListView;
+import android.support.annotation.StringRes;
+import android.support.design.widget.BottomNavigationView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.adapters.IconItemsAdapter;
-import com.randomappsinc.foodjournal.fragments.DishesFragment;
+import com.randomappsinc.foodjournal.fragments.HomepageFragmentController;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.PreferencesManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 
 public class MainActivity extends StandardActivity {
-    @BindView(R.id.parent) View parent;
-    @BindView(R.id.nav_options) ListView mNavOptions;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
 
-    private DishesFragment mDishesFragment;
+    @BindView(R.id.bottom_navigation) BottomNavigationView mBottomNavigationView;
+    @BindColor(R.color.dark_gray) int darkGray;
+    @BindColor(R.color.app_red) int red;
+
+    private int mCurrentNavId = -1;
+    private HomepageFragmentController mNavigationController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +51,44 @@ public class MainActivity extends StandardActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setSupportActionBar(mToolbar);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+        mNavigationController = new HomepageFragmentController(getFragmentManager(), R.id.container);
 
-        mNavOptions.setAdapter(new IconItemsAdapter(this, R.array.nav_drawer_tabs, R.array.nav_drawer_icons));
+        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.home, IoniconsIcons.ion_android_home, this);
+        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.restaurants, IoniconsIcons.ion_android_restaurant, this);
+        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.check_ins, IoniconsIcons.ion_android_checkmark_circle, this);
 
-        mDishesFragment = (DishesFragment) getFragmentManager().findFragmentById(R.id.dishes);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(mNavItemSelectedListener);
+        mBottomNavigationView.setSelectedItemId(R.id.home);
 
         if (PreferencesManager.get().shouldAskForRating()) {
             showRatingPrompt();
         }
     }
+
+    private final BottomNavigationView.OnNavigationItemSelectedListener mNavItemSelectedListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    if (item.getItemId() == mCurrentNavId) {
+                        return false;
+                    }
+
+                    mNavigationController.onNavItemSelected(item);
+
+                    if (mCurrentNavId != -1) {
+                        mBottomNavigationView
+                                .getMenu()
+                                .findItem(mCurrentNavId)
+                                .getIcon()
+                                .setColorFilter(darkGray, PorterDuff.Mode.SRC_ATOP);
+                    }
+                    item.getIcon().setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
+
+                    mCurrentNavId = item.getItemId();
+                    return true;
+                }
+            };
 
     private void showRatingPrompt() {
         new MaterialDialog.Builder(this)
@@ -77,7 +101,7 @@ public class MainActivity extends StandardActivity {
                         Uri uri =  Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         if (!(getPackageManager().queryIntentActivities(intent, 0).size() > 0)) {
-                            UIUtils.showSnackbar(parent, getString(R.string.play_store_error));
+                            showToast(R.string.play_store_error);
                             return;
                         }
                         startActivity(intent);
@@ -86,32 +110,24 @@ public class MainActivity extends StandardActivity {
                 .show();
     }
 
-    @OnItemClick(R.id.nav_options)
-    public void onNavOptionClicked(int position) {
-        mDishesFragment.closeUploadMenu();
-        mDrawerLayout.closeDrawer(GravityCompat.START);
-
-        Intent intent = null;
-        switch (position) {
-            case 0:
-                intent = new Intent(this, RestaurantsActivity.class);
-                break;
-            case 1:
-                intent = new Intent(this, MyLocationsActivity.class);
-                break;
-            case 2:
-                intent = new Intent(this, SettingsActivity.class);
-                break;
-        }
-        startActivity(intent);
+    private void showToast(@StringRes int stringId) {
+        Toast.makeText(this, stringId, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        UIUtils.loadActionBarIcon(menu, R.id.settings, IoniconsIcons.ion_android_settings, this);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
