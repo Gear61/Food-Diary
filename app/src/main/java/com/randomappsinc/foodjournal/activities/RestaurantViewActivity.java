@@ -16,6 +16,7 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.RestaurantTabsAdapter;
+import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
@@ -73,7 +74,7 @@ public class RestaurantViewActivity extends StandardActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         DatabaseManager.get().getRestaurantsDBManager().deleteRestaurant(mRestaurant);
-                        setResult(RestaurantsActivity.RESTAURANT_DELETED_CODE);
+                        setResult(RestaurantsFragment.RESTAURANT_DELETED_CODE);
                         finish();
                     }
                 })

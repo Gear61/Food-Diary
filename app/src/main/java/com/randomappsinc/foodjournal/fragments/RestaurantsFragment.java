@@ -19,6 +19,7 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
 import com.randomappsinc.foodjournal.activities.FindRestaurantActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantViewActivity;
+import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.UserRestaurantsAdapter;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.utils.UIUtils;
@@ -31,9 +32,6 @@ import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 
 public class RestaurantsFragment extends Fragment {
-
-    public static final String PICKER_MODE_KEY = "pickerMode";
-    public static final String ID_KEY = "id";
 
     // Request codes
     public static final int ADD_RESTAURANT_CODE = 1;
@@ -56,7 +54,7 @@ public class RestaurantsFragment extends Fragment {
     public static RestaurantsFragment newInstance(boolean pickerMode) {
         RestaurantsFragment fragment = new RestaurantsFragment();
         Bundle bundle = new Bundle();
-        bundle.putBoolean(PICKER_MODE_KEY, pickerMode);
+        bundle.putBoolean(RestaurantsActivity.PICKER_MODE_KEY, pickerMode);
         fragment.setArguments(bundle);
         fragment.setRetainInstance(true);
         return fragment;
@@ -67,7 +65,7 @@ public class RestaurantsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.restaurants, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
-        mPickerMode = getArguments().getBoolean(PICKER_MODE_KEY, false);
+        mPickerMode = getArguments().getBoolean(RestaurantsActivity.PICKER_MODE_KEY, false);
         mAddRestaurant.setImageDrawable(new IconDrawable(getActivity(), IoniconsIcons.ion_android_add).colorRes(R.color.white));
         mAdapter = new UserRestaurantsAdapter(getActivity(), mNoResults);
         mRestaurantsList.setAdapter(mAdapter);

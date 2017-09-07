@@ -198,6 +198,14 @@ public class DishesFragment extends Fragment {
         } else if (requestCode == DISH_FORM_ADD && resultCode == Activity.RESULT_CANCELED) {
             mTakenPhotoFile.delete();
         }
+
+        if (resultCode == DISH_ADDED || resultCode == DISH_EDITED || resultCode == DISH_DELETED) {
+            mDishesAdapter.resyncWithDB();
+
+            if (resultCode == DISH_ADDED || resultCode == DISH_EDITED) {
+                mDishesList.setSelectionAfterHeaderView();
+            }
+        }
     }
 
     @Override
@@ -215,13 +223,6 @@ public class DishesFragment extends Fragment {
                     break;
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mDishesAdapter.resyncWithDB();
-        mDishesList.setSelectionAfterHeaderView();
     }
 
     @Override
