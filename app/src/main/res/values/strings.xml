@@ -1,30 +1,10 @@
 <resources>
     <string name="app_name">Food Journal</string>
-
-    <string name="welcome">Welcome to Food Journal!</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="settings">Settings</string>
 
     <string name="home">Home</string>
     <string name="restaurants">Restaurants</string>
     <string name="check_ins">Check-Ins</string>
-    <string name="my_locations">My Locations</string>
-    <string name="settings">Settings</string>
-    <string-array name="nav_drawer_tabs">
-        <item>@string/restaurants</item>
-        <item>@string/my_locations</item>
-        <item>@string/settings</item>
-    </string-array>
-
-    <string name="restaurant_icon">{ion-android-restaurant}</string>
-    <string name="map_icon">{ion-android-map}</string>
-    <string name="settings_icon">{ion-android-settings}</string>
-    <string-array name="nav_drawer_icons">
-        <item>@string/restaurant_icon</item>
-        <item>@string/map_icon</item>
-        <item>@string/settings_icon</item>
-    </string-array>
 
     <string name="add_a_dish">Add a dish</string>
     <string name="take_a_picture">Take a picture</string>
