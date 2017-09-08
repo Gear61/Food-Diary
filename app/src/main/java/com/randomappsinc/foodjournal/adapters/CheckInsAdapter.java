@@ -1,15 +1,22 @@
 package com.randomappsinc.foodjournal.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.CheckIn;
+import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.TimeUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -59,8 +66,10 @@ public class CheckInsAdapter extends BaseAdapter {
 
     public class CheckInViewHolder {
 
-        @BindView(R.id.check_in_time) TextView checkInTime;
-        @BindView(R.id.check_in_message) TextView checkInMessage;
+        @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
+        @BindView(R.id.restaurant_name) TextView mRestaurantName;
+        @BindView(R.id.check_in_date) TextView mCheckInDate;
+        @BindView(R.id.check_in_message) TextView mCheckInMessage;
 
         public CheckInViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -68,12 +77,30 @@ public class CheckInsAdapter extends BaseAdapter {
 
         public void loadItem(int position) {
             CheckIn checkIn = getItem(position);
-            checkInTime.setText(checkIn.getCheckInMessage(mRestaurantId != null));
-            if (checkIn.getMessage().isEmpty()) {
-                checkInMessage.setVisibility(View.GONE);
+
+            Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(checkIn.getRestaurantId());
+
+            Drawable defaultThumbnail = new IconDrawable(
+                    mContext,
+                    IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
+            if (!restaurant.getImageUrl().isEmpty()) {
+                Picasso.with(mContext)
+                        .load(restaurant.getImageUrl())
+                        .error(defaultThumbnail)
+                        .fit()
+                        .centerCrop()
+                        .into(mRestaurantThumbnail);
             } else {
-                checkInMessage.setText("\"" + checkIn.getMessage() + "\"");
-                checkInMessage.setVisibility(View.VISIBLE);
+                mRestaurantThumbnail.setImageDrawable(defaultThumbnail);
+            }
+            mRestaurantName.setText(restaurant.getName());
+
+            mCheckInDate.setText(TimeUtils.getDateText(checkIn.getTimeAdded()));
+            if (checkIn.getMessage().isEmpty()) {
+                mCheckInMessage.setVisibility(View.GONE);
+            } else {
+                mCheckInMessage.setText("\"" + checkIn.getMessage() + "\"");
+                mCheckInMessage.setVisibility(View.VISIBLE);
             }
         }
     }

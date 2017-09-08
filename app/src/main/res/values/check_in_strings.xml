@@ -8,8 +8,6 @@
     </string>
     <string name="describe_your_visit">Describe Your Visit</string>
     <string name="check_in_prompt">How was your experience here?</string>
-    <string name="check_in_time">You checked-in here on %s.</string>
-    <string name="check_in_message_homepage">You checked-in to %1$s on %2$s.</string>
     <string name="check_in_added">Check-in added.</string>
     <string name="check_in_edited">Check-in edited.</string>
     <string name="check_in_deleted">Check-in deleted.</string>

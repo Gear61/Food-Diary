@@ -3,10 +3,7 @@ package com.randomappsinc.foodjournal.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
-import com.randomappsinc.foodjournal.utils.MyApplication;
-import com.randomappsinc.foodjournal.utils.TimeUtils;
 
 public class CheckIn implements Parcelable {
 
@@ -50,25 +47,8 @@ public class CheckIn implements Parcelable {
         mRestaurantId = restaurantId;
     }
 
-    public String getRestaurantName() {
-        return mRestaurantName;
-    }
-
     public void setRestaurantName(String restaurantName) {
         mRestaurantName = restaurantName;
-    }
-
-    public String getCheckInMessage(boolean onRestaurantPage) {
-        if (onRestaurantPage) {
-            return String.format(
-                    MyApplication.getAppContext().getString(R.string.check_in_time),
-                    TimeUtils.getDateText(mTimeAdded));
-        } else {
-            return String.format(
-                    MyApplication.getAppContext().getString(R.string.check_in_message_homepage),
-                    mRestaurantName,
-                    TimeUtils.getDateText(mTimeAdded));
-        }
     }
 
     public CheckInDO toCheckInDO() {

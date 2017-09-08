@@ -55,40 +55,20 @@ public class Restaurant implements Parcelable {
         this.imageUrl = imageUrl;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getCity() {
-        return city;
     }
 
     public void setCity(String city) {
         this.city = city;
     }
 
-    public String getZipCode() {
-        return zipCode;
-    }
-
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getState() {
-        return state;
     }
 
     public void setState(String state) {
@@ -103,16 +83,8 @@ public class Restaurant implements Parcelable {
         this.address = address;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
     public void setLatitude(double latitude) {
         this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
     }
 
     public void setLongitude(double longitude) {

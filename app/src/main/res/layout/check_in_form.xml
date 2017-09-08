@@ -50,7 +50,7 @@
                     android:id="@+id/experience_input"
                     android:hint="@string/check_in_prompt"
                     android:minLines="3"
-                    android:gravity="top"
+                    android:gravity="center_vertical"
                     style="@style/form_input"/>
             </android.support.v7.widget.CardView>
 
