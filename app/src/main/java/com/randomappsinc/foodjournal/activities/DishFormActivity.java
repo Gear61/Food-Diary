@@ -18,6 +18,7 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.DatePickerFragment;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
+import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
@@ -35,7 +36,6 @@ public class DishFormActivity extends StandardActivity {
 
     public static final String NEW_DISH_KEY = "newDish";
     public static final String URI_KEY = "uri";
-    public static final String RESTAURANT_KEY = "restaurant";
     public static final String DISH_KEY = "dish";
 
     @BindView(R.id.parent) View mParent;
@@ -123,7 +123,7 @@ public class DishFormActivity extends StandardActivity {
             String pictureUri = getIntent().getStringExtra(URI_KEY);
             mDish.setUriString(pictureUri);
 
-            mRestaurant = getIntent().getParcelableExtra(RESTAURANT_KEY);
+            mRestaurant = getIntent().getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
             // From the app activity_main
             if (mRestaurant == null) {
                 mRestaurantInfo.setVisibility(View.INVISIBLE);
@@ -196,7 +196,7 @@ public class DishFormActivity extends StandardActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            mRestaurant = data.getParcelableExtra(RESTAURANT_KEY);
+            mRestaurant = data.getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
             loadRestaurantInfo();
         }
     }

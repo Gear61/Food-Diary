@@ -45,7 +45,7 @@
                 <EditText
                     android:id="@+id/dish_name_input"
                     android:hint="@string/dish_name_hint"
-                    style="@style/dish_form_input"/>
+                    style="@style/form_input"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -82,7 +82,7 @@
                     android:id="@+id/date_text"
                     android:text="@string/dish_date_prompt"
                     android:textColor="@color/gray"
-                    style="@style/dish_form_input"/>
+                    style="@style/form_input"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -93,7 +93,7 @@
                 <EditText
                     android:id="@+id/dish_description_input"
                     android:hint="@string/dish_description_prompt"
-                    style="@style/dish_form_input"/>
+                    style="@style/form_input"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView

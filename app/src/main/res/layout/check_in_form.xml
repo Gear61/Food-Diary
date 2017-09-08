@@ -51,15 +51,14 @@
                     android:hint="@string/check_in_prompt"
                     android:minLines="3"
                     android:gravity="top"
-                    style="@style/dish_form_input"/>
+                    style="@style/form_input"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView style="@style/form_card">
                 <TextView
                     android:id="@+id/date_input"
-                    android:text="@string/dish_date_prompt"
-                    android:textColor="@color/gray"
-                    style="@style/dish_form_input"/>
+                    android:textColor="@color/dark_gray"
+                    style="@style/form_input"/>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView

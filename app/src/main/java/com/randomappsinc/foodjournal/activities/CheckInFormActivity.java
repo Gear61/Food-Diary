@@ -1,23 +1,30 @@
 package com.randomappsinc.foodjournal.activities;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.CheckInsFragment;
 import com.randomappsinc.foodjournal.fragments.DatePickerFragment;
+import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.CheckIn;
+import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,26 +34,31 @@ public class CheckInFormActivity extends StandardActivity {
 
     public static final String ADDER_MODE_KEY = "adderMode";
     public static final String RESTAURANT_ID_KEY = "restaurantId";
-    public static final String CHECK_IN_KEY = "checkIn";
+    public static final String CHECK_IN_KEY = "mCheckIn";
 
     private final DatePickerFragment.Listener mDateListener = new DatePickerFragment.Listener() {
         @Override
         public void onDateChosen(long dateTimeInMillis) {
-            checkIn.setTimeAdded(dateTimeInMillis);
+            mCheckIn.setTimeAdded(dateTimeInMillis);
             mDateInput.setText(TimeUtils.getDateText(dateTimeInMillis));
         }
 
         @Override
         public long getCurrentTime() {
-            return checkIn.getTimeAdded();
+            return mCheckIn.getTimeAdded();
         }
     };
 
     @BindView(R.id.parent) View mParent;
+    @BindView(R.id.base_restaurant_cell) View mRestaurantInfo;
+    @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
+    @BindView(R.id.restaurant_name) TextView mRestaurantName;
+    @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
+    @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
     @BindView(R.id.experience_input) EditText mExperienceInput;
     @BindView(R.id.date_input) TextView mDateInput;
 
-    private CheckIn checkIn;
+    private CheckIn mCheckIn;
     private DatePickerFragment mDatePickerFragment;
     private MaterialDialog mDeleteConfirmationDialog;
     private boolean mAdderMode;
@@ -54,17 +66,31 @@ public class CheckInFormActivity extends StandardActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_check_in);
+        setContentView(R.layout.check_in_form);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAdderMode = getIntent().getBooleanExtra(ADDER_MODE_KEY, false);
 
         if (mAdderMode) {
+            mCheckIn = new CheckIn();
+            mCheckIn.setTimeAdded(System.currentTimeMillis());
 
+            String restaurantId = getIntent().getStringExtra(RESTAURANT_ID_KEY);
+            if (restaurantId != null) {
+                Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(restaurantId);
+                mCheckIn.setRestaurantId(restaurantId);
+                mCheckIn.setRestaurantName(restaurant.getName());
+                loadRestaurantInfo(restaurant);
+            }
         } else {
-            checkIn = getIntent().getParcelableExtra(CHECK_IN_KEY);
+            mCheckIn = getIntent().getParcelableExtra(CHECK_IN_KEY);
+            Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(mCheckIn.getRestaurantId());
+            loadRestaurantInfo(restaurant);
+            mExperienceInput.setText(mCheckIn.getMessage());
         }
+
+        mDateInput.setText(TimeUtils.getDateText(mCheckIn.getTimeAdded()));
 
         mDeleteConfirmationDialog = new MaterialDialog.Builder(this)
                 .title(R.string.check_in_delete_title)
@@ -74,7 +100,7 @@ public class CheckInFormActivity extends StandardActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        DatabaseManager.get().getCheckInsDBManager().deleteCheckIn(checkIn);
+                        DatabaseManager.get().getCheckInsDBManager().deleteCheckIn(mCheckIn);
                         setResult(CheckInsFragment.DELETED_RESULT);
                         finish();
                     }
@@ -83,9 +109,47 @@ public class CheckInFormActivity extends StandardActivity {
 
         mDatePickerFragment = new DatePickerFragment();
         mDatePickerFragment.setListener(mDateListener);
+    }
 
-        mExperienceInput.setText(checkIn.getMessage());
-        mDateInput.setText(TimeUtils.getDateText(checkIn.getTimeAdded()));
+    private void loadRestaurantInfo(Restaurant restaurant) {
+        Drawable defaultThumbnail = new IconDrawable(
+                this,
+                IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
+        if (!restaurant.getImageUrl().isEmpty()) {
+            Picasso.with(this)
+                    .load(restaurant.getImageUrl())
+                    .error(defaultThumbnail)
+                    .fit().centerCrop()
+                    .into(mRestaurantThumbnail);
+        } else {
+            mRestaurantThumbnail.setImageDrawable(defaultThumbnail);
+        }
+        mRestaurantName.setText(restaurant.getName());
+        mRestaurantAddress.setText(restaurant.getAddress());
+        if (mRestaurantInfo.getVisibility() != View.VISIBLE) {
+            mRestaurantInfo.setVisibility(View.VISIBLE);
+        }
+        if (mChooseRestaurantPrompt.getVisibility() != View.GONE) {
+            mChooseRestaurantPrompt.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @OnClick(R.id.restaurant_info_section)
+    public void chooseRestaurant() {
+        Intent intent = new Intent(this, RestaurantsActivity.class);
+        intent.putExtra(RestaurantsActivity.PICKER_MODE_KEY, true);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Restaurant restaurant = data.getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
+            mCheckIn.setRestaurantId(restaurant.getId());
+            mCheckIn.setRestaurantName(restaurant.getName());
+            loadRestaurantInfo(restaurant);
+        }
     }
 
     @OnClick(R.id.date_input)
@@ -95,9 +159,9 @@ public class CheckInFormActivity extends StandardActivity {
 
     @OnClick(R.id.save)
     public void onCheckInSaved() {
-        checkIn.setMessage(mExperienceInput.getText().toString().trim());
-        DatabaseManager.get().getCheckInsDBManager().updateCheckIn(checkIn);
-        setResult(CheckInsFragment.EDIT_RESULT);
+        mCheckIn.setMessage(mExperienceInput.getText().toString().trim());
+        DatabaseManager.get().getCheckInsDBManager().updateCheckIn(mCheckIn);
+        setResult(CheckInsFragment.EDITED_RESULT);
         finish();
     }
 

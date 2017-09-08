@@ -175,7 +175,7 @@ public class DishesFragment extends Fragment {
                     Intent cameraIntent = new Intent(getActivity(), DishFormActivity.class);
                     cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
-                    cameraIntent.putExtra(DishFormActivity.RESTAURANT_KEY, mRestaurant);
+                    cameraIntent.putExtra(RestaurantsFragment.RESTAURANT_KEY, mRestaurant);
                     startActivityForResult(cameraIntent, DISH_FORM_ADD);
                     break;
                 case FILES_SOURCE:
@@ -191,7 +191,7 @@ public class DishesFragment extends Fragment {
                     Intent filesIntent = new Intent(getActivity(), DishFormActivity.class);
                     filesIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     filesIntent.putExtra(DishFormActivity.URI_KEY, imageUri);
-                    filesIntent.putExtra(DishFormActivity.RESTAURANT_KEY, mRestaurant);
+                    filesIntent.putExtra(RestaurantsFragment.RESTAURANT_KEY, mRestaurant);
                     startActivityForResult(filesIntent, DISH_FORM_ADD);
                     break;
             }

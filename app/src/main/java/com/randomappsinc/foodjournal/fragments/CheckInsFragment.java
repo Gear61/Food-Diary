@@ -17,9 +17,7 @@ import com.randomappsinc.foodjournal.activities.CheckInFormActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.CheckInsAdapter;
 import com.randomappsinc.foodjournal.models.CheckIn;
-import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
-import com.randomappsinc.foodjournal.views.CheckInAdder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,28 +27,18 @@ import butterknife.Unbinder;
 
 public class CheckInsFragment extends Fragment {
 
-    public static final int EDIT_REQUEST = 1;
+    public static final int CHECK_IN_FORM = 1;
 
-    public static final int EDIT_RESULT = 1;
-    public static final int DELETED_RESULT = 2;
+    public static final int ADDED_RESULT = 1;
+    public static final int EDITED_RESULT = 2;
+    public static final int DELETED_RESULT = 3;
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.no_results) TextView mNoResults;
     @BindView(R.id.check_ins) ListView mCheckInsList;
     @BindView(R.id.add_check_in) FloatingActionButton mAddCheckIn;
 
-    private final CheckInAdder.Callback mCheckInCallback = new CheckInAdder.Callback() {
-        @Override
-        public void onCheckInCreated(CheckIn checkIn) {
-            checkIn.setRestaurantId(mRestaurantId);
-            DatabaseManager.get().getCheckInsDBManager().addCheckIn(checkIn);
-            mCheckInsAdapter.resyncWithDB();
-            UIUtils.showSnackbar(mParent, getString(R.string.check_in_added));
-        }
-    };
-
     private CheckInsAdapter mCheckInsAdapter;
-    private CheckInAdder mCheckInAdder;
     private String mRestaurantId;
     private Unbinder mUnbinder;
 
@@ -74,14 +62,15 @@ public class CheckInsFragment extends Fragment {
         mCheckInsAdapter = new CheckInsAdapter(getActivity(), mNoResults, mRestaurantId);
         mCheckInsList.setAdapter(mCheckInsAdapter);
 
-        mCheckInAdder = new CheckInAdder(getActivity(), mCheckInCallback);
-
         return rootView;
     }
 
     @OnClick(R.id.add_check_in)
     public void addCheckIn() {
-        mCheckInAdder.show();
+        Intent addCheckIn = new Intent(getActivity(), CheckInFormActivity.class);
+        addCheckIn.putExtra(CheckInFormActivity.ADDER_MODE_KEY, true);
+        addCheckIn.putExtra(CheckInFormActivity.RESTAURANT_ID_KEY, mRestaurantId);
+        startActivityForResult(addCheckIn, CHECK_IN_FORM);
     }
 
     @OnItemClick(R.id.check_ins)
@@ -89,15 +78,19 @@ public class CheckInsFragment extends Fragment {
         CheckIn checkIn = mCheckInsAdapter.getItem(position);
         Intent intent = new Intent(getActivity(), CheckInFormActivity.class);
         intent.putExtra(CheckInFormActivity.CHECK_IN_KEY, checkIn);
-        startActivityForResult(intent, EDIT_REQUEST);
+        startActivityForResult(intent, CHECK_IN_FORM);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EDIT_REQUEST) {
+        if (requestCode == CHECK_IN_FORM) {
             switch (resultCode) {
-                case EDIT_REQUEST:
+                case ADDED_RESULT:
+                    mCheckInsAdapter.resyncWithDB();
+                    UIUtils.showSnackbar(mParent, getString(R.string.check_in_added));
+                    break;
+                case EDITED_RESULT:
                     mCheckInsAdapter.resyncWithDB();
                     UIUtils.showSnackbar(mParent, getString(R.string.check_in_edited));
                     break;

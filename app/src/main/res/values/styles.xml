@@ -98,4 +98,13 @@
         <item name="cardCornerRadius">3dp</item>
         <item name="cardElevation">2dp</item>
     </style>
+
+    <style name="form_input">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:background">@null</item>
+    </style>
 </resources>

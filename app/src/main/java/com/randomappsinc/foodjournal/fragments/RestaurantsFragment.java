@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.activities.DishFormActivity;
 import com.randomappsinc.foodjournal.activities.FindRestaurantActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantViewActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
@@ -32,6 +31,9 @@ import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 
 public class RestaurantsFragment extends Fragment {
+
+    // Return keys
+    public static final String RESTAURANT_KEY = "restaurant";
 
     // Request codes
     public static final int ADD_RESTAURANT_CODE = 1;
@@ -99,7 +101,7 @@ public class RestaurantsFragment extends Fragment {
         Restaurant restaurant = mAdapter.getItem(position);
         if (mPickerMode) {
             Intent returnRestaurant = new Intent();
-            returnRestaurant.putExtra(DishFormActivity.RESTAURANT_KEY, restaurant);
+            returnRestaurant.putExtra(RESTAURANT_KEY, restaurant);
             getActivity().setResult(Activity.RESULT_OK, returnRestaurant);
             getActivity().finish();
         } else {
