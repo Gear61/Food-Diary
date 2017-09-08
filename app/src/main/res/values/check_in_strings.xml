@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Check-ins -->
+    <string name="check_in_form">Check-In Form</string>
+    <string name="check_in_location_prompt">Where did you go?</string>
+
     <string name="no_check_ins">
         Hit the {ion-android-add} in the bottom right to add your first check-in!
     </string>
     <string name="describe_your_visit">Describe Your Visit</string>
     <string name="check_in_prompt">How was your experience here?</string>
-    <string name="check_in_time">You checked in here on %s.</string>
+    <string name="check_in_time">You checked-in here on %s.</string>
+    <string name="check_in_message_homepage">You checked-in to %1$s on %2$s.</string>
     <string name="check_in_added">Check-in added.</string>
     <string name="check_in_edited">Check-in edited.</string>
     <string name="check_in_deleted">Check-in deleted.</string>
-    <string name="edit_check_in">Edit Check-In</string>
 
     <string name="check_in_delete_title">Confirm Check-In Deletion</string>
     <string name="check_in_delete_content">Are you sure you want to delete this check-in?</string>

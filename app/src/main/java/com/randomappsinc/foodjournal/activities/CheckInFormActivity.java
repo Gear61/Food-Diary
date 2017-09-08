@@ -23,8 +23,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EditCheckInActivity extends StandardActivity {
+public class CheckInFormActivity extends StandardActivity {
 
+    public static final String ADDER_MODE_KEY = "adderMode";
+    public static final String RESTAURANT_ID_KEY = "restaurantId";
     public static final String CHECK_IN_KEY = "checkIn";
 
     private final DatePickerFragment.Listener mDateListener = new DatePickerFragment.Listener() {
@@ -47,6 +49,7 @@ public class EditCheckInActivity extends StandardActivity {
     private CheckIn checkIn;
     private DatePickerFragment mDatePickerFragment;
     private MaterialDialog mDeleteConfirmationDialog;
+    private boolean mAdderMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,14 @@ public class EditCheckInActivity extends StandardActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        checkIn = getIntent().getParcelableExtra(CHECK_IN_KEY);
+        mAdderMode = getIntent().getBooleanExtra(ADDER_MODE_KEY, false);
+
+        if (mAdderMode) {
+
+        } else {
+            checkIn = getIntent().getParcelableExtra(CHECK_IN_KEY);
+        }
+
         mDeleteConfirmationDialog = new MaterialDialog.Builder(this)
                 .title(R.string.check_in_delete_title)
                 .content(R.string.check_in_delete_content)
@@ -76,7 +86,6 @@ public class EditCheckInActivity extends StandardActivity {
 
         mExperienceInput.setText(checkIn.getMessage());
         mDateInput.setText(TimeUtils.getDateText(checkIn.getTimeAdded()));
-        mParent.requestFocus();
     }
 
     @OnClick(R.id.date_input)
@@ -94,8 +103,10 @@ public class EditCheckInActivity extends StandardActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.content_menu, menu);
-        UIUtils.loadActionBarIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
+        if (!mAdderMode) {
+            getMenuInflater().inflate(R.menu.content_menu, menu);
+            UIUtils.loadActionBarIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
+        }
         return true;
     }
 

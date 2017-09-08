@@ -88,8 +88,8 @@
         </activity>
 
         <activity
-            android:name=".activities.EditCheckInActivity"
-            android:label="@string/edit_check_in"
+            android:name=".activities.CheckInFormActivity"
+            android:label="@string/check_in_form"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:screenOrientation="portrait">
         </activity>

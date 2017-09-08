@@ -30,7 +30,7 @@
 
     <!-- Edit check-in -->
     <dimen name="check_in_cell_padding">12dp</dimen>
-    <dimen name="edit_check_in_padding">8dp</dimen>
+    <dimen name="check_in_form_padding">8dp</dimen>
 
     <!-- Dish form -->
     <dimen name="dish_form_card_spacing">8dp</dimen>

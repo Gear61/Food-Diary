@@ -19,7 +19,7 @@ public class HomepageFragmentController {
         mContainerId = containerId;
         mDishesFragment = DishesFragment.newInstance(null);
         mRestaurantsFragment = RestaurantsFragment.newInstance(false);
-        mCheckInsFragment = CheckInsFragment.newInstance("");
+        mCheckInsFragment = CheckInsFragment.newInstance(null);
     }
 
     public void onNavItemSelected(MenuItem menuItem) {

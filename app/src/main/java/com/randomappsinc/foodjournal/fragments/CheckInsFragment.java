@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.activities.EditCheckInActivity;
+import com.randomappsinc.foodjournal.activities.CheckInFormActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.CheckInsAdapter;
 import com.randomappsinc.foodjournal.models.CheckIn;
@@ -87,8 +87,8 @@ public class CheckInsFragment extends Fragment {
     @OnItemClick(R.id.check_ins)
     public void onCheckInSelected(int position) {
         CheckIn checkIn = mCheckInsAdapter.getItem(position);
-        Intent intent = new Intent(getActivity(), EditCheckInActivity.class);
-        intent.putExtra(EditCheckInActivity.CHECK_IN_KEY, checkIn);
+        Intent intent = new Intent(getActivity(), CheckInFormActivity.class);
+        intent.putExtra(CheckInFormActivity.CHECK_IN_KEY, checkIn);
         startActivityForResult(intent, EDIT_REQUEST);
     }
 

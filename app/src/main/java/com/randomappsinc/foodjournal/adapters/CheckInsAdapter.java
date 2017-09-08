@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
-import com.randomappsinc.foodjournal.utils.TimeUtils;
 
 import java.util.List;
 
@@ -32,7 +31,9 @@ public class CheckInsAdapter extends BaseAdapter {
     }
 
     public void resyncWithDB() {
-        mCheckIns = DatabaseManager.get().getCheckInsDBManager().getCheckIns(mRestaurantId);
+        mCheckIns = mRestaurantId == null
+                ? DatabaseManager.get().getCheckInsDBManager().getAllCheckIns()
+                : DatabaseManager.get().getCheckInsDBManager().getCheckIns(mRestaurantId);
         if (mCheckIns.isEmpty()) {
             mNoResults.setVisibility(View.VISIBLE);
         } else {
@@ -67,11 +68,7 @@ public class CheckInsAdapter extends BaseAdapter {
 
         public void loadItem(int position) {
             CheckIn checkIn = getItem(position);
-
-            checkInTime.setText(String.format(
-                    mContext.getString(R.string.check_in_time),
-                    TimeUtils.getDateText(checkIn.getTimeAdded())));
-
+            checkInTime.setText(checkIn.getCheckInMessage(mRestaurantId != null));
             if (checkIn.getMessage().isEmpty()) {
                 checkInMessage.setVisibility(View.GONE);
             } else {

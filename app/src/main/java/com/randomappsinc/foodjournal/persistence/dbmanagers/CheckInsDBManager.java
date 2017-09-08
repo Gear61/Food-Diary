@@ -97,4 +97,16 @@ public class CheckInsDBManager {
             return new ArrayList<>();
         }
     }
+
+    public List<CheckIn> getAllCheckIns() {
+        List<CheckInDO> checkInDOs = getRealm()
+                .where(CheckInDO.class)
+                .findAllSorted("timeAdded", Sort.DESCENDING);
+
+        List<CheckIn> checkIns = new ArrayList<>();
+        for (CheckInDO checkInDO : checkInDOs) {
+            checkIns.add(DBConverter.getCheckInFromDO(checkInDO));
+        }
+        return checkIns;
+    }
 }
