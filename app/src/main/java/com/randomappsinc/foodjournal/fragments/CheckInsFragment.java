@@ -77,6 +77,7 @@ public class CheckInsFragment extends Fragment {
     public void onCheckInSelected(int position) {
         CheckIn checkIn = mCheckInsAdapter.getItem(position);
         Intent intent = new Intent(getActivity(), CheckInFormActivity.class);
+        intent.putExtra(CheckInFormActivity.ADDER_MODE_KEY, false);
         intent.putExtra(CheckInFormActivity.CHECK_IN_KEY, checkIn);
         startActivityForResult(intent, CHECK_IN_FORM);
     }

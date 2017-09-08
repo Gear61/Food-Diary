@@ -14,6 +14,8 @@
     <string name="check_in_edited">Check-in edited.</string>
     <string name="check_in_deleted">Check-in deleted.</string>
 
+    <string name="check_in_location_needed">Please tell us where you went.</string>
+
     <string name="check_in_delete_title">Confirm Check-In Deletion</string>
     <string name="check_in_delete_content">Are you sure you want to delete this check-in?</string>
 </resources>

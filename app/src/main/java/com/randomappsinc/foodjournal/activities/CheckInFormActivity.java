@@ -159,9 +159,19 @@ public class CheckInFormActivity extends StandardActivity {
 
     @OnClick(R.id.save)
     public void onCheckInSaved() {
+        if (mCheckIn.getRestaurantId() == null) {
+            UIUtils.showSnackbar(mParent, getString(R.string.check_in_location_needed));
+            return;
+        }
+
         mCheckIn.setMessage(mExperienceInput.getText().toString().trim());
-        DatabaseManager.get().getCheckInsDBManager().updateCheckIn(mCheckIn);
-        setResult(CheckInsFragment.EDITED_RESULT);
+        if (mAdderMode) {
+            DatabaseManager.get().getCheckInsDBManager().addCheckIn(mCheckIn);
+            setResult(CheckInsFragment.ADDED_RESULT);
+        } else {
+            DatabaseManager.get().getCheckInsDBManager().updateCheckIn(mCheckIn);
+            setResult(CheckInsFragment.EDITED_RESULT);
+        }
         finish();
     }
 
