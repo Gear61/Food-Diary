@@ -80,8 +80,6 @@
 
                 <TextView
                     android:id="@+id/date_text"
-                    android:text="@string/dish_date_prompt"
-                    android:textColor="@color/gray"
                     style="@style/form_input"/>
             </android.support.v7.widget.CardView>
 

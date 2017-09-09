@@ -189,7 +189,7 @@ public class DishesFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case CAMERA_SOURCE:
-                    // Revoke external access to URI
+                    // Revoke external access to content URI
                     getActivity().revokeUriPermission(
                             mTakenPhotoUri,
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);

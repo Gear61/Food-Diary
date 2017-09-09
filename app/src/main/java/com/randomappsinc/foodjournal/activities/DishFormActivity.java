@@ -119,6 +119,7 @@ public class DishFormActivity extends StandardActivity {
         if (mNewDishMode) {
             mDish = new Dish();
             mDish.setTimeAdded(System.currentTimeMillis());
+            mDateText.setText(TimeUtils.getDateText(mDish.getTimeAdded()));
 
             String pictureUri = getIntent().getStringExtra(URI_KEY);
             mDish.setUriString(pictureUri);
@@ -216,11 +217,6 @@ public class DishFormActivity extends StandardActivity {
         }
         if (mRestaurant == null) {
             UIUtils.showSnackbar(mParent, getString(R.string.dish_restaurant_needed));
-            return;
-        }
-
-        if (mDateText.getText().equals(getString(R.string.dish_date_prompt))) {
-            UIUtils.showSnackbar(mParent, getString(R.string.dish_date_needed));
             return;
         }
 
