@@ -183,7 +183,8 @@ public class DishFormActivity extends StandardActivity {
 
     @OnClick(R.id.restaurant_info_section)
     public void chooseRestaurant() {
-        Intent intent = new Intent(this, RestaurantsActivity.class);
+        boolean noRestaurants = DatabaseManager.get().getRestaurantsDBManager().getNumUserRestaurants() == 0;
+        Intent intent = new Intent(this, noRestaurants ? FindRestaurantActivity.class : RestaurantsActivity.class);
         intent.putExtra(RestaurantsActivity.PICKER_MODE_KEY, true);
         startActivityForResult(intent, 1);
     }
