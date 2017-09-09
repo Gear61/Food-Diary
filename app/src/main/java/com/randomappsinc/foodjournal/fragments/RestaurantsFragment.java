@@ -113,7 +113,9 @@ public class RestaurantsFragment extends Fragment {
 
     @OnClick(R.id.add_restaurant)
     public void addRestaurant() {
-        startActivityForResult(new Intent(getActivity(), FindRestaurantActivity.class), ADD_RESTAURANT_CODE);
+        Intent intent = new Intent(getActivity(), FindRestaurantActivity.class);
+        intent.putExtra(RestaurantsActivity.PICKER_MODE_KEY, mPickerMode);
+        startActivityForResult(intent, ADD_RESTAURANT_CODE);
     }
 
     @Override
@@ -121,8 +123,16 @@ public class RestaurantsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         // Restaurant successfully added, refresh list to reflect that
         if (requestCode == ADD_RESTAURANT_CODE && resultCode == Activity.RESULT_OK) {
-            mAdapter.resyncWithDB(mSearchInput.getText().toString());
-            UIUtils.showSnackbar(mParent, getString(R.string.restaurant_added));
+            if (mPickerMode) {
+                Intent returnRestaurant = new Intent();
+                Restaurant restaurant = data.getParcelableExtra(RESTAURANT_KEY);
+                returnRestaurant.putExtra(RESTAURANT_KEY, restaurant);
+                getActivity().setResult(Activity.RESULT_OK, returnRestaurant);
+                getActivity().finish();
+            } else {
+                mAdapter.resyncWithDB(mSearchInput.getText().toString());
+                UIUtils.showSnackbar(mParent, getString(R.string.restaurant_added));
+            }
         } else if (requestCode == RESTAURANT_VIEW_CODE && resultCode == RESTAURANT_DELETED_CODE) {
             mAdapter.resyncWithDB(mSearchInput.getText().toString());
             UIUtils.showSnackbar(mParent, getString(R.string.restaurant_deleted));

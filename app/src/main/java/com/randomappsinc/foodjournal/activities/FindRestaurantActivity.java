@@ -22,6 +22,7 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.RestaurantSearchResultsAdapter;
 import com.randomappsinc.foodjournal.api.RestClient;
+import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
@@ -75,6 +76,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private SavedLocation mCurrentLocation;
     private LocationChooser mLocationChooser;
     private MaterialDialog mLocationServicesDialog;
+    private boolean mPickerMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,8 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        mPickerMode = getIntent().getBooleanExtra(RestaurantsActivity.PICKER_MODE_KEY, false);
 
         mRestClient = RestClient.getInstance();
         mRestClient.registerRestaurantResultsHandler(this);
@@ -201,11 +205,20 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     @OnItemClick(R.id.restaurants)
     public void onRestaurantClicked(int position) {
         Restaurant restaurant = mAdapter.getItem(position);
-        if (DatabaseManager.get().getRestaurantsDBManager().userAlreadyHasRestaurant(restaurant)) {
+        if (!mPickerMode && DatabaseManager.get().getRestaurantsDBManager().userAlreadyHasRestaurant(restaurant)) {
             UIUtils.showSnackbar(mParent, getString(R.string.restaurant_already_added));
         } else {
-            DatabaseManager.get().getRestaurantsDBManager().addRestaurant(restaurant);
-            setResult(RESULT_OK);
+            if (!DatabaseManager.get().getRestaurantsDBManager().userAlreadyHasRestaurant(restaurant)) {
+                DatabaseManager.get().getRestaurantsDBManager().addRestaurant(restaurant);
+            }
+
+            if (mPickerMode) {
+                Intent returnRestaurant = new Intent();
+                returnRestaurant.putExtra(RestaurantsFragment.RESTAURANT_KEY, restaurant);
+                setResult(RESULT_OK, returnRestaurant);
+            } else {
+                setResult(RESULT_OK);
+            }
             finish();
         }
     }
