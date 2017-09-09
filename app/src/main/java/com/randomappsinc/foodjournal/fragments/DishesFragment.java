@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,6 +32,7 @@ import com.randomappsinc.foodjournal.utils.PictureUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import java.io.File;
+import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -145,12 +147,27 @@ public class DishesFragment extends Fragment {
 
     private void startCameraPage() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             mTakenPhotoFile = PictureUtils.createImageFile();
             if (mTakenPhotoFile != null) {
                 mTakenPhotoUri = FileProvider.getUriForFile(getActivity(),
                         "com.randomappsinc.foodjournal.fileprovider",
                         mTakenPhotoFile);
+
+                // Grant access to content URI so camera app doesn't crash
+                List<ResolveInfo> resolvedIntentActivities = getActivity()
+                        .getPackageManager()
+                        .queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+
+                for (ResolveInfo resolvedIntentInfo : resolvedIntentActivities) {
+                    String packageName = resolvedIntentInfo.activityInfo.packageName;
+                    getActivity().grantUriPermission(
+                            packageName,
+                            mTakenPhotoUri,
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakenPhotoUri);
                 startActivityForResult(takePictureIntent, CAMERA_SOURCE);
             } else {
@@ -172,6 +189,11 @@ public class DishesFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case CAMERA_SOURCE:
+                    // Revoke external access to URI
+                    getActivity().revokeUriPermission(
+                            mTakenPhotoUri,
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
                     Intent cameraIntent = new Intent(getActivity(), DishFormActivity.class);
                     cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
                     cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
