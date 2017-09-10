@@ -17,11 +17,8 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public class RestClient {
+
     public interface RestaurantResultsHandler {
         void processResults(List<Restaurant> results);
     }

@@ -1,9 +1,5 @@
 package com.randomappsinc.foodjournal.api;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public class ApiConstants {
     public static final String GRANT_TYPE = "client_credentials";
 
