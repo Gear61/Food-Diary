@@ -115,6 +115,12 @@ public class MainActivity extends StandardActivity {
     }
 
     @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        mNavigationController.closeAddDishMenu();
+        super.startActivityForResult(intent, requestCode);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         UIUtils.loadActionBarIcon(menu, R.id.settings, IoniconsIcons.ion_android_settings, this);

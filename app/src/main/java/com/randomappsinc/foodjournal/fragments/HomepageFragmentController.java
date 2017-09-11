@@ -22,6 +22,10 @@ public class HomepageFragmentController {
         mCheckInsFragment = CheckInsFragment.newInstance(null);
     }
 
+    public void closeAddDishMenu() {
+        mDishesFragment.closeAddDishMenu();
+    }
+
     public void onNavItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.home:

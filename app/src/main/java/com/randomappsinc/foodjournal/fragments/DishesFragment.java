@@ -115,8 +115,6 @@ public class DishesFragment extends Fragment {
 
     @OnClick({R.id.from_camera, R.id.from_files})
     public void addPicture(View view) {
-        closeUploadMenu();
-
         switch (view.getId()) {
             case R.id.from_camera:
                 if (PermissionUtils.isPermissionGranted(Manifest.permission.CAMERA)) {
@@ -139,10 +137,6 @@ public class DishesFragment extends Fragment {
                 }
                 break;
         }
-    }
-
-    public void closeUploadMenu() {
-        mSourcePicker.close(true);
     }
 
     private void startCameraPage() {
@@ -247,8 +241,13 @@ public class DishesFragment extends Fragment {
         }
     }
 
+    public void closeAddDishMenu() {
+        mSourcePicker.close(true);
+    }
+
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
+        closeAddDishMenu();
         UIUtils.hideKeyboard(getActivity());
         super.startActivityForResult(intent, requestCode);
         getActivity().overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
