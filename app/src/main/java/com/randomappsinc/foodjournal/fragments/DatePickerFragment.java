@@ -11,7 +11,7 @@ import java.util.Calendar;
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     public interface Listener {
-        void onDateChosen(long dateTimeInMillis);
+        void onDateChosen(int year, int month, int day);
 
         long getCurrentTime();
     }
@@ -20,7 +20,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current date as the default date in the picker
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mListener.getCurrentTime());
         int year = calendar.get(Calendar.YEAR);
@@ -36,12 +35,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-
-        long dateTimeInMillis = calendar.getTimeInMillis();
-        mListener.onDateChosen(dateTimeInMillis);
+        mListener.onDateChosen(year, month, day);
     }
 }

@@ -17,13 +17,13 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.CheckInsFragment;
-import com.randomappsinc.foodjournal.fragments.DatePickerFragment;
 import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
+import com.randomappsinc.foodjournal.views.DateTimeAdder;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -36,16 +36,10 @@ public class CheckInFormActivity extends StandardActivity {
     public static final String RESTAURANT_ID_KEY = "restaurantId";
     public static final String CHECK_IN_KEY = "mCheckIn";
 
-    private final DatePickerFragment.Listener mDateListener = new DatePickerFragment.Listener() {
+    private final DateTimeAdder.Listener mDateTimeListener = new DateTimeAdder.Listener() {
         @Override
-        public void onDateChosen(long dateTimeInMillis) {
-            mCheckIn.setTimeAdded(dateTimeInMillis);
-            mDateInput.setText(TimeUtils.getDateText(dateTimeInMillis));
-        }
-
-        @Override
-        public long getCurrentTime() {
-            return mCheckIn.getTimeAdded();
+        public void onDateTimeChosen(long timeChosen) {
+            mCheckIn.setTimeAdded(timeChosen);
         }
     };
 
@@ -59,9 +53,9 @@ public class CheckInFormActivity extends StandardActivity {
     @BindView(R.id.date_input) TextView mDateInput;
 
     private CheckIn mCheckIn;
-    private DatePickerFragment mDatePickerFragment;
     private MaterialDialog mDeleteConfirmationDialog;
     private boolean mAdderMode;
+    private DateTimeAdder mDateTimeAdder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +63,8 @@ public class CheckInFormActivity extends StandardActivity {
         setContentView(R.layout.check_in_form);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mDateTimeAdder = new DateTimeAdder(getFragmentManager(), mDateTimeListener);
 
         mAdderMode = getIntent().getBooleanExtra(ADDER_MODE_KEY, false);
 
@@ -106,9 +102,6 @@ public class CheckInFormActivity extends StandardActivity {
                     }
                 })
                 .build();
-
-        mDatePickerFragment = new DatePickerFragment();
-        mDatePickerFragment.setListener(mDateListener);
     }
 
     private void loadRestaurantInfo(Restaurant restaurant) {
@@ -155,7 +148,7 @@ public class CheckInFormActivity extends StandardActivity {
 
     @OnClick(R.id.date_input)
     public void setDate() {
-        mDatePickerFragment.show(getFragmentManager(), "datePicker");
+        mDateTimeAdder.show(mCheckIn.getTimeAdded());
     }
 
     @OnClick(R.id.save)

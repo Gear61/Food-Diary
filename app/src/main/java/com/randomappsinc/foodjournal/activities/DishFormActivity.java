@@ -16,7 +16,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.fragments.DatePickerFragment;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Dish;
@@ -24,6 +23,7 @@ import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
+import com.randomappsinc.foodjournal.views.DateTimeAdder;
 import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
 
@@ -38,6 +38,13 @@ public class DishFormActivity extends StandardActivity {
     public static final String URI_KEY = "uri";
     public static final String DISH_KEY = "dish";
 
+    private final DateTimeAdder.Listener mDateTimeListener = new DateTimeAdder.Listener() {
+        @Override
+        public void onDateTimeChosen(long timeChosen) {
+            mDish.setTimeAdded(timeChosen);
+        }
+    };
+
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.dish_picture) ImageView mDishPicture;
     @BindView(R.id.rating_widget) View mRatingLayout;
@@ -51,26 +58,12 @@ public class DishFormActivity extends StandardActivity {
     @BindView(R.id.dish_description_input) EditText mDishDescriptionInput;
     @BindColor(R.color.dark_gray) int darkGray;
 
-    private final DatePickerFragment.Listener mDateListener = new DatePickerFragment.Listener() {
-        @Override
-        public void onDateChosen(long dateTimeInMillis) {
-            mDish.setTimeAdded(dateTimeInMillis);
-            mDateText.setText(TimeUtils.getDateText(dateTimeInMillis));
-            mDateText.setTextColor(darkGray);
-        }
-
-        @Override
-        public long getCurrentTime() {
-            return mDish.getTimeAdded();
-        }
-    };
-
     private Dish mDish;
     private Restaurant mRestaurant;
     private RatingView mRatingView;
     private MaterialDialog mLeaveDialog;
     private MaterialDialog mDeleteConfirmationDialog;
-    private DatePickerFragment mDatePickerFragment;
+    private DateTimeAdder mDateTimeAdder;
     private boolean mNewDishMode;
 
     @Override
@@ -81,6 +74,7 @@ public class DishFormActivity extends StandardActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRatingView = new RatingView(mRatingLayout);
+        mDateTimeAdder = new DateTimeAdder(getFragmentManager(), mDateTimeListener);
         mLeaveDialog = new MaterialDialog.Builder(this)
                 .title(R.string.confirm_dish_exit)
                 .content(R.string.confirm_leaving_dish_form)
@@ -109,9 +103,6 @@ public class DishFormActivity extends StandardActivity {
                     }
                 })
                 .build();
-
-        mDatePickerFragment = new DatePickerFragment();
-        mDatePickerFragment.setListener(mDateListener);
 
         mNewDishMode = getIntent().getBooleanExtra(NEW_DISH_KEY, false);
 
@@ -191,7 +182,7 @@ public class DishFormActivity extends StandardActivity {
 
     @OnClick(R.id.date_text)
     public void selectDate() {
-        mDatePickerFragment.show(getFragmentManager(), "datePicker");
+        mDateTimeAdder.show(mDish.getTimeAdded());
     }
 
     @Override
