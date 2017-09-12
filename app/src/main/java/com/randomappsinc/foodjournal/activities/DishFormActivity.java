@@ -27,7 +27,6 @@ import com.randomappsinc.foodjournal.views.DateTimeAdder;
 import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
 
-import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,6 +41,7 @@ public class DishFormActivity extends StandardActivity {
         @Override
         public void onDateTimeChosen(long timeChosen) {
             mDish.setTimeAdded(timeChosen);
+            mDateTimeText.setText(TimeUtils.getTimeText(timeChosen));
         }
     };
 
@@ -54,9 +54,8 @@ public class DishFormActivity extends StandardActivity {
     @BindView(R.id.restaurant_name) TextView mRestaurantName;
     @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
     @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
-    @BindView(R.id.date_text) TextView mDateText;
+    @BindView(R.id.date_text) TextView mDateTimeText;
     @BindView(R.id.dish_description_input) EditText mDishDescriptionInput;
-    @BindColor(R.color.dark_gray) int darkGray;
 
     private Dish mDish;
     private Restaurant mRestaurant;
@@ -110,7 +109,7 @@ public class DishFormActivity extends StandardActivity {
         if (mNewDishMode) {
             mDish = new Dish();
             mDish.setTimeAdded(System.currentTimeMillis());
-            mDateText.setText(TimeUtils.getDateText(mDish.getTimeAdded()));
+            mDateTimeText.setText(TimeUtils.getTimeText(mDish.getTimeAdded()));
 
             String pictureUri = getIntent().getStringExtra(URI_KEY);
             mDish.setUriString(pictureUri);
@@ -144,8 +143,7 @@ public class DishFormActivity extends StandardActivity {
         mRatingView.loadRating(mDish.getRating());
         mDishNameInput.setText(mDish.getTitle());
         loadRestaurantInfo();
-        mDateText.setText(TimeUtils.getDateText(mDish.getTimeAdded()));
-        mDateText.setTextColor(darkGray);
+        mDateTimeText.setText(TimeUtils.getTimeText(mDish.getTimeAdded()));
         mDishDescriptionInput.setText(mDish.getDescription());
     }
 

@@ -242,7 +242,9 @@ public class DishesFragment extends Fragment {
     }
 
     public void closeAddDishMenu() {
-        mSourcePicker.close(true);
+        if (mSourcePicker != null) {
+            mSourcePicker.close(true);
+        }
     }
 
     @Override

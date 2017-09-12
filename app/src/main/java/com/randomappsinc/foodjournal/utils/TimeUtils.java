@@ -7,9 +7,9 @@ import java.util.TimeZone;
 
 public class TimeUtils {
 
-    private static final String DATE_FORMAT = "MMMM dd, yyyy";
+    private static final String DATE_FORMAT = "MMMM d, yyyy - h:mm a";
 
-    public static String getDateText(long unixTime) {
+    public static String getTimeText(long unixTime) {
         Date date = new Date(unixTime);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         simpleDateFormat.setTimeZone(TimeZone.getDefault());

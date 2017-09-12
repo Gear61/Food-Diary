@@ -95,7 +95,7 @@ public class CheckInsAdapter extends BaseAdapter {
             }
             mRestaurantName.setText(restaurant.getName());
 
-            mCheckInDate.setText(TimeUtils.getDateText(checkIn.getTimeAdded()));
+            mCheckInDate.setText(TimeUtils.getTimeText(checkIn.getTimeAdded()));
             if (checkIn.getMessage().isEmpty()) {
                 mCheckInMessage.setVisibility(View.GONE);
             } else {

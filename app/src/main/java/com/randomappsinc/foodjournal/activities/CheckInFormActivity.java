@@ -40,6 +40,7 @@ public class CheckInFormActivity extends StandardActivity {
         @Override
         public void onDateTimeChosen(long timeChosen) {
             mCheckIn.setTimeAdded(timeChosen);
+            mDateTimeInput.setText(TimeUtils.getTimeText(timeChosen));
         }
     };
 
@@ -50,7 +51,7 @@ public class CheckInFormActivity extends StandardActivity {
     @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
     @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
     @BindView(R.id.experience_input) EditText mExperienceInput;
-    @BindView(R.id.date_input) TextView mDateInput;
+    @BindView(R.id.date_input) TextView mDateTimeInput;
 
     private CheckIn mCheckIn;
     private MaterialDialog mDeleteConfirmationDialog;
@@ -86,7 +87,7 @@ public class CheckInFormActivity extends StandardActivity {
             mExperienceInput.setText(mCheckIn.getMessage());
         }
 
-        mDateInput.setText(TimeUtils.getDateText(mCheckIn.getTimeAdded()));
+        mDateTimeInput.setText(TimeUtils.getTimeText(mCheckIn.getTimeAdded()));
 
         mDeleteConfirmationDialog = new MaterialDialog.Builder(this)
                 .title(R.string.check_in_delete_title)
