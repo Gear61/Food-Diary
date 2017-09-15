@@ -55,6 +55,10 @@ public class Restaurant implements Parcelable {
         this.imageUrl = imageUrl;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }

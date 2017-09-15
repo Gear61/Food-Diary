@@ -1,10 +1,13 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
+import android.net.Uri;
+
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DBConverter;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +102,10 @@ public class DishesDBManager {
                         .deleteFromRealm();
             }
         });
+
+        String imagePath = Uri.parse(dish.getUriString()).getPath();
+        File imageFile = new File(imagePath);
+        imageFile.delete();
     }
 
     public void updateDish(final Dish dish) {

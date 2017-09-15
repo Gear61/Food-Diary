@@ -1,6 +1,8 @@
 package com.randomappsinc.foodjournal.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -83,14 +85,36 @@ public class RestaurantViewActivity extends StandardActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.content_menu, menu);
+        getMenuInflater().inflate(R.menu.restaurant_menu, menu);
+        UIUtils.loadActionBarIcon(menu, R.id.navigate, IoniconsIcons.ion_android_map, this);
+        UIUtils.loadActionBarIcon(menu, R.id.call, IoniconsIcons.ion_android_call, this);
         UIUtils.loadActionBarIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
         return true;
+    }
+
+    private void navigateToRestaurant() {
+        String mapUri = "google.navigation:q=" + mRestaurant.getAddress() + " " + mRestaurant.getName();
+        startActivity(Intent.createChooser(
+                new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(mapUri)),
+                getString(R.string.navigate_with)));
+    }
+
+    private void callRestaurant() {
+        String phoneUri = "tel:" + mRestaurant.getPhoneNumber();
+        startActivity(Intent.createChooser(
+                new Intent(Intent.ACTION_DIAL, Uri.parse(phoneUri)),
+                getString(R.string.call_with)));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.navigate:
+                navigateToRestaurant();
+                return true;
+            case R.id.call:
+                callRestaurant();
+                return true;
             case R.id.delete:
                 mDeleteConfirmationDialog.show();
                 return true;

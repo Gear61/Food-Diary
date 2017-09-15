@@ -34,4 +34,9 @@
         Are you sure you want to delete this restaurant?
         All of your attached dishes and check-ins will be deleted too.
     </string>
+
+    <string name="navigate_to_restaurant">Navigate to restaurant</string>
+    <string name="navigate_with">Navigate with</string>
+    <string name="call_restaurant">Call restaurant</string>
+    <string name="call_with">Call with</string>
 </resources>
