@@ -52,7 +52,7 @@
         <activity
             android:name=".activities.DishFormActivity"
             android:label="@string/dish_form"
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:screenOrientation="portrait">
         </activity>
 
