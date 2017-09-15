@@ -33,6 +33,10 @@
         android:layout_marginRight="@dimen/dish_rating_spacing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:shadowColor="@color/rating_shadow"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"
         android:textColor="@color/dark_gray"
         android:textSize="25dp"/>
 

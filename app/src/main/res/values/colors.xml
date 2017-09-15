@@ -17,6 +17,7 @@
 
     <color name="black">#000000</color>
     <color name="shadow_black">#3D000000</color>
+    <color name="rating_shadow">#22000000</color>
 
     <color name="blue">#2196F3</color>
 </resources>

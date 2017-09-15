@@ -79,13 +79,21 @@ public class DishesAdapter extends BaseAdapter {
             Dish dish = getItem(position);
 
             mDishInfoText.setText(dish.getDishInfoText());
-            mDishRatingText.setText(dish.getRatingText());
+
+            if (dish.getRating() > 0) {
+                mDishRatingText.setText(dish.getRatingText());
+                mDishRatingText.setVisibility(View.VISIBLE);
+            } else {
+                mDishRatingText.setVisibility(View.GONE);
+            }
+
             Picasso.with(mContext)
                     .load(dish.getUriString())
                     .error(mDefaultThumbnail)
                     .fit()
                     .centerCrop()
                     .into(mDishPicture);
+
             if (dish.getDescription().isEmpty()) {
                 mDishDescription.setVisibility(View.GONE);
             } else {

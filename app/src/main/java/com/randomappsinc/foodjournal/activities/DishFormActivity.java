@@ -197,10 +197,6 @@ public class DishFormActivity extends StandardActivity {
         int rating = mRatingView.getRating();
         String title = mDishNameInput.getText().toString().trim();
 
-        if (rating == 0) {
-            UIUtils.showSnackbar(mParent, getString(R.string.dish_rating_needed));
-            return;
-        }
         if (title.isEmpty()) {
             UIUtils.showSnackbar(mParent, getString(R.string.dish_title_needed));
             return;
