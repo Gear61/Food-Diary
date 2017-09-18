@@ -47,6 +47,10 @@ public class CheckIn implements Parcelable {
         mRestaurantId = restaurantId;
     }
 
+    public String getRestaurantName() {
+        return mRestaurantName;
+    }
+
     public void setRestaurantName(String restaurantName) {
         mRestaurantName = restaurantName;
     }

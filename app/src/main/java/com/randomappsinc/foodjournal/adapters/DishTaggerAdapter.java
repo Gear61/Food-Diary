@@ -1,15 +1,22 @@
 package com.randomappsinc.foodjournal.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.TimeUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -18,11 +25,14 @@ import butterknife.ButterKnife;
 
 public class DishTaggerAdapter extends BaseAdapter {
 
-    private List<Dish> mDishes;
     private Context mContext;
+    private List<Dish> mDishes;
+    private Drawable mDefaultThumbnail;
 
-    public DishTaggerAdapter(Context context, CheckIn mCheckIn) {
+    public DishTaggerAdapter(Context context, CheckIn checkIn) {
         mContext = context;
+        mDishes = DatabaseManager.get().getDishesDBManager().getTaggingSuggestions(checkIn);
+        mDefaultThumbnail = new IconDrawable(context, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
     }
 
     @Override
@@ -43,13 +53,34 @@ public class DishTaggerAdapter extends BaseAdapter {
     public class DishViewHolder {
 
         @BindView(R.id.dish_picture) ImageView mDishPicture;
+        @BindView(R.id.dish_name) TextView mDishName;
+        @BindView(R.id.dish_date) TextView mDishDate;
+        @BindView(R.id.dish_description) TextView mDishDescription;
 
         public DishViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
 
         public void loadItem(int position) {
+            Dish dish = getItem(position);
 
+            Picasso.with(mContext)
+                    .load(dish.getUriString())
+                    .error(mDefaultThumbnail)
+                    .fit()
+                    .centerCrop()
+                    .into(mDishPicture);
+
+            mDishName.setText(dish.getTitle());
+            mDishDate.setText(TimeUtils.getTimeText(dish.getTimeAdded()));
+
+            if (dish.getDescription().isEmpty()) {
+                mDishDescription.setVisibility(View.GONE);
+            } else {
+                String quotedText = "\"" + dish.getDescription() + "\"";
+                mDishDescription.setText(quotedText);
+                mDishDescription.setVisibility(View.VISIBLE);
+            }
         }
     }
 

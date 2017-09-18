@@ -2,10 +2,12 @@ package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
 import android.net.Uri;
 
+import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DBConverter;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
+import com.randomappsinc.foodjournal.utils.TimeUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -148,5 +150,22 @@ public class DishesDBManager {
                 }
             });
         }
+    }
+
+    public List<Dish> getTaggingSuggestions(CheckIn checkIn) {
+        List<DishDO> dishDOs = getRealm()
+                .where(DishDO.class)
+                .equalTo("restaurantId", checkIn.getRestaurantId())
+                .beginGroup()
+                    .lessThanOrEqualTo("timeAdded", checkIn.getTimeAdded() + TimeUtils.MILLIS_IN_A_DAY)
+                    .or()
+                    .greaterThanOrEqualTo("timeAdded", checkIn.getTimeAdded() - TimeUtils.MILLIS_IN_A_DAY)
+                .findAllSorted("timeAdded", Sort.DESCENDING);
+
+        List<Dish> dishes = new ArrayList<>();
+        for (DishDO dishDO : dishDOs) {
+            dishes.add(DBConverter.getDishFromDO(dishDO));
+        }
+        return dishes;
     }
 }

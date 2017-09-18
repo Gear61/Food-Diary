@@ -34,7 +34,7 @@ public class CheckInFormActivity extends StandardActivity {
 
     public static final String ADDER_MODE_KEY = "adderMode";
     public static final String RESTAURANT_ID_KEY = "restaurantId";
-    public static final String CHECK_IN_KEY = "mCheckIn";
+    public static final String CHECK_IN_KEY = "checkIn";
 
     private final DateTimeAdder.Listener mDateTimeListener = new DateTimeAdder.Listener() {
         @Override
@@ -150,6 +150,18 @@ public class CheckInFormActivity extends StandardActivity {
     @OnClick(R.id.date_input)
     public void setDate() {
         mDateTimeAdder.show(mCheckIn.getTimeAdded());
+    }
+
+    @OnClick(R.id.tag_dish)
+    public void tagDish() {
+        if (mCheckIn.getRestaurantId() == null) {
+            UIUtils.showSnackbar(mParent, getString(R.string.check_in_location_needed));
+            return;
+        }
+
+        Intent intent = new Intent(this, DishTaggerActivity.class);
+        intent.putExtra(CHECK_IN_KEY, mCheckIn);
+        startActivityForResult(intent, 1);
     }
 
     @OnClick(R.id.save)
