@@ -15,11 +15,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public class SettingsActivity extends StandardActivity {
+
     public static final String SUPPORT_EMAIL = "chessnone@gmail.com";
     public static final String OTHER_APPS_URL = "https://play.google.com/store/apps/dev?id=9093438553713389916";
     public static final String REPO_URL = "https://github.com/Gear61/Food-Journal";

@@ -7,11 +7,8 @@ import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-/**
- * Created by alexanderchiou on 8/14/17.
- */
-
 public class PermissionUtils {
+
     public static void requestPermission(Activity activity, String permission, int requestCode) {
         ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
     }

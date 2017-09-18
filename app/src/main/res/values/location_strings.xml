@@ -33,11 +33,21 @@
         Please try again or reset location services.
     </string>
 
-    <string name="location_services_needed">
-        Your current location is \"Automatic\",
-        which means that you need to enable location services.
-        Would you like to do that now?
+    <string name="turn_on_location_services">
+        Turn on location services so Food Journal can find restaurants near you.
     </string>
+
+    <string name="location_services_needed">Location Services Needed</string>
+    <string name="location_services_denial">
+        Your current location is set to \"Automatic\",
+        which means that Food Journal needs location services to find restaurants near you.
+        If you don\'t want to give us your current location,
+        you can enter in your location manually by clicking the map button in the bottom right.
+    </string>
+    <string name="location_services_confirm">Turn on location services</string>
+    <string name="enter_location_manually">Enter in location manually</string>
+
+    <string name="location_services_on">Location services turned on. Fetching current location&#8230;</string>
 
     <string name="choose_current_location">Choose Current Location</string>
     <string name="current_instructions">Your current location is where Food Journal searches for restaurants.</string>

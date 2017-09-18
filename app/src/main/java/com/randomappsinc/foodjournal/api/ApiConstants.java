@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.api;
 
 public class ApiConstants {
+
     public static final String GRANT_TYPE = "client_credentials";
 
     public static final String BASE_URL = "https://api.yelp.com";

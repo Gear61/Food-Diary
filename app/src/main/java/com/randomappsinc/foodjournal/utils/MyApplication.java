@@ -8,11 +8,8 @@ import com.joanzapata.iconify.fonts.IoniconsModule;
 import com.randomappsinc.foodjournal.api.RestClient;
 import com.randomappsinc.foodjournal.persistence.PreferencesManager;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public final class MyApplication extends Application {
+
     private static Context instance;
 
     @Override

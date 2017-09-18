@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantResults {
+
     @SerializedName("businesses")
     @Expose
     private List<Business> businesses;

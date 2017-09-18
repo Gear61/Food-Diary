@@ -10,10 +10,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public interface YelpService {
     @FormUrlEncoded
     @POST("oauth2/token")

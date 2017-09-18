@@ -12,17 +12,14 @@ import com.randomappsinc.foodjournal.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public class IconItemsAdapter extends BaseAdapter {
-    private Context context;
+
+    private Context mContext;
     private String[] itemNames;
     private String[] itemIcons;
 
     public IconItemsAdapter(Context context, int optionIds, int iconIds) {
-        this.context = context;
+        this.mContext = context;
         this.itemNames = context.getResources().getStringArray(optionIds);
         this.itemIcons = context.getResources().getStringArray(iconIds);
     }
@@ -43,6 +40,7 @@ public class IconItemsAdapter extends BaseAdapter {
     }
 
     public class IconItemViewHolder {
+
         @BindView(R.id.item_icon) TextView itemIcon;
         @BindView(R.id.item_name) TextView itemName;
 
@@ -59,7 +57,7 @@ public class IconItemsAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         IconItemViewHolder holder;
         if (view == null) {
-            LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = vi.inflate(R.layout.icon_item_cell, parent, false);
             holder = new IconItemViewHolder(view);
             view.setTag(holder);

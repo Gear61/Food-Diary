@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +26,7 @@ import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.LocationsDBManager;
+import com.randomappsinc.foodjournal.utils.LocationFetcher;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.LocationChooser;
@@ -43,6 +43,8 @@ import io.nlopez.smartlocation.SmartLocation;
 
 public class FindRestaurantActivity extends StandardActivity implements RestClient.RestaurantResultsHandler {
 
+    private static final int LOCATION_SERVICES_CODE = 1;
+
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.search_input) EditText mSearchInput;
@@ -56,15 +58,17 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         @Override
         public void onLocationChosen(SavedLocation savedLocation) {
             if (mCurrentLocation.getId() != savedLocation.getId()) {
-                mCurrentLocation = savedLocation;
+                // Do a deep-copy so we don't alter the data objects in the location chooser
+                mCurrentLocation.loadLocationInfo(savedLocation);
+
                 if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID) {
                     fetchCurrentLocation();
                 } else {
+                    UIUtils.showSnackbar(mParent, getString(R.string.current_location_set));
                     stopFetchingCurrentLocation();
                     fetchRestaurants();
                 }
             }
-            UIUtils.showSnackbar(mParent, getString(R.string.current_location_set));
         }
     };
 
@@ -73,10 +77,12 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private boolean mLocationFetched;
     private Handler mLocationChecker;
     private Runnable mLocationCheckTask;
+    private LocationFetcher mLocationFetcher;
     private SavedLocation mCurrentLocation;
     private LocationChooser mLocationChooser;
-    private MaterialDialog mLocationServicesDialog;
+    private boolean mDenialLock;
     private boolean mPickerMode;
+    private MaterialDialog mLocationDenialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +104,8 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
         mSetLocation.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_map).colorRes(R.color.white));
 
+        mDenialLock = false;
+        mLocationFetcher = new LocationFetcher(this);
         mLocationChecker = new Handler();
         mLocationCheckTask = new Runnable() {
             @Override
@@ -109,19 +117,30 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
             }
         };
 
-        mLocationChooser = new LocationChooser(this, mLocationChoiceCallback);
-        mCurrentLocation = DatabaseManager.get().getLocationsDBManager().getCurrentLocation();
-        mLocationServicesDialog = new MaterialDialog.Builder(this)
-                .content(R.string.location_services_needed)
-                .negativeText(android.R.string.cancel)
-                .positiveText(android.R.string.yes)
+        mLocationDenialDialog = new MaterialDialog.Builder(this)
+                .cancelable(false)
+                .title(R.string.location_services_needed)
+                .content(R.string.location_services_denial)
+                .positiveText(R.string.location_services_confirm)
+                .negativeText(R.string.enter_location_manually)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        mLocationFetcher.askForLocation(LOCATION_SERVICES_CODE);
+                        mDenialLock = false;
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mLocationChooser.show();
+                        mDenialLock = false;
                     }
                 })
                 .build();
+
+        mLocationChooser = new LocationChooser(this, mLocationChoiceCallback);
+        mCurrentLocation = DatabaseManager.get().getLocationsDBManager().getCurrentLocation();
 
         // Automatically do a search if we have a pre-defined location
         if (mCurrentLocation.getId() != LocationsDBManager.AUTOMATIC_LOCATION_ID) {
@@ -134,7 +153,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         super.onResume();
 
         // Run this here instead of onCreate() to cover the case where they return from turning on location
-        if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID) {
+        if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID && !mDenialLock) {
             fetchCurrentLocation();
         }
     }
@@ -142,26 +161,30 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private void fetchCurrentLocation() {
         if (PermissionUtils.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
             if (SmartLocation.with(this).location().state().locationServicesEnabled()) {
-                mLocationFetched = false;
-                SmartLocation.with(this).location()
-                        .oneFix()
-                        .start(new OnLocationUpdatedListener() {
-                            @Override
-                            public void onLocationUpdated(Location location) {
-                                mLocationChecker.removeCallbacks(mLocationCheckTask);
-                                mLocationFetched = true;
-                                mCurrentLocation.setId(0);
-                                mCurrentLocation.setAddress(String.valueOf(location.getLatitude()) + ", " + String.valueOf(location.getLongitude()));
-                                fetchRestaurants();
-                            }
-                        });
-                mLocationChecker.postDelayed(mLocationCheckTask, 10000L);
+                runLocationFetch();
             } else {
-                showLocationServicesDialog();
+                mLocationFetcher.askForLocation(LOCATION_SERVICES_CODE);
             }
         } else {
             PermissionUtils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, 1);
         }
+    }
+
+    private void runLocationFetch() {
+        mLocationFetched = false;
+        SmartLocation.with(this).location()
+                .oneFix()
+                .start(new OnLocationUpdatedListener() {
+                    @Override
+                    public void onLocationUpdated(Location location) {
+                        mLocationChecker.removeCallbacks(mLocationCheckTask);
+                        mLocationFetched = true;
+                        mCurrentLocation.setId(0);
+                        mCurrentLocation.setAddress(String.valueOf(location.getLatitude()) + ", " + String.valueOf(location.getLongitude()));
+                        fetchRestaurants();
+                    }
+                });
+        mLocationChecker.postDelayed(mLocationCheckTask, 10000L);
     }
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -235,21 +258,30 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         }
     }
 
-    private void showLocationServicesDialog() {
-        if (!mLocationServicesDialog.isShowing()) {
-            mLocationServicesDialog.show();
-        }
-    }
-
     private void stopFetchingCurrentLocation() {
         mLocationChecker.removeCallbacks(mLocationCheckTask);
         SmartLocation.with(this).location().stop();
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOCATION_SERVICES_CODE) {
+            if (resultCode == RESULT_OK) {
+                UIUtils.showSnackbar(mParent, getString(R.string.location_services_on));
+                runLocationFetch();
+            } else {
+                mDenialLock = true;
+                mLocationDenialDialog.show();
+            }
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
 
+        mLocationFetcher.stop();
         stopFetchingCurrentLocation();
 
         // Stop listening for restaurant search results

@@ -9,10 +9,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by alexanderchiou on 8/13/17.
- */
-
 public class FetchTokenCallback implements Callback<TokenResponse> {
     @Override
     public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {

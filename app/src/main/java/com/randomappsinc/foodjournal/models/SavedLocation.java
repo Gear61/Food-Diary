@@ -48,6 +48,13 @@ public class SavedLocation {
         mIsCurrentLocation = isCurrentLocation;
     }
 
+    public void loadLocationInfo(SavedLocation otherLocation) {
+        mId = otherLocation.getId();
+        mName = otherLocation.getName();
+        mAddress = otherLocation.getAddress();
+        mIsCurrentLocation = otherLocation.isCurrentLocation();
+    }
+
     public String[] getLocationOptions() {
         Context context = MyApplication.getAppContext();
         List<String> options = new ArrayList<>();
