@@ -99,7 +99,8 @@ public class CheckInsAdapter extends BaseAdapter {
             if (checkIn.getMessage().isEmpty()) {
                 mCheckInMessage.setVisibility(View.GONE);
             } else {
-                mCheckInMessage.setText("\"" + checkIn.getMessage() + "\"");
+                String quotedMessage = "\"" + checkIn.getMessage() + "\"";
+                mCheckInMessage.setText(quotedMessage);
                 mCheckInMessage.setVisibility(View.VISIBLE);
             }
         }

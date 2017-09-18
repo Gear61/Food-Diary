@@ -93,5 +93,11 @@
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".activities.DishTaggerActivity"
+            android:label="@string/dish_tagger"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>
