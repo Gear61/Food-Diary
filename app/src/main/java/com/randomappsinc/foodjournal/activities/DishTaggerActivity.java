@@ -11,8 +11,10 @@ public class DishTaggerActivity extends StandardActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.restaurant_view);
+        setContentView(R.layout.dish_tagger);
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+
 }

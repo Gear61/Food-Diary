@@ -3,9 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="SpUsage">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -72,6 +74,47 @@
                         android:textColor="@color/dark_gray"
                         style="@style/form_input"/>
                 </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dish_form_card_spacing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        android:layout_marginTop="0dp"
+                        style="@style/form_card">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.joanzapata.iconify.widget.IconTextView
+                                android:layout_marginTop="4dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|center_horizontal"
+                                android:text="@string/add_icon"
+                                android:textColor="@color/app_red"
+                                android:textSize="48dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_gravity="bottom|center_horizontal"
+                                android:text="@string/tag_dish"
+                                android:textColor="@color/app_red"
+                                android:textSize="13dp"/>
+                        </FrameLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/tagged_dishes"
+                        style="@style/horizontal_gallery"/>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>

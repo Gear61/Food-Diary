@@ -30,4 +30,6 @@
     <string name="no_im_good">No, I\'m good</string>
 
     <string name="filter">Filter</string>
+
+    <string name="add_icon">{ion-android-add}</string>
 </resources>

@@ -30,4 +30,5 @@
     <string name="dish_tagger_header">
         Showing dishes from %1$s posted within 24 hours of your check-in time of %2$s.
     </string>
+    <string name="tag_dish">Tag Dish</string>
 </resources>
