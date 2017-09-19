@@ -156,6 +156,7 @@ public class DishesDBManager {
         List<DishDO> dishDOs = getRealm()
                 .where(DishDO.class)
                 .equalTo("restaurantId", checkIn.getRestaurantId())
+                .equalTo("checkInId", 0)
                 .beginGroup()
                     .lessThanOrEqualTo("timeAdded", checkIn.getTimeAdded() + TimeUtils.MILLIS_IN_A_DAY)
                     .or()

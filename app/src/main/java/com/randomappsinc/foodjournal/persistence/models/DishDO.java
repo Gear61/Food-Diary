@@ -16,6 +16,7 @@ public class DishDO extends RealmObject {
     private long timeLastUpdated;
     private String restaurantId;
     private String restaurantName;
+    private int checkInId;
 
     public int getId() {
         return id;
@@ -87,5 +88,13 @@ public class DishDO extends RealmObject {
 
     public void setRestaurantName(String restaurantName) {
         this.restaurantName = restaurantName;
+    }
+
+    public int getCheckInId() {
+        return checkInId;
+    }
+
+    public void setCheckInId(int checkInId) {
+        this.checkInId = checkInId;
     }
 }

@@ -7,15 +7,21 @@ import android.widget.TextView;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.DishTaggerAdapter;
 import com.randomappsinc.foodjournal.models.CheckIn;
+import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
+import com.rey.material.widget.Button;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DishTaggerActivity extends StandardActivity {
 
     @BindView(R.id.description) TextView mDescription;
     @BindView(R.id.dishes) ListView mDishes;
+    @BindView(R.id.tag) Button mTagButton;
 
     private DishTaggerAdapter mDishTaggerAdapter;
 
@@ -34,7 +40,12 @@ public class DishTaggerActivity extends StandardActivity {
                 TimeUtils.getTimeText(checkIn.getTimeAdded()));
         mDescription.setText(header);
 
-        mDishTaggerAdapter = new DishTaggerAdapter(this, checkIn);
+        mDishTaggerAdapter = new DishTaggerAdapter(this, checkIn, mTagButton);
         mDishes.setAdapter(mDishTaggerAdapter);
+    }
+
+    @OnClick(R.id.tag)
+    public void tagDishes() {
+        ArrayList<Dish> taggedDishes = mDishTaggerAdapter.getChosenDishes();
     }
 }
