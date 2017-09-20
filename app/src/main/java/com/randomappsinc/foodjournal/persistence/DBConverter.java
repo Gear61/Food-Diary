@@ -65,6 +65,13 @@ public class DBConverter {
         checkIn.setTimeAdded(checkInDO.getTimeAdded());
         checkIn.setRestaurantId(checkInDO.getRestaurantId());
         checkIn.setRestaurantName(checkInDO.getRestaurantName());
+
+        ArrayList<Dish> dishes = new ArrayList<>();
+        for (DishDO dishDO : checkInDO.getTaggedDishes()) {
+            dishes.add(DBConverter.getDishFromDO(dishDO));
+        }
+        checkIn.setTaggedDishes(dishes);
+
         return checkIn;
     }
 

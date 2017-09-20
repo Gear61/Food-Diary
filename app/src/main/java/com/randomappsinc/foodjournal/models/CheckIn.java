@@ -4,6 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
+import com.randomappsinc.foodjournal.persistence.models.DishDO;
+
+import java.util.ArrayList;
+
+import io.realm.RealmList;
 
 public class CheckIn implements Parcelable {
 
@@ -12,6 +17,7 @@ public class CheckIn implements Parcelable {
     private long mTimeAdded;
     private String mRestaurantId;
     private String mRestaurantName;
+    private ArrayList<Dish> mTaggedDishes;
 
     public CheckIn() {}
 
@@ -55,6 +61,14 @@ public class CheckIn implements Parcelable {
         mRestaurantName = restaurantName;
     }
 
+    public ArrayList<Dish> getTaggedDishes() {
+        return mTaggedDishes;
+    }
+
+    public void setTaggedDishes(ArrayList<Dish> taggedDishes) {
+        mTaggedDishes = taggedDishes;
+    }
+
     public CheckInDO toCheckInDO() {
         CheckInDO checkInDO = new CheckInDO();
         checkInDO.setCheckInId(mCheckInId);
@@ -62,6 +76,13 @@ public class CheckIn implements Parcelable {
         checkInDO.setTimeAdded(mTimeAdded);
         checkInDO.setRestaurantId(mRestaurantId);
         checkInDO.setRestaurantName(mRestaurantName);
+
+        RealmList<DishDO> dishDOs = new RealmList<>();
+        for (Dish dish : mTaggedDishes) {
+            dishDOs.add(dish.toDishDO());
+        }
+        checkInDO.setTaggedDishes(dishDOs);
+
         return checkInDO;
     }
 
@@ -71,6 +92,12 @@ public class CheckIn implements Parcelable {
         mTimeAdded = in.readLong();
         mRestaurantId = in.readString();
         mRestaurantName = in.readString();
+        if (in.readByte() == 0x01) {
+            mTaggedDishes = new ArrayList<>();
+            in.readList(mTaggedDishes, Dish.class.getClassLoader());
+        } else {
+            mTaggedDishes = null;
+        }
     }
 
     @Override
@@ -85,6 +112,12 @@ public class CheckIn implements Parcelable {
         dest.writeLong(mTimeAdded);
         dest.writeString(mRestaurantId);
         dest.writeString(mRestaurantName);
+        if (mTaggedDishes == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mTaggedDishes);
+        }
     }
 
     @SuppressWarnings("unused")
