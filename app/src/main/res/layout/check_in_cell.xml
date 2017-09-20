@@ -38,12 +38,34 @@
             android:textSize="15dp"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/dishes_attached"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/restaurant_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dish_icon"
+            android:textColor="@color/app_red"
+            style="@style/user_restaurant_icon"/>
+
+        <TextView
+            android:id="@+id/num_dishes"
+            android:layout_marginLeft="4dp"
+            style="@style/user_restaurant_stats_text"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/check_in_message"
-        android:layout_marginTop="@dimen/default_cell_padding"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/dishes_attached"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/gray"
-        android:textSize="17dp"
-        android:layout_below="@id/restaurant_thumbnail"/>
+        android:textSize="17dp"/>
 </RelativeLayout>

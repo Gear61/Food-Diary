@@ -2,6 +2,8 @@ package com.randomappsinc.foodjournal.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -9,6 +11,7 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.DishTaggerAdapter;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.rey.material.widget.Button;
 
@@ -24,6 +27,7 @@ public class DishTaggerActivity extends StandardActivity {
 
     @BindView(R.id.description) TextView mDescription;
     @BindView(R.id.dishes) ListView mDishes;
+    @BindView(R.id.no_dishes) View mNoDishes;
     @BindView(R.id.tag) Button mTagButton;
 
     private DishTaggerAdapter mDishTaggerAdapter;
@@ -43,15 +47,28 @@ public class DishTaggerActivity extends StandardActivity {
                 TimeUtils.getTimeText(checkIn.getTimeAdded()));
         mDescription.setText(header);
 
-        mDishTaggerAdapter = new DishTaggerAdapter(this, checkIn, mTagButton);
-        mDishes.setAdapter(mDishTaggerAdapter);
+        if (checkIn.getTaggedDishes().isEmpty() &&
+            DatabaseManager.get().getDishesDBManager().getTaggingSuggestions(checkIn).isEmpty()) {
+            mDishes.setVisibility(View.GONE);
+
+            String tagMessage = String.format(getString(R.string.tag_with_number), 0);
+            mTagButton.setText(tagMessage);
+        } else {
+            mNoDishes.setVisibility(View.GONE);
+            mDishTaggerAdapter = new DishTaggerAdapter(this, checkIn, mTagButton);
+            mDishes.setAdapter(mDishTaggerAdapter);
+        }
     }
 
     @OnClick(R.id.tag)
     public void tagDishes() {
         Intent intent = new Intent();
-        ArrayList<Dish> taggedDishes = mDishTaggerAdapter.getChosenDishes();
-        intent.putParcelableArrayListExtra(DISHES_KEY, taggedDishes);
+        if (mDishTaggerAdapter != null) {
+            ArrayList<Dish> taggedDishes = mDishTaggerAdapter.getChosenDishes();
+            intent.putParcelableArrayListExtra(DISHES_KEY, taggedDishes);
+        } else {
+            intent.putParcelableArrayListExtra(DISHES_KEY, new ArrayList<Parcelable>());
+        }
         setResult(RESULT_OK, intent);
         finish();
     }

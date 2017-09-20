@@ -69,6 +69,7 @@ public class CheckInsAdapter extends BaseAdapter {
         @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
         @BindView(R.id.restaurant_name) TextView mRestaurantName;
         @BindView(R.id.check_in_date) TextView mCheckInDate;
+        @BindView(R.id.num_dishes) TextView numDishes;
         @BindView(R.id.check_in_message) TextView mCheckInMessage;
 
         public CheckInViewHolder(View view) {
@@ -79,7 +80,6 @@ public class CheckInsAdapter extends BaseAdapter {
             CheckIn checkIn = getItem(position);
 
             Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(checkIn.getRestaurantId());
-
             Drawable defaultThumbnail = new IconDrawable(
                     mContext,
                     IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
@@ -96,6 +96,10 @@ public class CheckInsAdapter extends BaseAdapter {
             mRestaurantName.setText(restaurant.getName());
 
             mCheckInDate.setText(TimeUtils.getTimeText(checkIn.getTimeAdded()));
+            numDishes.setText(checkIn.getTaggedDishes().size() == 1
+                    ? mContext.getString(R.string.one_dish)
+                    : String.format(mContext.getString(R.string.num_dishes), checkIn.getTaggedDishes().size()));
+
             if (checkIn.getMessage().isEmpty()) {
                 mCheckInMessage.setVisibility(View.GONE);
             } else {

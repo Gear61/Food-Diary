@@ -30,6 +30,7 @@ import com.randomappsinc.foodjournal.views.DateTimeAdder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +68,7 @@ public class CheckInFormActivity extends StandardActivity {
     private boolean mAdderMode;
     private DateTimeAdder mDateTimeAdder;
     private DishGalleryAdapter mDishGalleryAdapter;
+    private List<Dish> mOriginallyTaggedDishes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +119,7 @@ public class CheckInFormActivity extends StandardActivity {
         mDishGalleryAdapter = new DishGalleryAdapter(this);
         mDishGalleryAdapter.setDishes(mCheckIn.getTaggedDishes());
         mTaggedDishes.setAdapter(mDishGalleryAdapter);
+        mOriginallyTaggedDishes = mCheckIn.getTaggedDishes();
     }
 
     private void loadRestaurantInfo(Restaurant restaurant) {
@@ -165,7 +168,6 @@ public class CheckInFormActivity extends StandardActivity {
                 loadRestaurantInfo(restaurant);
                 break;
             case DISH_TAGGING_CODE:
-                UIUtils.showSnackbar(mParent, getString(R.string.tag_dish_save_reminder));
                 ArrayList<Dish> dishes = data.getParcelableArrayListExtra(DishTaggerActivity.DISHES_KEY);
                 mCheckIn.setTaggedDishes(dishes);
                 mDishGalleryAdapter.setDishes(mCheckIn.getTaggedDishes());
@@ -203,6 +205,18 @@ public class CheckInFormActivity extends StandardActivity {
             setResult(CheckInsFragment.ADDED_RESULT);
         } else {
             DatabaseManager.get().getCheckInsDBManager().updateCheckIn(mCheckIn);
+
+            List<Dish> dishesToUntag = new ArrayList<>();
+            // Untag dishes that were originally in the check-in but now aren't
+            for (Dish originallyTaggedDish : mOriginallyTaggedDishes) {
+                if (!mCheckIn.getTaggedDishes().contains(originallyTaggedDish)) {
+                    dishesToUntag.add(originallyTaggedDish);
+                }
+            }
+            if (!dishesToUntag.isEmpty()) {
+                DatabaseManager.get().getDishesDBManager().untagDishes(dishesToUntag);
+            }
+
             setResult(CheckInsFragment.EDITED_RESULT);
         }
         finish();

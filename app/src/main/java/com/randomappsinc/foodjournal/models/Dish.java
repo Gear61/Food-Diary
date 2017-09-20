@@ -21,6 +21,7 @@ public class Dish implements Parcelable {
     private long mTimeLastUpdated;
     private String mRestaurantId;
     private String mRestaurantName;
+    private int mCheckInId;
 
     public Dish() {}
 
@@ -72,12 +73,8 @@ public class Dish implements Parcelable {
         mTimeAdded = timeAdded;
     }
 
-    public long getTimeLastUpdated() {
-        return mTimeLastUpdated;
-    }
-
     public void setTimeLastUpdated(long timeLastUpdated) {
-        mTimeLastUpdated = mTimeLastUpdated;
+        mTimeLastUpdated = timeLastUpdated;
     }
 
     public String getRestaurantId() {
@@ -88,12 +85,16 @@ public class Dish implements Parcelable {
         mRestaurantId = restaurantId;
     }
 
-    public String getRestaurantName() {
-        return mRestaurantName;
-    }
-
     public void setRestaurantName(String restaurantName) {
         mRestaurantName = restaurantName;
+    }
+
+    public int getCheckInId() {
+        return mCheckInId;
+    }
+
+    public void setCheckInId(int checkInId) {
+        mCheckInId = checkInId;
     }
 
     @SuppressWarnings("deprecation")
@@ -132,6 +133,7 @@ public class Dish implements Parcelable {
         dishDO.setTimeLastUpdated(mTimeLastUpdated);
         dishDO.setRestaurantId(mRestaurantId);
         dishDO.setRestaurantName(mRestaurantName);
+        dishDO.setCheckInId(mCheckInId);
         return dishDO;
     }
 
@@ -145,6 +147,7 @@ public class Dish implements Parcelable {
         mTimeLastUpdated = in.readLong();
         mRestaurantId = in.readString();
         mRestaurantName = in.readString();
+        mCheckInId = in.readInt();
     }
 
     @Override
@@ -175,6 +178,7 @@ public class Dish implements Parcelable {
         dest.writeLong(mTimeLastUpdated);
         dest.writeString(mRestaurantId);
         dest.writeString(mRestaurantName);
+        dest.writeInt(mCheckInId);
     }
 
     @SuppressWarnings("unused")

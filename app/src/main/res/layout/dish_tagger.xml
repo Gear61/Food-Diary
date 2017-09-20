@@ -28,4 +28,12 @@
         android:layout_above="@id/tag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/no_dishes"
+        android:text="@string/no_dishes_to_tag"
+        android:textSize="25dp"
+        android:layout_below="@id/description"
+        android:layout_above="@id/tag"
+        style="@style/no_content"/>
 </RelativeLayout>

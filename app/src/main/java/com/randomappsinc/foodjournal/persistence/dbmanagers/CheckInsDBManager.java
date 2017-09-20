@@ -1,7 +1,9 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
 import com.randomappsinc.foodjournal.models.CheckIn;
+import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DBConverter;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 
@@ -59,6 +61,11 @@ public class CheckInsDBManager {
     }
 
     public void updateCheckIn(final CheckIn checkIn) {
+        // Need to update DishDOs because their check in ID could have changed
+        for (Dish taggedDish : checkIn.getTaggedDishes()) {
+            DatabaseManager.get().getDishesDBManager().updateDish(taggedDish);
+        }
+
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {

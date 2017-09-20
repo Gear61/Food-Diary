@@ -32,7 +32,5 @@
     </string>
     <string name="tag_dishes">Tag Dishes</string>
     <string name="tag_with_number">Tag (%d)</string>
-    <string name="tag_dish_save_reminder">
-        Remember to save to finalize your dish tagging.
-    </string>
+    <string name="no_dishes_to_tag">No dishes to display.</string>
 </resources>

@@ -85,7 +85,7 @@ public class DishesDBManager {
     public List<Dish> getAllDishes() {
         List<DishDO> dishDOs = getRealm()
                 .where(DishDO.class)
-                .findAllSorted("timeLastUpdated", Sort.DESCENDING);
+                .findAllSorted("timeAdded", Sort.DESCENDING);
 
         List<Dish> dishes = new ArrayList<>();
         for (DishDO dishDO : dishDOs) {
@@ -168,5 +168,23 @@ public class DishesDBManager {
             dishes.add(DBConverter.getDishFromDO(dishDO));
         }
         return dishes;
+    }
+
+    public void untagDishes(final List<Dish> dishesToUntag) {
+        getRealm().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                for (Dish taggedDish : dishesToUntag) {
+                    DishDO dishDO = getRealm()
+                            .where(DishDO.class)
+                            .equalTo("id", taggedDish.getId())
+                            .findFirst();
+                    if (dishDO != null) {
+                        dishDO.setCheckInId(0);
+                        dishDO.setTimeLastUpdated(System.currentTimeMillis());
+                    }
+                }
+            }
+        });
     }
 }

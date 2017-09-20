@@ -55,6 +55,7 @@ public class DBConverter {
         dish.setTimeLastUpdated(dishDO.getTimeLastUpdated());
         dish.setRestaurantId(dishDO.getRestaurantId());
         dish.setRestaurantName(dishDO.getRestaurantName());
+        dish.setCheckInId(dishDO.getCheckInId());
         return dish;
     }
 

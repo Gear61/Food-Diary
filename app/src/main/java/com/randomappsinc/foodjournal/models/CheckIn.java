@@ -17,7 +17,7 @@ public class CheckIn implements Parcelable {
     private long mTimeAdded;
     private String mRestaurantId;
     private String mRestaurantName;
-    private ArrayList<Dish> mTaggedDishes;
+    private ArrayList<Dish> mTaggedDishes = new ArrayList<>();
 
     public CheckIn() {}
 
@@ -67,6 +67,9 @@ public class CheckIn implements Parcelable {
 
     public void setTaggedDishes(ArrayList<Dish> taggedDishes) {
         mTaggedDishes = taggedDishes;
+        for (Dish taggedDish : mTaggedDishes) {
+            taggedDish.setCheckInId(mCheckInId);
+        }
     }
 
     public CheckInDO toCheckInDO() {
