@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.adapters.DishGalleryAdapter;
 import com.randomappsinc.foodjournal.fragments.CheckInsFragment;
 import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.CheckIn;
@@ -58,11 +60,13 @@ public class CheckInFormActivity extends StandardActivity {
     @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
     @BindView(R.id.experience_input) EditText mExperienceInput;
     @BindView(R.id.date_input) TextView mDateTimeInput;
+    @BindView(R.id.tagged_dishes) RecyclerView mTaggedDishes;
 
     private CheckIn mCheckIn;
     private MaterialDialog mDeleteConfirmationDialog;
     private boolean mAdderMode;
     private DateTimeAdder mDateTimeAdder;
+    private DishGalleryAdapter mDishGalleryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +113,10 @@ public class CheckInFormActivity extends StandardActivity {
                     }
                 })
                 .build();
+
+        mDishGalleryAdapter = new DishGalleryAdapter(this);
+        mDishGalleryAdapter.setDishes(mCheckIn.getTaggedDishes());
+        mTaggedDishes.setAdapter(mDishGalleryAdapter);
     }
 
     private void loadRestaurantInfo(Restaurant restaurant) {
@@ -160,6 +168,7 @@ public class CheckInFormActivity extends StandardActivity {
                 UIUtils.showSnackbar(mParent, getString(R.string.tag_dish_save_reminder));
                 ArrayList<Dish> dishes = data.getParcelableArrayListExtra(DishTaggerActivity.DISHES_KEY);
                 mCheckIn.setTaggedDishes(dishes);
+                mDishGalleryAdapter.setDishes(mCheckIn.getTaggedDishes());
                 break;
         }
     }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    tools:ignore="ContentDescription"
+    android:id="@+id/tag_dish"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_marginTop="0dp"
+    card_view:contentPadding="0dp"
+    style="@style/form_card">
+
+    <ImageView
+        android:id="@+id/dish_picture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</android.support.v7.widget.CardView>

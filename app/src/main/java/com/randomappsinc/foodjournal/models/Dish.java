@@ -148,6 +148,18 @@ public class Dish implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object dish) {
+        if (dish == null || !(dish instanceof Dish)) {
+            return false;
+        }
+        if (dish == this) {
+            return true;
+        }
+        Dish otherDish = (Dish) dish;
+        return mId == otherDish.getId();
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

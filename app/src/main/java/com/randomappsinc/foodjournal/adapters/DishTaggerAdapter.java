@@ -31,14 +31,22 @@ public class DishTaggerAdapter extends BaseAdapter {
 
     private ArrayList<Dish> mChosenDishes;
     private Context mContext;
-    private List<Dish> mDishes;
+    private List<Dish> mTaggingOptions;
     private Drawable mDefaultThumbnail;
     private Button mTagButton;
 
     public DishTaggerAdapter(Context context, CheckIn checkIn, Button tagButton) {
         mChosenDishes = checkIn.getTaggedDishes();
         mContext = context;
-        mDishes = DatabaseManager.get().getDishesDBManager().getTaggingSuggestions(checkIn);
+        mTaggingOptions = DatabaseManager.get().getDishesDBManager().getTaggingSuggestions(checkIn);
+
+        // Append dishes that are already officially tagged and therefore aren't returned by the DB
+        for (Dish alreadyChosen : mChosenDishes) {
+            if (!mTaggingOptions.contains(alreadyChosen)) {
+                mTaggingOptions.add(alreadyChosen);
+            }
+        }
+
         mDefaultThumbnail = new IconDrawable(context, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         mTagButton = tagButton;
 
@@ -56,12 +64,12 @@ public class DishTaggerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mDishes.size();
+        return mTaggingOptions.size();
     }
 
     @Override
     public Dish getItem(int position) {
-        return mDishes.get(position);
+        return mTaggingOptions.get(position);
     }
 
     @Override
