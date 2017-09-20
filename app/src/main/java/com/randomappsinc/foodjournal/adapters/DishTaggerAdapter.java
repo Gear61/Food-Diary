@@ -36,11 +36,18 @@ public class DishTaggerAdapter extends BaseAdapter {
     private Button mTagButton;
 
     public DishTaggerAdapter(Context context, CheckIn checkIn, Button tagButton) {
-        mChosenDishes = new ArrayList<>();
+        mChosenDishes = checkIn.getTaggedDishes();
         mContext = context;
         mDishes = DatabaseManager.get().getDishesDBManager().getTaggingSuggestions(checkIn);
         mDefaultThumbnail = new IconDrawable(context, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         mTagButton = tagButton;
+
+        refreshTagButtonText();
+    }
+
+    public void refreshTagButtonText() {
+        String tagMessage = String.format(mContext.getString(R.string.tag_with_number), mChosenDishes.size());
+        mTagButton.setText(tagMessage);
     }
 
     public ArrayList<Dish> getChosenDishes() {
@@ -110,8 +117,7 @@ public class DishTaggerAdapter extends BaseAdapter {
             } else {
                 mChosenDishes.remove(getItem(mPosition));
             }
-            String tagMessage = String.format(mContext.getString(R.string.tag_with_number), mChosenDishes.size());
-            mTagButton.setText(tagMessage);
+            refreshTagButtonText();
         }
 
         @OnClick(R.id.dish_checkbox)
@@ -122,8 +128,7 @@ public class DishTaggerAdapter extends BaseAdapter {
             } else {
                 mChosenDishes.remove(getItem(mPosition));
             }
-            String tagMessage = String.format(mContext.getString(R.string.tag_with_number), mChosenDishes.size());
-            mTagButton.setText(tagMessage);
+            refreshTagButtonText();
         }
     }
 

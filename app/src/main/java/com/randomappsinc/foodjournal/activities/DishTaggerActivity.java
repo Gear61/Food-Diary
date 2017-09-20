@@ -1,5 +1,6 @@
 package com.randomappsinc.foodjournal.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DishTaggerActivity extends StandardActivity {
+
+    public static final String DISHES_KEY = "dishes";
 
     @BindView(R.id.description) TextView mDescription;
     @BindView(R.id.dishes) ListView mDishes;
@@ -46,6 +49,10 @@ public class DishTaggerActivity extends StandardActivity {
 
     @OnClick(R.id.tag)
     public void tagDishes() {
+        Intent intent = new Intent();
         ArrayList<Dish> taggedDishes = mDishTaggerAdapter.getChosenDishes();
+        intent.putParcelableArrayListExtra(DISHES_KEY, taggedDishes);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

@@ -32,4 +32,7 @@
     </string>
     <string name="tag_dish">Tag Dish</string>
     <string name="tag_with_number">Tag (%d)</string>
+    <string name="tag_dish_save_reminder">
+        Remember to save to finalize your dish tagging.
+    </string>
 </resources>

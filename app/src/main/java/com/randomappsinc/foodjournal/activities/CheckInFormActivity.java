@@ -19,6 +19,7 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.CheckInsFragment;
 import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.CheckIn;
+import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
@@ -26,11 +27,16 @@ import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DateTimeAdder;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class CheckInFormActivity extends StandardActivity {
+
+    private static final int RESTAURANT_CODE = 1;
+    private static final int DISH_TAGGING_CODE = 2;
 
     public static final String ADDER_MODE_KEY = "adderMode";
     public static final String RESTAURANT_ID_KEY = "restaurantId";
@@ -133,17 +139,28 @@ public class CheckInFormActivity extends StandardActivity {
         boolean noRestaurants = DatabaseManager.get().getRestaurantsDBManager().getNumUserRestaurants() == 0;
         Intent intent = new Intent(this, noRestaurants ? FindRestaurantActivity.class : RestaurantsActivity.class);
         intent.putExtra(RestaurantsActivity.PICKER_MODE_KEY, true);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, RESTAURANT_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            Restaurant restaurant = data.getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
-            mCheckIn.setRestaurantId(restaurant.getId());
-            mCheckIn.setRestaurantName(restaurant.getName());
-            loadRestaurantInfo(restaurant);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        switch (requestCode) {
+            case RESTAURANT_CODE:
+                Restaurant restaurant = data.getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
+                mCheckIn.setRestaurantId(restaurant.getId());
+                mCheckIn.setRestaurantName(restaurant.getName());
+                loadRestaurantInfo(restaurant);
+                break;
+            case DISH_TAGGING_CODE:
+                UIUtils.showSnackbar(mParent, getString(R.string.tag_dish_save_reminder));
+                ArrayList<Dish> dishes = data.getParcelableArrayListExtra(DishTaggerActivity.DISHES_KEY);
+                mCheckIn.setTaggedDishes(dishes);
+                break;
         }
     }
 
@@ -161,7 +178,7 @@ public class CheckInFormActivity extends StandardActivity {
 
         Intent intent = new Intent(this, DishTaggerActivity.class);
         intent.putExtra(CHECK_IN_KEY, mCheckIn);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, DISH_TAGGING_CODE);
     }
 
     @OnClick(R.id.save)
