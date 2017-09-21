@@ -157,13 +157,14 @@ public class DishesDBManager {
                 .where(DishDO.class)
                 .equalTo("restaurantId", checkIn.getRestaurantId())
                 .beginGroup()
-                    .equalTo("checkInId", 0)
+                    .beginGroup()
+                        .equalTo("checkInId", 0)
+                        .lessThanOrEqualTo("timeAdded", checkIn.getTimeAdded() + TimeUtils.MILLIS_IN_A_DAY)
+                        .greaterThanOrEqualTo("timeAdded", checkIn.getTimeAdded() - TimeUtils.MILLIS_IN_A_DAY)
+                    .endGroup()
                     .or()
                     .equalTo("checkInId", checkIn.getCheckInId())
-                .beginGroup()
-                    .lessThanOrEqualTo("timeAdded", checkIn.getTimeAdded() + TimeUtils.MILLIS_IN_A_DAY)
-                    .or()
-                    .greaterThanOrEqualTo("timeAdded", checkIn.getTimeAdded() - TimeUtils.MILLIS_IN_A_DAY)
+                .endGroup()
                 .findAllSorted("timeAdded", Sort.DESCENDING);
 
         List<Dish> dishes = new ArrayList<>();

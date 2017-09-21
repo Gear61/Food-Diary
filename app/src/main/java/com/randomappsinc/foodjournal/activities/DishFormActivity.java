@@ -76,7 +76,7 @@ public class DishFormActivity extends StandardActivity {
         mDateTimeAdder = new DateTimeAdder(getFragmentManager(), mDateTimeListener);
         mLeaveDialog = new MaterialDialog.Builder(this)
                 .title(R.string.confirm_dish_exit)
-                .content(R.string.confirm_leaving_dish_form)
+                .content(R.string.confirm_form_exit)
                 .negativeText(android.R.string.no)
                 .positiveText(R.string.yes)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -223,6 +223,11 @@ public class DishFormActivity extends StandardActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        mLeaveDialog.show();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNewDishMode) {
             getMenuInflater().inflate(R.menu.content_menu, menu);
@@ -235,12 +240,8 @@ public class DishFormActivity extends StandardActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (mNewDishMode) {
-                    mLeaveDialog.show();
-                    return true;
-                } else {
-                    return super.onOptionsItemSelected(item);
-                }
+                mLeaveDialog.show();
+                return true;
             case R.id.delete:
                 mDeleteConfirmationDialog.show();
                 return true;

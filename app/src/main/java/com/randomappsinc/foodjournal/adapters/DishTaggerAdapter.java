@@ -45,7 +45,7 @@ public class DishTaggerAdapter extends BaseAdapter {
         refreshTagButtonText();
     }
 
-    public void refreshTagButtonText() {
+    private void refreshTagButtonText() {
         String tagMessage = String.format(mContext.getString(R.string.tag_with_number), mChosenDishes.size());
         mTagButton.setText(tagMessage);
     }

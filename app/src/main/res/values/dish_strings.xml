@@ -15,9 +15,6 @@
     <string name="dish_restaurant_needed">Please tell us where you ate this dish.</string>
 
     <string name="confirm_dish_exit">Confirm Dish Form Exit</string>
-    <string name="confirm_leaving_dish_form">
-        Are you sure you want to leave? All of your progress will be lost.
-    </string>
 
     <string name="no_dishes">
         Hit the {ion-android-add} in the bottom right to add your first dish!

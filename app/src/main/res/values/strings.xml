@@ -32,4 +32,8 @@
     <string name="filter">Filter</string>
 
     <string name="add_icon">{ion-android-add}</string>
+
+    <string name="confirm_form_exit">
+        Are you sure you want to leave? Any unsaved changes will be lost.
+    </string>
 </resources>
