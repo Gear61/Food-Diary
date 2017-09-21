@@ -99,5 +99,11 @@
             android:label="@string/dish_tagger"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".activities.FullPictureActivity"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>

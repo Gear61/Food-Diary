@@ -22,6 +22,7 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
+import com.randomappsinc.foodjournal.activities.FullPictureActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.DishesAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
@@ -107,10 +108,10 @@ public class DishesFragment extends Fragment {
     @OnItemClick(R.id.dishes)
     public void onDishSelected(int position) {
         Dish dish = mDishesAdapter.getItem(position);
-        Intent editDish = new Intent(getActivity(), DishFormActivity.class);
-        editDish.putExtra(DishFormActivity.NEW_DISH_KEY, false);
-        editDish.putExtra(DishFormActivity.DISH_KEY, dish);
-        startActivityForResult(editDish, DISH_FORM_EDIT);
+        Intent intent = new Intent(getActivity(), FullPictureActivity.class);
+        intent.putExtra(FullPictureActivity.IMAGE_URI_KEY, dish.getUriString());
+        startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     @OnClick({R.id.from_camera, R.id.from_files})

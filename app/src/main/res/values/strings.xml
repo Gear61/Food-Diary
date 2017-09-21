@@ -36,4 +36,5 @@
     <string name="confirm_form_exit">
         Are you sure you want to leave? Any unsaved changes will be lost.
     </string>
+    <string name="image_load_fail">Failed to load image.</string>
 </resources>
