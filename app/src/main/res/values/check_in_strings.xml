@@ -16,4 +16,6 @@
 
     <string name="check_in_delete_title">Confirm Check-In Deletion</string>
     <string name="check_in_delete_content">Are you sure you want to delete this check-in?</string>
+
+    <string name="confirm_check_in_exit">Confirm Check-In Form Exit</string>
 </resources>

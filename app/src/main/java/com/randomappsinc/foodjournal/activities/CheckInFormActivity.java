@@ -65,6 +65,7 @@ public class CheckInFormActivity extends StandardActivity {
 
     private CheckIn mCheckIn;
     private MaterialDialog mDeleteConfirmationDialog;
+    private MaterialDialog mLeaveDialog;
     private boolean mAdderMode;
     private DateTimeAdder mDateTimeAdder;
     private DishGalleryAdapter mDishGalleryAdapter;
@@ -111,6 +112,19 @@ public class CheckInFormActivity extends StandardActivity {
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         DatabaseManager.get().getCheckInsDBManager().deleteCheckIn(mCheckIn);
                         setResult(CheckInsFragment.DELETED_RESULT);
+                        finish();
+                    }
+                })
+                .build();
+
+        mLeaveDialog = new MaterialDialog.Builder(this)
+                .title(R.string.confirm_check_in_exit)
+                .content(R.string.confirm_form_exit)
+                .negativeText(android.R.string.no)
+                .positiveText(R.string.yes)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         finish();
                     }
                 })
@@ -222,6 +236,21 @@ public class CheckInFormActivity extends StandardActivity {
         finish();
     }
 
+    public boolean showConfirmExitDialog() {
+        if (mCheckIn.getRestaurantId() == null && mExperienceInput.getText().toString().trim().isEmpty()) {
+            return false;
+        }
+        mLeaveDialog.show();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!showConfirmExitDialog()) {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mAdderMode) {
@@ -234,10 +263,13 @@ public class CheckInFormActivity extends StandardActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                return showConfirmExitDialog() || super.onOptionsItemSelected(item);
             case R.id.delete:
                 mDeleteConfirmationDialog.show();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }
