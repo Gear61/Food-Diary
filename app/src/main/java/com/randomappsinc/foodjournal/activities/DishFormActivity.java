@@ -21,6 +21,7 @@ import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DateTimeAdder;
@@ -115,10 +116,16 @@ public class DishFormActivity extends StandardActivity {
             mDish.setUriString(pictureUri);
 
             mRestaurant = getIntent().getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
-            // From the app activity_main
+            // From the homepage's dishes feed
             if (mRestaurant == null) {
-                mRestaurantInfo.setVisibility(View.INVISIBLE);
-                mChooseRestaurantPrompt.setVisibility(View.VISIBLE);
+                Restaurant autoFill = CheckInsDBManager.get().getAutoFillRestaurant();
+                if (autoFill == null) {
+                    mRestaurantInfo.setVisibility(View.INVISIBLE);
+                    mChooseRestaurantPrompt.setVisibility(View.VISIBLE);
+                } else {
+                    mRestaurant = autoFill;
+                    loadRestaurantInfo();
+                }
             }
             // From a restaurant's dishes feed
             else {

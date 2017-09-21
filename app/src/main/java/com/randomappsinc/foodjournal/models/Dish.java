@@ -3,8 +3,6 @@ package com.randomappsinc.foodjournal.models;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.Html;
-import android.text.Spanned;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;

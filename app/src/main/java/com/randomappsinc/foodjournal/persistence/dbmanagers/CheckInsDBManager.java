@@ -2,10 +2,12 @@ package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DBConverter;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
+import com.randomappsinc.foodjournal.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,5 +117,22 @@ public class CheckInsDBManager {
             checkIns.add(DBConverter.getCheckInFromDO(checkInDO));
         }
         return checkIns;
+    }
+
+    public Restaurant getAutoFillRestaurant() {
+        RealmResults<CheckInDO> checkInDOs = getRealm()
+                .where(CheckInDO.class)
+                // Before now
+                .lessThan("timeAdded", System.currentTimeMillis())
+                // Less than 30 minutes ago
+                .greaterThanOrEqualTo("timeAdded", System.currentTimeMillis() - TimeUtils.MILLIS_IN_30_MINUTES)
+                // Get most recent check-in
+                .findAllSorted("timeAdded", Sort.DESCENDING);
+        if (checkInDOs.isEmpty()) {
+            return null;
+        } else {
+            CheckInDO checkInDO = checkInDOs.first();
+            return DatabaseManager.get().getRestaurantsDBManager().getRestaurant(checkInDO.getRestaurantId());
+        }
     }
 }
