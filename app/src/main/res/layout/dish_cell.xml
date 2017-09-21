@@ -12,14 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dish_cell_extra_top_margin"
-        android:padding="@dimen/dish_cell_spacing"
+        android:layout_marginLeft="@dimen/default_cell_padding"
+        android:layout_marginRight="@dimen/default_cell_padding"
         android:gravity="center_vertical"
-        android:textColor="@color/dark_gray"
+        android:textColor="@color/black"
         android:textSize="21dp"/>
+
+    <TextView
+        android:id="@+id/dish_date"
+        android:layout_below="@id/dish_info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_cell_padding"
+        android:layout_marginRight="@dimen/default_cell_padding"
+        android:singleLine="true"
+        android:textColor="@color/dark_gray"
+        android:textSize="15dp"/>
 
     <ImageView
         android:id="@+id/dish_picture"
-        android:layout_below="@id/dish_info_text"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/dish_date"
         android:layout_height="0dp"
         android:layout_width="0dp"
         app:layout_aspectRatio="100%"

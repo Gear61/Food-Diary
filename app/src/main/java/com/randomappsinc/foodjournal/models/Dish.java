@@ -97,10 +97,9 @@ public class Dish implements Parcelable {
         mCheckInId = checkInId;
     }
 
-    @SuppressWarnings("deprecation")
-    public Spanned getDishInfoText() {
-        String dishText = "<b>" + mTitle + "</b> from <b>" + mRestaurantName + "</b>";
-        return Html.fromHtml(dishText);
+    public String getDishInfoText() {
+        String template = MyApplication.getAppContext().getString(R.string.dish_title);
+        return String.format(template, mTitle, mRestaurantName);
     }
 
     public String getRatingText() {

@@ -14,6 +14,7 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -67,6 +68,7 @@ public class DishesAdapter extends BaseAdapter {
     public class DishViewHolder {
 
         @BindView(R.id.dish_info_text) TextView mDishInfoText;
+        @BindView(R.id.dish_date) TextView mDishDate;
         @BindView(R.id.dish_rating_text) TextView mDishRatingText;
         @BindView(R.id.dish_picture) ImageView mDishPicture;
         @BindView(R.id.dish_description) TextView mDishDescription;
@@ -79,6 +81,7 @@ public class DishesAdapter extends BaseAdapter {
             Dish dish = getItem(position);
 
             mDishInfoText.setText(dish.getDishInfoText());
+            mDishDate.setText(TimeUtils.getTimeText(dish.getTimeAdded()));
 
             if (dish.getRating() > 0) {
                 mDishRatingText.setText(dish.getRatingText());
