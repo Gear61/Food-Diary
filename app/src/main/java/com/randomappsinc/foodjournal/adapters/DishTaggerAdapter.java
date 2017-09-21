@@ -39,14 +39,6 @@ public class DishTaggerAdapter extends BaseAdapter {
         mChosenDishes = checkIn.getTaggedDishes();
         mContext = context;
         mTaggingOptions = DatabaseManager.get().getDishesDBManager().getTaggingSuggestions(checkIn);
-
-        // Append dishes that are already officially tagged and therefore aren't returned by the DB
-        for (Dish alreadyChosen : mChosenDishes) {
-            if (!mTaggingOptions.contains(alreadyChosen)) {
-                mTaggingOptions.add(alreadyChosen);
-            }
-        }
-
         mDefaultThumbnail = new IconDrawable(context, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         mTagButton = tagButton;
 
