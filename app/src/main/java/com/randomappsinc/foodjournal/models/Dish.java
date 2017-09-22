@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
 import com.randomappsinc.foodjournal.utils.MyApplication;
+import com.randomappsinc.foodjournal.utils.TextUtils;
 
 public class Dish implements Parcelable {
 
@@ -22,6 +23,19 @@ public class Dish implements Parcelable {
     private int mCheckInId;
 
     public Dish() {}
+
+    public Dish(Dish other) {
+        mId = other.getId();
+        mUriString = other.getUriString();
+        mTitle = other.getTitle();
+        mRating = other.getRating();
+        mDescription = other.getDescription();
+        mTimeAdded = other.getTimeAdded();
+        mTimeLastUpdated = other.getTimeLastUpdated();
+        mRestaurantId = other.getRestaurantId();
+        mRestaurantName = other.getRestaurantName();
+        mCheckInId = other.getCheckInId();
+    }
 
     public int getId() {
         return mId;
@@ -71,6 +85,10 @@ public class Dish implements Parcelable {
         mTimeAdded = timeAdded;
     }
 
+    public long getTimeLastUpdated() {
+        return mTimeLastUpdated;
+    }
+
     public void setTimeLastUpdated(long timeLastUpdated) {
         mTimeLastUpdated = timeLastUpdated;
     }
@@ -81,6 +99,10 @@ public class Dish implements Parcelable {
 
     public void setRestaurantId(String restaurantId) {
         mRestaurantId = restaurantId;
+    }
+
+    public String getRestaurantName() {
+        return mRestaurantName;
     }
 
     public void setRestaurantName(String restaurantName) {
@@ -132,6 +154,15 @@ public class Dish implements Parcelable {
         dishDO.setRestaurantName(mRestaurantName);
         dishDO.setCheckInId(mCheckInId);
         return dishDO;
+    }
+
+    /** As of now, title, rating, restaurant, time added, and description can change. */
+    public boolean hasChangedInForm(Dish other) {
+        return !(TextUtils.compareStrings(mTitle, other.getTitle())
+                && mRating == other.getRating()
+                && TextUtils.compareStrings(mRestaurantId, other.getRestaurantId())
+                && mTimeAdded == other.getTimeAdded()
+                && TextUtils.compareStrings(mDescription, other.getDescription()));
     }
 
     protected Dish(Parcel in) {

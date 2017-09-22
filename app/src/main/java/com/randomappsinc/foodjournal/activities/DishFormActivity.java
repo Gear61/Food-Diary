@@ -58,6 +58,7 @@ public class DishFormActivity extends StandardActivity {
     @BindView(R.id.dish_description_input) EditText mDishDescriptionInput;
 
     private Dish mDish;
+    private Dish mOriginalDish;
     private Restaurant mRestaurant;
     private RatingView mRatingView;
     private MaterialDialog mLeaveDialog;
@@ -122,6 +123,8 @@ public class DishFormActivity extends StandardActivity {
             loadDishInfo();
         }
 
+        mOriginalDish = new Dish(mDish);
+
         Picasso.with(this)
                 .load(mDish.getUriString())
                 .fit()
@@ -138,6 +141,9 @@ public class DishFormActivity extends StandardActivity {
     }
 
     private void loadRestaurantInfo() {
+        mDish.setRestaurantId(mRestaurant.getId());
+        mDish.setRestaurantName(mRestaurant.getName());
+
         Drawable defaultThumbnail = new IconDrawable(
                 this,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
@@ -182,9 +188,14 @@ public class DishFormActivity extends StandardActivity {
         }
     }
 
+    private void loadFormIntoDish() {
+        mDish.setTitle(mDishNameInput.getText().toString().trim());
+        mDish.setRating(mRatingView.getRating());
+        mDish.setDescription(mDishDescriptionInput.getText().toString().trim());
+    }
+
     @OnClick(R.id.save)
     public void saveDish() {
-        int rating = mRatingView.getRating();
         String title = mDishNameInput.getText().toString().trim();
 
         if (title.isEmpty()) {
@@ -196,11 +207,7 @@ public class DishFormActivity extends StandardActivity {
             return;
         }
 
-        mDish.setTitle(title);
-        mDish.setRating(rating);
-        mDish.setDescription(mDishDescriptionInput.getText().toString().trim());
-        mDish.setRestaurantId(mRestaurant.getId());
-        mDish.setRestaurantName(mRestaurant.getName());
+        loadFormIntoDish();
 
         if (mNewDishMode) {
             DatabaseManager.get().getDishesDBManager().addDish(mDish);
@@ -212,17 +219,31 @@ public class DishFormActivity extends StandardActivity {
         finish();
     }
 
+    /** Return true if the confirm exit dialog is shown */
+    public boolean confirmExit() {
+        loadFormIntoDish();
+        if (mNewDishMode || mDish.hasChangedInForm(mOriginalDish)) {
+            mLeaveDialog.show();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        mLeaveDialog.show();
+        if (!confirmExit()) {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                mLeaveDialog.show();
-                return true;
+                if (confirmExit()) {
+                    return true;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
