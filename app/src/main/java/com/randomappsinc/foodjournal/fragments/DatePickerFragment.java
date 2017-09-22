@@ -16,7 +16,17 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         long getCurrentTime();
     }
 
-    private Listener mListener;
+    private final Listener DUMMY_LISTENER = new Listener() {
+        @Override
+        public void onDateChosen(int year, int month, int day) {}
+
+        @Override
+        public long getCurrentTime() {
+            return 0;
+        }
+    };
+
+    private Listener mListener = DUMMY_LISTENER;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,7 +41,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     public void setListener(Listener listener) {
-        mListener = listener;
+        mListener = (listener == null) ? DUMMY_LISTENER : listener;
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {

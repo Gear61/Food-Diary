@@ -22,7 +22,6 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
-import com.randomappsinc.foodjournal.activities.FullPictureActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.DishesAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
@@ -39,7 +38,6 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 import butterknife.Unbinder;
 
 public class DishesFragment extends Fragment {
@@ -58,7 +56,6 @@ public class DishesFragment extends Fragment {
     // Result codes
     public static final int DISH_ADDED = 1;
     public static final int DISH_EDITED = 2;
-    public static final int DISH_DELETED = 3;
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.dishes) ListView mDishesList;
@@ -99,19 +96,17 @@ public class DishesFragment extends Fragment {
             mRestaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(restaurantId);
         }
 
-        mDishesAdapter = new DishesAdapter(getActivity(), noDishes, restaurantId);
+        mDishesAdapter = new DishesAdapter(this, noDishes, restaurantId);
         mDishesList.setAdapter(mDishesAdapter);
 
         return rootView;
     }
 
-    @OnItemClick(R.id.dishes)
-    public void onDishSelected(int position) {
-        Dish dish = mDishesAdapter.getItem(position);
-        Intent intent = new Intent(getActivity(), FullPictureActivity.class);
-        intent.putExtra(FullPictureActivity.IMAGE_URI_KEY, dish.getUriString());
-        startActivity(intent);
-        getActivity().overridePendingTransition(0, 0);
+    public void editDish(Dish dish) {
+        Intent intent = new Intent(getActivity(), DishFormActivity.class);
+        intent.putExtra(DishFormActivity.NEW_DISH_KEY, false);
+        intent.putExtra(DishFormActivity.DISH_KEY, dish);
+        startActivityForResult(intent, DishesFragment.DISH_FORM_EDIT);
     }
 
     @OnClick({R.id.from_camera, R.id.from_files})
@@ -216,10 +211,10 @@ public class DishesFragment extends Fragment {
             mTakenPhotoFile.delete();
         }
 
-        if (resultCode == DISH_ADDED || resultCode == DISH_EDITED || resultCode == DISH_DELETED) {
+        if (resultCode == DISH_ADDED || resultCode == DISH_EDITED) {
             mDishesAdapter.resyncWithDB();
 
-            if (resultCode == DISH_ADDED || resultCode == DISH_EDITED) {
+            if (resultCode == DISH_ADDED) {
                 mDishesList.setSelectionAfterHeaderView();
             }
         }

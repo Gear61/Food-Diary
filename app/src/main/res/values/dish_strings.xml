@@ -32,4 +32,11 @@
     <string name="no_dishes_to_tag">No dishes to display.</string>
 
     <string name="dish_title">%1$s from %2$s</string>
+
+    <string name="edit_dish">Edit dish</string>
+    <string name="delete_dish">Delete dish</string>
+    <string-array name="dish_options">
+        <item>@string/edit_dish</item>
+        <item>@string/delete_dish</item>
+    </string-array>
 </resources>

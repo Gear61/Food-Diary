@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -62,7 +61,6 @@ public class DishFormActivity extends StandardActivity {
     private Restaurant mRestaurant;
     private RatingView mRatingView;
     private MaterialDialog mLeaveDialog;
-    private MaterialDialog mDeleteConfirmationDialog;
     private DateTimeAdder mDateTimeAdder;
     private boolean mNewDishMode;
 
@@ -84,21 +82,6 @@ public class DishFormActivity extends StandardActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         setResult(RESULT_CANCELED);
-                        finish();
-                    }
-                })
-                .build();
-
-        mDeleteConfirmationDialog = new MaterialDialog.Builder(this)
-                .title(R.string.confirm_dish_delete_title)
-                .content(R.string.confirm_dish_delete)
-                .negativeText(android.R.string.no)
-                .positiveText(R.string.yes)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        DatabaseManager.get().getDishesDBManager().deleteDish(mDish);
-                        setResult(DishesFragment.DISH_DELETED);
                         finish();
                     }
                 })
@@ -235,22 +218,10 @@ public class DishFormActivity extends StandardActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNewDishMode) {
-            getMenuInflater().inflate(R.menu.content_menu, menu);
-            UIUtils.loadActionBarIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 mLeaveDialog.show();
-                return true;
-            case R.id.delete:
-                mDeleteConfirmationDialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

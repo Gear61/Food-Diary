@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.adapters;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.activities.FullPictureActivity;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.squareup.picasso.Picasso;
 
@@ -19,17 +21,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DishGalleryAdapter extends RecyclerView.Adapter<DishGalleryAdapter.DishThumbnailViewHolder> {
 
-    private Context mContext;
+    private Activity mActivity;
     private List<Dish> mDishes;
     private Drawable mDefaultThumbnail;
 
-    public DishGalleryAdapter(Context context) {
-        mContext = context;
+    public DishGalleryAdapter(Activity activity) {
+        mActivity = activity;
         mDishes = new ArrayList<>();
-        mDefaultThumbnail = new IconDrawable(context, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
+        mDefaultThumbnail = new IconDrawable(activity, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
     }
 
     public void setDishes(List<Dish> dishes) {
@@ -39,7 +42,7 @@ public class DishGalleryAdapter extends RecyclerView.Adapter<DishGalleryAdapter.
 
     @Override
     public DishThumbnailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(mContext).inflate(R.layout.dish_gallery_cell, parent, false);
+        View itemView = LayoutInflater.from(mActivity).inflate(R.layout.dish_gallery_cell, parent, false);
         return new DishThumbnailViewHolder(itemView);
     }
 
@@ -63,12 +66,21 @@ public class DishGalleryAdapter extends RecyclerView.Adapter<DishGalleryAdapter.
         }
 
         public void loadDish(int position) {
-            Picasso.with(mContext)
+            Picasso.with(mActivity)
                     .load(mDishes.get(position).getUriString())
                     .error(mDefaultThumbnail)
                     .fit()
                     .centerCrop()
                     .into(mDishPicture);
+        }
+
+        @OnClick(R.id.dish_picture)
+        public void onPictureClicked() {
+            Dish dish = mDishes.get(getAdapterPosition());
+            Intent intent = new Intent(mActivity, FullPictureActivity.class);
+            intent.putExtra(FullPictureActivity.IMAGE_URI_KEY, dish.getUriString());
+            mActivity.startActivity(intent);
+            mActivity.overridePendingTransition(0, 0);
         }
     }
 }

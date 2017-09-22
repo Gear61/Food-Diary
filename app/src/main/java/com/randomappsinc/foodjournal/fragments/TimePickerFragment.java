@@ -17,7 +17,17 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         long getCurrentTime();
     }
 
-    private TimePickerFragment.Listener mListener;
+    private final Listener DUMMY_LISTENER = new Listener() {
+        @Override
+        public void onTimeChosen(int hourOfDay, int minute) {}
+
+        @Override
+        public long getCurrentTime() {
+            return 0;
+        }
+    };
+
+    private TimePickerFragment.Listener mListener = DUMMY_LISTENER;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,7 +41,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     }
 
     public void setListener(Listener listener) {
-        mListener = listener;
+        mListener = (listener == null) ? DUMMY_LISTENER : listener;
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
