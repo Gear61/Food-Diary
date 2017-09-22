@@ -64,6 +64,7 @@ public class CheckInFormActivity extends StandardActivity {
     @BindView(R.id.tagged_dishes) RecyclerView mTaggedDishes;
 
     private CheckIn mCheckIn;
+    private CheckIn mOriginalCheckIn;
     private MaterialDialog mDeleteConfirmationDialog;
     private MaterialDialog mLeaveDialog;
     private boolean mAdderMode;
@@ -89,8 +90,6 @@ public class CheckInFormActivity extends StandardActivity {
             String restaurantId = getIntent().getStringExtra(RESTAURANT_ID_KEY);
             if (restaurantId != null) {
                 Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(restaurantId);
-                mCheckIn.setRestaurantId(restaurantId);
-                mCheckIn.setRestaurantName(restaurant.getName());
                 loadRestaurantInfo(restaurant);
             }
         } else {
@@ -99,6 +98,7 @@ public class CheckInFormActivity extends StandardActivity {
             loadRestaurantInfo(restaurant);
             mExperienceInput.setText(mCheckIn.getMessage());
         }
+        mOriginalCheckIn = new CheckIn(mCheckIn);
 
         mDateTimeInput.setText(TimeUtils.getTimeText(mCheckIn.getTimeAdded()));
 
@@ -137,6 +137,9 @@ public class CheckInFormActivity extends StandardActivity {
     }
 
     private void loadRestaurantInfo(Restaurant restaurant) {
+        mCheckIn.setRestaurantId(restaurant.getId());
+        mCheckIn.setRestaurantName(restaurant.getName());
+
         Drawable defaultThumbnail = new IconDrawable(
                 this,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
@@ -177,8 +180,6 @@ public class CheckInFormActivity extends StandardActivity {
         switch (requestCode) {
             case RESTAURANT_CODE:
                 Restaurant restaurant = data.getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
-                mCheckIn.setRestaurantId(restaurant.getId());
-                mCheckIn.setRestaurantName(restaurant.getName());
                 loadRestaurantInfo(restaurant);
                 break;
             case DISH_TAGGING_CODE:
@@ -237,11 +238,12 @@ public class CheckInFormActivity extends StandardActivity {
     }
 
     public boolean showConfirmExitDialog() {
-        if (mCheckIn.getRestaurantId() == null && mExperienceInput.getText().toString().trim().isEmpty()) {
-            return false;
+        mCheckIn.setMessage(mExperienceInput.getText().toString().trim());
+        if (mCheckIn.hasChangedFromForm(mOriginalCheckIn)) {
+            mLeaveDialog.show();
+            return true;
         }
-        mLeaveDialog.show();
-        return true;
+        return false;
     }
 
     @Override

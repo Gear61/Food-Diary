@@ -152,12 +152,13 @@ public class DishesDBManager {
         }
     }
 
+    // Return all dishes within 24 hours from the same restaurant alongside those already tagged
     public List<Dish> getTaggingSuggestions(CheckIn checkIn) {
         List<DishDO> dishDOs = getRealm()
                 .where(DishDO.class)
-                .equalTo("restaurantId", checkIn.getRestaurantId())
                 .beginGroup()
                     .beginGroup()
+                        .equalTo("restaurantId", checkIn.getRestaurantId())
                         .equalTo("checkInId", 0)
                         .lessThanOrEqualTo("timeAdded", checkIn.getTimeAdded() + TimeUtils.MILLIS_IN_A_DAY)
                         .greaterThanOrEqualTo("timeAdded", checkIn.getTimeAdded() - TimeUtils.MILLIS_IN_A_DAY)

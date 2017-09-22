@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
+import com.randomappsinc.foodjournal.utils.TextUtils;
 
 import java.util.ArrayList;
 
@@ -13,13 +14,22 @@ import io.realm.RealmList;
 public class CheckIn implements Parcelable {
 
     private int mCheckInId;
-    private String mMessage;
+    private String mMessage = "";
     private long mTimeAdded;
     private String mRestaurantId;
     private String mRestaurantName;
     private ArrayList<Dish> mTaggedDishes = new ArrayList<>();
 
     public CheckIn() {}
+
+    public CheckIn(CheckIn other) {
+        mCheckInId = other.getCheckInId();
+        mMessage = other.getMessage();
+        mTimeAdded = other.getTimeAdded();
+        mRestaurantId = other.getRestaurantId();
+        mRestaurantName = other.getRestaurantName();
+        mTaggedDishes = other.getTaggedDishes();
+    }
 
     public int getCheckInId() {
         return mCheckInId;
@@ -87,6 +97,28 @@ public class CheckIn implements Parcelable {
         checkInDO.setTaggedDishes(dishDOs);
 
         return checkInDO;
+    }
+
+    /** Restaurant, time added, experience, and tagged dishes can change */
+    public boolean hasChangedFromForm(CheckIn other) {
+        if (!TextUtils.compareStrings(mRestaurantId, other.getRestaurantId())) {
+            return true;
+        }
+        if (mTimeAdded != other.getTimeAdded()) {
+            return true;
+        }
+        if (!TextUtils.compareStrings(mMessage, other.getMessage())) {
+            return true;
+        }
+        if (mTaggedDishes.size() != other.getTaggedDishes().size()) {
+            return true;
+        }
+        for (int i = 0; i < mTaggedDishes.size(); i++) {
+            if (mTaggedDishes.get(i).getId() != other.getTaggedDishes().get(i).getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected CheckIn(Parcel in) {
