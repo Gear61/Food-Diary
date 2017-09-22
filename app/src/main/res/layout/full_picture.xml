@@ -2,31 +2,29 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:background="@color/theater_black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:alpha="0"
     tools:ignore="SpUsage, ContentDescription">
 
     <ImageView
         android:id="@+id/dish_picture"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0"/>
+        android:layout_height="match_parent"/>
 
-    <FrameLayout
-        android:id="@+id/toolbar"
-        android:background="@color/shadow_black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:alpha="0">
-
-        <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/close"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:gravity="center"
-            android:text="@string/close_icon"
-            android:textColor="@color/white"
-            android:textSize="32dp"/>
-    </FrameLayout>
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/close"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="top|start"
+        android:gravity="center"
+        android:text="@string/close_icon"
+        android:textColor="@color/white"
+        android:textSize="32dp"
+        android:shadowColor="@color/rating_shadow"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"/>
 </FrameLayout>

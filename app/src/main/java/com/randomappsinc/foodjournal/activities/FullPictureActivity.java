@@ -21,14 +21,13 @@ public class FullPictureActivity extends AppCompatActivity{
 
     public static final String IMAGE_URI_KEY = "imageUri";
 
+    @BindView(R.id.parent) View parent;
     @BindView(R.id.dish_picture) ImageView mDishPicture;
-    @BindView(R.id.toolbar) View mToolbar;
 
     private final Callback mImageLoadingCallback = new Callback() {
         @Override
         public void onSuccess() {
-            mDishPicture.animate().alpha(1.0f).setDuration(getResources().getInteger(R.integer.default_anim_length));
-            mToolbar.animate().alpha(1.0f).setDuration(getResources().getInteger(R.integer.default_anim_length));
+            parent.animate().alpha(1.0f).setDuration(getResources().getInteger(R.integer.default_anim_length));
         }
 
         @Override
@@ -50,7 +49,7 @@ public class FullPictureActivity extends AppCompatActivity{
                 .load(imageUri)
                 .error(defaultThumbnail)
                 .fit()
-                .centerCrop()
+                .centerInside()
                 .into(mDishPicture, mImageLoadingCallback);
     }
 
