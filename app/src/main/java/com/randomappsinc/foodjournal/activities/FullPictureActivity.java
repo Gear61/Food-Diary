@@ -1,7 +1,10 @@
 package com.randomappsinc.foodjournal.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +27,8 @@ public class FullPictureActivity extends AppCompatActivity{
     @BindView(R.id.parent) View parent;
     @BindView(R.id.dish_picture) ImageView mDishPicture;
 
+    private String mImageUri;
+
     private final Callback mImageLoadingCallback = new Callback() {
         @Override
         public void onSuccess() {
@@ -44,9 +49,9 @@ public class FullPictureActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         Drawable defaultThumbnail = new IconDrawable(this, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
-        String imageUri = getIntent().getStringExtra(IMAGE_URI_KEY);
+        mImageUri = getIntent().getStringExtra(IMAGE_URI_KEY);
         Picasso.with(this)
-                .load(imageUri)
+                .load(mImageUri)
                 .error(defaultThumbnail)
                 .fit()
                 .centerInside()
@@ -56,6 +61,19 @@ public class FullPictureActivity extends AppCompatActivity{
     @OnClick(R.id.close)
     public void closePage() {
         finish();
+    }
+
+    @OnClick(R.id.share)
+    public void sharePicture() {
+        Intent shareIntent = ShareCompat.IntentBuilder.from(this)
+                .setStream(Uri.parse(mImageUri))
+                .getIntent();
+        shareIntent.setData(Uri.parse(mImageUri));
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        if (shareIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(shareIntent);
+        }
     }
 
     @Override

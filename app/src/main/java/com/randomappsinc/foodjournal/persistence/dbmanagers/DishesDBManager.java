@@ -70,7 +70,7 @@ public class DishesDBManager {
                 .findFirst();
 
         if (restaurantDO != null) {
-            RealmResults<DishDO> dishDOs = restaurantDO.getDishes().sort("timeLastUpdated", Sort.DESCENDING);
+            RealmResults<DishDO> dishDOs = restaurantDO.getDishes().sort("timeAdded", Sort.DESCENDING);
 
             List<Dish> dishes = new ArrayList<>();
             for (DishDO dishDO : dishDOs) {

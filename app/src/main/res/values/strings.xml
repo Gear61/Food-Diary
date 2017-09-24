@@ -36,6 +36,7 @@
     <string name="overflow_icon">{ion-android-more-vertical}</string>
     <string name="heart_filled_icon">{ion-ios-heart}</string>
     <string name="heart_icon">{ion-ios-heart-outline}</string>
+    <string name="share_icon">{ion-android-share-alt}</string>
 
     <string name="confirm_form_exit">
         Are you sure you want to leave? Any unsaved changes will be lost.

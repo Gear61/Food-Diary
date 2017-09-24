@@ -23,7 +23,21 @@
         android:text="@string/close_icon"
         android:textColor="@color/white"
         android:textSize="32dp"
-        android:shadowColor="@color/rating_shadow"
+        android:shadowColor="@color/shadow_black"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/share"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="top|end"
+        android:gravity="center"
+        android:text="@string/share_icon"
+        android:textColor="@color/white"
+        android:textSize="28dp"
+        android:shadowColor="@color/shadow_black"
         android:shadowDx="3"
         android:shadowDy="3"
         android:shadowRadius="1"/>
