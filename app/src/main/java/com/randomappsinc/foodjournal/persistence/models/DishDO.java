@@ -17,6 +17,7 @@ public class DishDO extends RealmObject {
     private String restaurantId;
     private String restaurantName;
     private int checkInId;
+    private boolean isFavorited;
 
     public int getId() {
         return id;
@@ -96,5 +97,13 @@ public class DishDO extends RealmObject {
 
     public void setCheckInId(int checkInId) {
         this.checkInId = checkInId;
+    }
+
+    public boolean isFavorited() {
+        return isFavorited;
+    }
+
+    public void setIsFavorited(boolean isFavorited) {
+        this.isFavorited = isFavorited;
     }
 }

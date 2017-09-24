@@ -62,12 +62,26 @@
         android:layout_marginRight="@dimen/dish_rating_spacing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:shadowColor="@color/rating_shadow"
+        android:shadowColor="@color/shadow_black"
         android:shadowDx="3"
         android:shadowDy="3"
         android:shadowRadius="1"
         android:textColor="@color/dark_gray"
         android:textSize="25dp"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/favorite_toggle"
+        android:layout_alignTop="@id/dish_picture"
+        android:layout_alignLeft="@id/dish_picture"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:shadowColor="@color/shadow_black"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"
+        android:textColor="@color/dark_gray"
+        android:textSize="29dp"/>
 
     <TextView
         android:id="@+id/dish_description"

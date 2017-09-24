@@ -15,7 +15,7 @@ import io.realm.RealmSchema;
 
 public class DatabaseManager {
 
-    private static final int CURRENT_REALM_VERSION = 1;
+    private static final int CURRENT_REALM_VERSION = 2;
 
     private static DatabaseManager instance;
 
@@ -64,6 +64,15 @@ public class DatabaseManager {
                 if (checkInSchema != null && dishSchema != null) {
                     checkInSchema.addRealmListField("taggedDishes", dishSchema);
                     dishSchema.addField("checkInId", int.class);
+                }
+                oldVersion++;
+            }
+
+            // Support for dish favoriting
+            if (oldVersion == 1) {
+                RealmObjectSchema dishSchema = schema.get("DishDO");
+                if (dishSchema != null) {
+                    dishSchema.addField("isFavorited", boolean.class);
                 }
             }
         }

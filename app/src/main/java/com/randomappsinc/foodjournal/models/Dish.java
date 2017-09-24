@@ -21,6 +21,7 @@ public class Dish implements Parcelable {
     private String mRestaurantId;
     private String mRestaurantName;
     private int mCheckInId;
+    private boolean mIsFavorited;
 
     public Dish() {}
 
@@ -117,6 +118,14 @@ public class Dish implements Parcelable {
         mCheckInId = checkInId;
     }
 
+    public boolean isFavorited() {
+        return mIsFavorited;
+    }
+
+    public void setIsFavorited(boolean isFavorited) {
+        mIsFavorited = isFavorited;
+    }
+
     public String getDishInfoText() {
         String template = MyApplication.getAppContext().getString(R.string.dish_title);
         return String.format(template, mTitle, mRestaurantName);
@@ -153,6 +162,7 @@ public class Dish implements Parcelable {
         dishDO.setRestaurantId(mRestaurantId);
         dishDO.setRestaurantName(mRestaurantName);
         dishDO.setCheckInId(mCheckInId);
+        dishDO.setIsFavorited(mIsFavorited);
         return dishDO;
     }
 
@@ -163,6 +173,18 @@ public class Dish implements Parcelable {
                 && TextUtils.compareStrings(mRestaurantId, other.getRestaurantId())
                 && mTimeAdded == other.getTimeAdded()
                 && TextUtils.compareStrings(mDescription, other.getDescription()));
+    }
+
+    @Override
+    public boolean equals(Object dish) {
+        if (dish == null || !(dish instanceof Dish)) {
+            return false;
+        }
+        if (dish == this) {
+            return true;
+        }
+        Dish otherDish = (Dish) dish;
+        return mId == otherDish.getId();
     }
 
     protected Dish(Parcel in) {
@@ -176,18 +198,7 @@ public class Dish implements Parcelable {
         mRestaurantId = in.readString();
         mRestaurantName = in.readString();
         mCheckInId = in.readInt();
-    }
-
-    @Override
-    public boolean equals(Object dish) {
-        if (dish == null || !(dish instanceof Dish)) {
-            return false;
-        }
-        if (dish == this) {
-            return true;
-        }
-        Dish otherDish = (Dish) dish;
-        return mId == otherDish.getId();
+        mIsFavorited = in.readByte() != 0x00;
     }
 
     @Override
@@ -207,6 +218,7 @@ public class Dish implements Parcelable {
         dest.writeString(mRestaurantId);
         dest.writeString(mRestaurantName);
         dest.writeInt(mCheckInId);
+        dest.writeByte((byte) (mIsFavorited ? 0x01 : 0x00));
     }
 
     @SuppressWarnings("unused")

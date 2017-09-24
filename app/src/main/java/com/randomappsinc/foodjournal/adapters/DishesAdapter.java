@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -90,9 +91,13 @@ public class DishesAdapter extends BaseAdapter {
 
         @BindView(R.id.dish_info_text) TextView mDishInfoText;
         @BindView(R.id.dish_date) TextView mDishDate;
+        @BindView(R.id.favorite_toggle) TextView mFavoriteToggle;
         @BindView(R.id.dish_rating_text) TextView mDishRatingText;
         @BindView(R.id.dish_picture) ImageView mDishPicture;
         @BindView(R.id.dish_description) TextView mDishDescription;
+
+        @BindColor(R.color.dark_gray) int darkGray;
+        @BindColor(R.color.light_red) int lightRed;
 
         private int mPosition;
 
@@ -107,6 +112,9 @@ public class DishesAdapter extends BaseAdapter {
 
             mDishInfoText.setText(dish.getDishInfoText());
             mDishDate.setText(TimeUtils.getTimeText(dish.getTimeAdded()));
+
+            mFavoriteToggle.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);
+            mFavoriteToggle.setTextColor(dish.isFavorited() ? lightRed : darkGray);
 
             if (dish.getRating() > 0) {
                 mDishRatingText.setText(dish.getRatingText());
@@ -143,6 +151,16 @@ public class DishesAdapter extends BaseAdapter {
         public void overflowClicked() {
             Dish dish = getItem(mPosition);
             mDishOptionsPresenter.showOptions(dish);
+        }
+
+        @OnClick(R.id.favorite_toggle)
+        public void toggleFavorite() {
+            Dish dish = getItem(mPosition);
+            boolean isFavorited = dish.isFavorited();
+            dish.setIsFavorited(!isFavorited);
+            mFavoriteToggle.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);
+            mFavoriteToggle.setTextColor(dish.isFavorited() ? lightRed : darkGray);
+            DatabaseManager.get().getDishesDBManager().updateDish(dish);
         }
     }
 

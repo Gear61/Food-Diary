@@ -56,6 +56,7 @@ public class DBConverter {
         dish.setRestaurantId(dishDO.getRestaurantId());
         dish.setRestaurantName(dishDO.getRestaurantName());
         dish.setCheckInId(dishDO.getCheckInId());
+        dish.setIsFavorited(dishDO.isFavorited());
         return dish;
     }
 
