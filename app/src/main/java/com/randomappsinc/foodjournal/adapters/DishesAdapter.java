@@ -19,6 +19,7 @@ import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
+import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DishOptionsPresenter;
 import com.squareup.picasso.Picasso;
 
@@ -113,6 +114,7 @@ public class DishesAdapter extends BaseAdapter {
             mDishInfoText.setText(dish.getDishInfoText());
             mDishDate.setText(TimeUtils.getTimeText(dish.getTimeAdded()));
 
+            mFavoriteToggle.clearAnimation();
             mFavoriteToggle.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);
             mFavoriteToggle.setTextColor(dish.isFavorited() ? lightRed : darkGray);
 
@@ -158,9 +160,8 @@ public class DishesAdapter extends BaseAdapter {
             Dish dish = getItem(mPosition);
             boolean isFavorited = dish.isFavorited();
             dish.setIsFavorited(!isFavorited);
-            mFavoriteToggle.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);
-            mFavoriteToggle.setTextColor(dish.isFavorited() ? lightRed : darkGray);
             DatabaseManager.get().getDishesDBManager().updateDish(dish);
+            UIUtils.animateFavoriteToggle(mFavoriteToggle, !isFavorited);
         }
     }
 
