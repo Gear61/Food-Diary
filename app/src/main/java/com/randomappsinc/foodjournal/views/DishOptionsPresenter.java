@@ -3,12 +3,14 @@ package com.randomappsinc.foodjournal.views;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.UIUtils;
 
 public class DishOptionsPresenter {
 
@@ -35,7 +37,11 @@ public class DishOptionsPresenter {
                                 mListener.editDish(mDish);
                                 break;
                             case 1:
-                                mConfirmDeleteDialog.show();
+                                if (!mDish.isFavorited()) {
+                                    mConfirmDeleteDialog.show();
+                                } else {
+                                    UIUtils.showToast(R.string.favorited_dishes_protected, Toast.LENGTH_LONG);
+                                }
                                 break;
                         }
                     }

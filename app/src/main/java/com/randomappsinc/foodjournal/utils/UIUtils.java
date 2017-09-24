@@ -7,13 +7,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.ColorRes;
+import android.support.annotation.StringRes;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.joanzapata.iconify.Icon;
 import com.joanzapata.iconify.IconDrawable;
@@ -67,6 +70,7 @@ public class UIUtils {
             AnimatorSet shrink = new AnimatorSet();
             shrink.playTogether(animX, animY);
             shrink.setDuration(animLength);
+            shrink.setInterpolator(new AccelerateInterpolator());
             shrink.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {}
@@ -81,7 +85,7 @@ public class UIUtils {
                     AnimatorSet grow = new AnimatorSet();
                     grow.playTogether(animX, animY);
                     grow.setDuration(animLength);
-                    grow.setInterpolator(new OvershootInterpolator());
+                    grow.setInterpolator(new AnticipateOvershootInterpolator());
                     grow.start();
                 }
 
@@ -93,5 +97,9 @@ public class UIUtils {
             });
             shrink.start();
         }
+    }
+
+    public static void showToast(@StringRes int stringId, int length) {
+        Toast.makeText(MyApplication.getAppContext(), stringId, length).show();
     }
 }
