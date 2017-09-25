@@ -135,4 +135,25 @@ public class CheckInsDBManager {
             return DatabaseManager.get().getRestaurantsDBManager().getRestaurant(checkInDO.getRestaurantId());
         }
     }
+
+    public CheckIn getAutoTagCheckIn(Dish dish) {
+        RealmResults<CheckInDO> checkInDOs = getRealm()
+                .where(CheckInDO.class)
+                .equalTo("restaurantId", dish.getRestaurantId())
+                // Before now
+                .lessThan("timeAdded", System.currentTimeMillis())
+                // Less than 30 minutes ago
+                .greaterThanOrEqualTo("timeAdded", System.currentTimeMillis() - TimeUtils.MILLIS_IN_30_MINUTES)
+                // Get most recent check-in
+                .findAllSorted("timeAdded", Sort.DESCENDING);
+        if (checkInDOs.isEmpty()) {
+            return null;
+        } else {
+            return DBConverter.getCheckInFromDO(checkInDOs.first());
+        }
+    }
+
+    public boolean shouldAutoCreateCheckIn(Dish dish) {
+        return getAutoTagCheckIn(dish) == null;
+    }
 }
