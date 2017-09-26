@@ -14,7 +14,7 @@
     </array>
 
     <string name="play_store_error">Unable to open the Play Store.</string>
-    <string name="feedback_subject">Food Journal Feedback</string>
+    <string name="feedback_subject">Food Diary Feedback</string>
     <string name="send_email">Send email</string>
 
     <string name="map_icon">{ion-android-map}</string>

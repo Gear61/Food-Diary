@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Food Journal</string>
+    <string name="app_name">Food Diary</string>
     <string name="settings">Settings</string>
 
     <string name="home">Home</string>
@@ -23,7 +23,7 @@
     <string name="choose">Choose</string>
 
     <string name="please_rate">
-        Hey, it looks like you\'re a frequent user of Food Journal!
+        Hey, it looks like you\'re a frequent user of Food Diary!
         If you have a couple seconds, please rate this app in the Play Store.
         Every rating goes a long way towards motivating me to continue improving this app!
     </string>
