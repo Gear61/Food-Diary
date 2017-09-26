@@ -210,12 +210,38 @@ public class DishFormActivity extends StandardActivity {
         loadFormIntoDish();
 
         if (mNewDishMode) {
-            DatabaseManager.get().getDishesDBManager().addDish(mDish);
-            setResult(DishesFragment.DISH_ADDED);
+            if (DatabaseManager.get().getCheckInsDBManager().shouldAutoCreateCheckIn(mDish)) {
+                String ask = String.format(getString(R.string.auto_create_check_in), mDish.getRestaurantName());
+                new MaterialDialog.Builder(this)
+                        .cancelable(false)
+                        .title(R.string.create_check_in)
+                        .content(ask)
+                        .positiveText(R.string.yes)
+                        .negativeText(R.string.no)
+                        .onAny(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                if (which == DialogAction.POSITIVE) {
+                                    int checkInId = DatabaseManager.get()
+                                            .getCheckInsDBManager()
+                                            .autoCreateCheckIn(mDish);
+                                    mDish.setCheckInId(checkInId);
+                                }
+                                addDish();
+                            }
+                        })
+                        .show();
+            }
         } else {
             DatabaseManager.get().getDishesDBManager().updateDish(mDish);
             setResult(DishesFragment.DISH_EDITED);
+            finish();
         }
+    }
+
+    private void addDish() {
+        DatabaseManager.get().getDishesDBManager().addDish(mDish);
+        setResult(DishesFragment.DISH_ADDED);
         finish();
     }
 

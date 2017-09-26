@@ -41,4 +41,10 @@
     </string-array>
 
     <string name="favorited_dishes_protected">You can\'t delete dishes that you have favorited.</string>
+
+    <string name="auto_create_check_in">
+        It looks like you don\'t have a recent check-in for %s.
+        Would you like to create one now and tag this dish to it?
+    </string>
+    <string name="create_check_in">Create Check-In</string>
 </resources>

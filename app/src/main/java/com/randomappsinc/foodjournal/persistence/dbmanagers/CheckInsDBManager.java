@@ -38,14 +38,14 @@ public class CheckInsDBManager {
         return Realm.getDefaultInstance();
     }
 
-    public void addCheckIn(final CheckIn checkIn) {
+    public int addCheckIn(final CheckIn checkIn) {
         final RestaurantDO restaurantDO = getRealm()
                 .where(RestaurantDO.class)
                 .equalTo("id", checkIn.getRestaurantId())
                 .findFirst();
 
         if (restaurantDO == null) {
-            return;
+            return -1;
         }
 
         Number number = getRealm().where(CheckInDO.class).findAll().max("checkInId");
@@ -60,6 +60,8 @@ public class CheckInsDBManager {
                 restaurantDO.getCheckIns().add(checkInDO);
             }
         });
+
+        return checkInId;
     }
 
     public void updateCheckIn(final CheckIn checkIn) {
@@ -155,5 +157,22 @@ public class CheckInsDBManager {
 
     public boolean shouldAutoCreateCheckIn(Dish dish) {
         return getAutoTagCheckIn(dish) == null;
+    }
+
+    /**
+     * @param dish The dish that we're auto-creating the check-in for
+     * @return     The check-in ID of the created check-in
+     */
+    public int autoCreateCheckIn(Dish dish) {
+        CheckIn checkIn = new CheckIn();
+        checkIn.setTimeAdded(dish.getTimeAdded());
+        checkIn.setRestaurantId(dish.getRestaurantId());
+        checkIn.setRestaurantName(dish.getRestaurantName());
+
+        ArrayList<Dish> dishes = new ArrayList<>();
+        dishes.add(dish);
+        checkIn.setTaggedDishes(dishes);
+
+        return addCheckIn(checkIn);
     }
 }
