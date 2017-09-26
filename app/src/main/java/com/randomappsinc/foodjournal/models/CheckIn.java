@@ -82,6 +82,12 @@ public class CheckIn implements Parcelable {
         }
     }
 
+    public void addTaggedDish(Dish dish) {
+        if (mTaggedDishes != null) {
+            mTaggedDishes.add(dish);
+        }
+    }
+
     public CheckInDO toCheckInDO() {
         CheckInDO checkInDO = new CheckInDO();
         checkInDO.setCheckInId(mCheckInId);

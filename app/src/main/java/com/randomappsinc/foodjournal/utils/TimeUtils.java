@@ -10,6 +10,7 @@ public class TimeUtils {
 
     public static final long MILLIS_IN_A_DAY = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS);
     public static final long MILLIS_IN_30_MINUTES = TimeUnit.MILLISECONDS.convert(30, TimeUnit.MINUTES);
+    public static final long MILLIS_IN_3_HOURS = TimeUnit.MILLISECONDS.convert(3, TimeUnit.HOURS);
 
     private static final String DATE_FORMAT = "MMMM d, yyyy - h:mm a";
 

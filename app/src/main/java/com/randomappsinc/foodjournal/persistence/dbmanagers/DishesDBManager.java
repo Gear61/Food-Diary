@@ -51,12 +51,12 @@ public class DishesDBManager {
 
         Number number = getRealm().where(DishDO.class).findAll().max("id");
         final int dishId = number == null ? 1 : number.intValue() + 1;
+        dish.setId(dishId);
 
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 DishDO dishDO = dish.toDishDO();
-                dishDO.setId(dishId);
                 dishDO.setTimeLastUpdated(System.currentTimeMillis());
                 restaurantDO.getDishes().add(dishDO);
             }
@@ -164,7 +164,11 @@ public class DishesDBManager {
                         .greaterThanOrEqualTo("timeAdded", checkIn.getTimeAdded() - TimeUtils.MILLIS_IN_A_DAY)
                     .endGroup()
                     .or()
-                    .equalTo("checkInId", checkIn.getCheckInId())
+                    // Dishes already tagged to this check-in. Ignore ID 0 for the new check-in case
+                    .beginGroup()
+                        .equalTo("checkInId", checkIn.getCheckInId())
+                        .notEqualTo("checkInId", 0)
+                    .endGroup()
                 .endGroup()
                 .findAllSorted("timeAdded", Sort.DESCENDING);
 
@@ -191,5 +195,26 @@ public class DishesDBManager {
                 }
             }
         });
+    }
+
+    public void untagDishes(int checkInId) {
+        final List<DishDO> dishes = getRealm()
+                .where(DishDO.class)
+                .equalTo("checkInId", checkInId)
+                .findAll();
+
+        getRealm().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                for (DishDO dishDO : dishes) {
+                    dishDO.setCheckInId(0);
+                }
+            }
+        });
+    }
+
+    public int getNextDishId() {
+        Number number = getRealm().where(DishDO.class).findAll().max("id");
+        return number == null ? 1 : number.intValue() + 1;
     }
 }

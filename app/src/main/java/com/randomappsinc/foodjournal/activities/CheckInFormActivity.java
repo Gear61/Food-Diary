@@ -216,7 +216,7 @@ public class CheckInFormActivity extends StandardActivity {
 
         mCheckIn.setMessage(mExperienceInput.getText().toString().trim());
         if (mAdderMode) {
-            DatabaseManager.get().getCheckInsDBManager().addCheckIn(mCheckIn);
+            DatabaseManager.get().getCheckInsDBManager().addCheckIn(mCheckIn, false);
             setResult(CheckInsFragment.ADDED_RESULT);
         } else {
             DatabaseManager.get().getCheckInsDBManager().updateCheckIn(mCheckIn);

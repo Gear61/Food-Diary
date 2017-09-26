@@ -17,6 +17,7 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
+import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
@@ -210,7 +211,8 @@ public class DishFormActivity extends StandardActivity {
         loadFormIntoDish();
 
         if (mNewDishMode) {
-            if (DatabaseManager.get().getCheckInsDBManager().shouldAutoCreateCheckIn(mDish)) {
+            CheckIn checkIn = DatabaseManager.get().getCheckInsDBManager().getAutoTagCheckIn(mDish);
+            if (checkIn == null) {
                 String ask = String.format(getString(R.string.auto_create_check_in), mDish.getRestaurantName());
                 new MaterialDialog.Builder(this)
                         .cancelable(false)
@@ -222,27 +224,28 @@ public class DishFormActivity extends StandardActivity {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 if (which == DialogAction.POSITIVE) {
-                                    int checkInId = DatabaseManager.get()
-                                            .getCheckInsDBManager()
-                                            .autoCreateCheckIn(mDish);
-                                    mDish.setCheckInId(checkInId);
+                                    DatabaseManager.get().getCheckInsDBManager().autoCreateCheckIn(mDish);
+                                } else {
+                                    DatabaseManager.get().getDishesDBManager().addDish(mDish);
                                 }
-                                addDish();
+                                setResult(DishesFragment.DISH_ADDED);
+                                finish();
                             }
                         })
                         .show();
+            } else {
+                // Auto-tag to recent check-in
+                DatabaseManager.get().getDishesDBManager().addDish(mDish);
+                checkIn.addTaggedDish(mDish);
+                DatabaseManager.get().getCheckInsDBManager().updateCheckIn(checkIn);
+                setResult(DishesFragment.DISH_ADDED);
+                finish();
             }
         } else {
             DatabaseManager.get().getDishesDBManager().updateDish(mDish);
             setResult(DishesFragment.DISH_EDITED);
             finish();
         }
-    }
-
-    private void addDish() {
-        DatabaseManager.get().getDishesDBManager().addDish(mDish);
-        setResult(DishesFragment.DISH_ADDED);
-        finish();
     }
 
     /** Return true if the confirm exit dialog is shown */

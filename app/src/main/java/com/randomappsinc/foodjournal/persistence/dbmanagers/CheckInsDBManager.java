@@ -38,7 +38,7 @@ public class CheckInsDBManager {
         return Realm.getDefaultInstance();
     }
 
-    public int addCheckIn(final CheckIn checkIn) {
+    public int addCheckIn(final CheckIn checkIn, boolean autoCreate) {
         final RestaurantDO restaurantDO = getRealm()
                 .where(RestaurantDO.class)
                 .equalTo("id", checkIn.getRestaurantId())
@@ -50,6 +50,10 @@ public class CheckInsDBManager {
 
         Number number = getRealm().where(CheckInDO.class).findAll().max("checkInId");
         final int checkInId = number == null ? 1 : number.intValue() + 1;
+        checkIn.setCheckInId(checkInId);
+        if (autoCreate) {
+            checkIn.getTaggedDishes().get(0).setCheckInId(checkInId);
+        }
 
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
@@ -88,6 +92,8 @@ public class CheckInsDBManager {
                         .deleteFromRealm();
             }
         });
+
+        DatabaseManager.get().getDishesDBManager().untagDishes(checkIn.getCheckInId());
     }
 
     public List<CheckIn> getCheckIns(String restaurantId) {
@@ -144,8 +150,8 @@ public class CheckInsDBManager {
                 .equalTo("restaurantId", dish.getRestaurantId())
                 // Before now
                 .lessThan("timeAdded", System.currentTimeMillis())
-                // Less than 30 minutes ago
-                .greaterThanOrEqualTo("timeAdded", System.currentTimeMillis() - TimeUtils.MILLIS_IN_30_MINUTES)
+                // Less than 3 hours ago (account for tasting menu)
+                .greaterThanOrEqualTo("timeAdded", System.currentTimeMillis() - TimeUtils.MILLIS_IN_3_HOURS)
                 // Get most recent check-in
                 .findAllSorted("timeAdded", Sort.DESCENDING);
         if (checkInDOs.isEmpty()) {
@@ -155,24 +161,16 @@ public class CheckInsDBManager {
         }
     }
 
-    public boolean shouldAutoCreateCheckIn(Dish dish) {
-        return getAutoTagCheckIn(dish) == null;
-    }
-
-    /**
-     * @param dish The dish that we're auto-creating the check-in for
-     * @return     The check-in ID of the created check-in
-     */
-    public int autoCreateCheckIn(Dish dish) {
+    public void autoCreateCheckIn(Dish dish) {
         CheckIn checkIn = new CheckIn();
         checkIn.setTimeAdded(dish.getTimeAdded());
         checkIn.setRestaurantId(dish.getRestaurantId());
         checkIn.setRestaurantName(dish.getRestaurantName());
 
-        ArrayList<Dish> dishes = new ArrayList<>();
-        dishes.add(dish);
-        checkIn.setTaggedDishes(dishes);
+        int dishId = DatabaseManager.get().getDishesDBManager().getNextDishId();
+        dish.setId(dishId);
+        checkIn.addTaggedDish(dish);
 
-        return addCheckIn(checkIn);
+        addCheckIn(checkIn, true);
     }
 }
