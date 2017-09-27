@@ -1,5 +1,6 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
+import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DBConverter;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
@@ -90,5 +91,19 @@ public class RestaurantsDBManager {
                 .equalTo("id", restaurantId)
                 .findFirst();
         return DBConverter.getRestaurantFromDO(restaurantDO);
+    }
+
+    public void tagDishToRestaurant(final Dish dish) {
+        final RestaurantDO restaurantDO = getRealm()
+                .where(RestaurantDO.class)
+                .equalTo("id", dish.getRestaurantId())
+                .findFirst();
+
+        getRealm().executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                restaurantDO.getDishes().add(dish.toDishDO());
+            }
+        });
     }
 }

@@ -148,10 +148,10 @@ public class CheckInsDBManager {
         RealmResults<CheckInDO> checkInDOs = getRealm()
                 .where(CheckInDO.class)
                 .equalTo("restaurantId", dish.getRestaurantId())
-                // Before now
-                .lessThan("timeAdded", System.currentTimeMillis())
-                // Less than 3 hours ago (account for tasting menu)
-                .greaterThanOrEqualTo("timeAdded", System.currentTimeMillis() - TimeUtils.MILLIS_IN_3_HOURS)
+                // Before the dish was added
+                .lessThan("timeAdded", dish.getTimeAdded())
+                // Less than 3 hours ago relative to dish time (account for tasting menu)
+                .greaterThanOrEqualTo("timeAdded", dish.getTimeAdded() - TimeUtils.MILLIS_IN_3_HOURS)
                 // Get most recent check-in
                 .findAllSorted("timeAdded", Sort.DESCENDING);
         if (checkInDOs.isEmpty()) {
@@ -172,5 +172,6 @@ public class CheckInsDBManager {
         checkIn.addTaggedDish(dish);
 
         addCheckIn(checkIn, true);
+        DatabaseManager.get().getRestaurantsDBManager().tagDishToRestaurant(dish);
     }
 }
