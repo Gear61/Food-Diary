@@ -139,7 +139,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         super.onResume();
 
         // Run this here instead of onCreate() to cover the case where they return from turning on location
-        if (mCurrentLocation != null && !mDenialLock) {
+        if (mCurrentLocation == null && !mDenialLock) {
             fetchCurrentLocation();
         }
     }

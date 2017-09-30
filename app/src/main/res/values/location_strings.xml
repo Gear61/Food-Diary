@@ -13,8 +13,7 @@
 
     <string name="location_services_needed">Location Services Needed</string>
     <string name="location_services_denial">
-        Your current location is set to \"Automatic\",
-        which means that Food Diary needs location services to find restaurants near you.
+        Food Diary needs location services to find restaurants near you.
     </string>
     <string name="location_services_confirm">Turn on location services</string>
     <string name="enter_location_manually">Enter in location manually</string>
