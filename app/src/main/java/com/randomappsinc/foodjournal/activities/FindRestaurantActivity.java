@@ -30,6 +30,7 @@ import com.randomappsinc.foodjournal.utils.LocationFetcher;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.LocationChooser;
+import com.randomappsinc.foodjournal.views.LocationForm;
 
 import java.util.List;
 
@@ -53,6 +54,15 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     @BindView(R.id.loading) View mLoading;
     @BindView(R.id.no_results) View mNoResults;
     @BindView(R.id.set_location) FloatingActionButton mSetLocation;
+
+    private final LocationForm.Listener mLocationFormListener = new LocationForm.Listener() {
+        @Override
+        public void onLocationEntered(String location) {
+            mCurrentLocation.setId(0);
+            mCurrentLocation.setAddress(location);
+            fetchRestaurants();
+        }
+    };
 
     private final LocationChooser.Callback mLocationChoiceCallback = new LocationChooser.Callback() {
         @Override
@@ -83,6 +93,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private boolean mDenialLock;
     private boolean mPickerMode;
     private MaterialDialog mLocationDenialDialog;
+    private LocationForm mLocationForm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +128,14 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
             }
         };
 
+        mLocationForm = new LocationForm(this, mLocationFormListener);
         mLocationDenialDialog = new MaterialDialog.Builder(this)
                 .cancelable(false)
                 .title(R.string.location_services_needed)
                 .content(R.string.location_services_denial)
                 .positiveText(R.string.location_services_confirm)
                 .negativeText(R.string.enter_location_manually)
+                .neutralText(R.string.choose_from_saved_locations)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -131,6 +144,13 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mLocationForm.show();
+                        mDenialLock = false;
+                    }
+                })
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         mLocationChooser.show();
@@ -248,7 +268,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
     @OnClick(R.id.set_location)
     public void setLocation() {
-        mLocationChooser.show();
+        mLocationForm.show();
     }
 
     @Override
