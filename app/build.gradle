@@ -8,8 +8,8 @@ android {
         applicationId "com.randomappsinc.foodjournal"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 21
-        versionName "1.2.10"
+        versionCode 22
+        versionName "1.2.11"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
