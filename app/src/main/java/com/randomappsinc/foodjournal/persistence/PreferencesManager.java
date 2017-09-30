@@ -11,8 +11,6 @@ public class PreferencesManager {
     private SharedPreferences prefs;
 
     private static final String BEARER_TOKEN_KEY = "bearerToken";
-    private static final String FIRST_TIME_KEY = "firstTime";
-
     private static final String NUM_APP_OPENS = "numAppOpens";
     private static final int OPENS_BEFORE_RATING = 5;
 
@@ -43,14 +41,6 @@ public class PreferencesManager {
 
     public void setBearerToken(String bearerToken) {
         prefs.edit().putString(BEARER_TOKEN_KEY, bearerToken).apply();
-    }
-
-    public boolean isFirstTime() {
-        boolean isFirstTime = prefs.getBoolean(FIRST_TIME_KEY, true);
-        if (isFirstTime) {
-            prefs.edit().putBoolean(FIRST_TIME_KEY, false).apply();
-        }
-        return isFirstTime;
     }
 
     public boolean shouldAskForRating() {

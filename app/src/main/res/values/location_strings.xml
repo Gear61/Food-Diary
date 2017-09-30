@@ -1,32 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="automatic">Automatic</string>
     <string name="location">Location</string>
-    <string name="no_locations">Hit the {ion-android-add} in the bottom right to add your first location!</string>
-    <string name="delete_location_title">Confirm Location Deletion</string>
-    <string name="location_delete_confirmation">Are you sure you want to delete the location:&#160;</string>
-
-    <string name="set_location_name">Set Location Name</string>
-    <string name="location_name_hint">Name (e.g. home, work, etc)</string>
-    <string name="set_location_address">Set Location Address</string>
-    <string name="address">Address</string>
-
-    <string name="check_icon">{ion-checkmark}</string>
-    <string name="list_icon">{ion-android-list}</string>
-
-    <string name="location_added">Location added.</string>
-    <string name="location_deleted">Location deleted.</string>
-    <string name="location_edited">Location edited.</string>
-
-    <string name="set_as_current">Set as current location</string>
-    <string name="edit_location_name">Edit location name</string>
-    <string name="edit_location_address">Edit location address</string>
-    <string name="delete_location">Delete location</string>
-
-    <string name="current_location_set">Your current location has been set.</string>
-
-    <string name="edit_location_name_title">Edit Location Name</string>
-    <string name="edit_location_address_title">Edit Location Address</string>
 
     <string name="auto_location_fail">
         We couldn\'t get your current location.
@@ -44,12 +18,8 @@
     </string>
     <string name="location_services_confirm">Turn on location services</string>
     <string name="enter_location_manually">Enter in location manually</string>
-    <string name="choose_from_saved_locations">Choose from saved locations</string>
 
     <string name="location_services_on">Location services turned on. Fetching current location&#8230;</string>
-
-    <string name="choose_current_location">Choose Current Location</string>
-    <string name="current_instructions">Your current location is where Food Diary searches for restaurants.</string>
 
     <string name="location_form">Location Form</string>
     <string name="location_form_prompt">Where do you want to search for restaurants?</string>

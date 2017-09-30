@@ -2,7 +2,6 @@ package com.randomappsinc.foodjournal.persistence;
 
 import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.DishesDBManager;
-import com.randomappsinc.foodjournal.persistence.dbmanagers.LocationsDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.RestaurantsDBManager;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 
@@ -15,7 +14,7 @@ import io.realm.RealmSchema;
 
 public class DatabaseManager {
 
-    private static final int CURRENT_REALM_VERSION = 2;
+    private static final int CURRENT_REALM_VERSION = 3;
 
     private static DatabaseManager instance;
 
@@ -35,7 +34,6 @@ public class DatabaseManager {
 
     private CheckInsDBManager mCheckInsDBManager;
     private RestaurantsDBManager mRestaurantsDBManager;
-    private LocationsDBManager mLocationsDBManager;
     private DishesDBManager mDishesDBManager;
 
     private DatabaseManager() {
@@ -48,7 +46,6 @@ public class DatabaseManager {
 
         mCheckInsDBManager = CheckInsDBManager.get();
         mRestaurantsDBManager = RestaurantsDBManager.get();
-        mLocationsDBManager = LocationsDBManager.get();
         mDishesDBManager = DishesDBManager.get();
     }
 
@@ -74,6 +71,12 @@ public class DatabaseManager {
                 if (dishSchema != null) {
                     dishSchema.addField("isFavorited", boolean.class);
                 }
+                oldVersion++;
+            }
+
+            // Drop saved locations feature since it's clunky
+            if (oldVersion == 2) {
+                schema.remove("SavedLocationDO");
             }
         }
     };
@@ -84,10 +87,6 @@ public class DatabaseManager {
 
     public RestaurantsDBManager getRestaurantsDBManager() {
         return mRestaurantsDBManager;
-    }
-
-    public LocationsDBManager getLocationsDBManager() {
-        return mLocationsDBManager;
     }
 
     public DishesDBManager getDishesDBManager() {

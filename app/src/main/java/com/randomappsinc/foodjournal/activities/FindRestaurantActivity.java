@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -23,13 +24,10 @@ import com.randomappsinc.foodjournal.adapters.RestaurantSearchResultsAdapter;
 import com.randomappsinc.foodjournal.api.RestClient;
 import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Restaurant;
-import com.randomappsinc.foodjournal.models.SavedLocation;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
-import com.randomappsinc.foodjournal.persistence.dbmanagers.LocationsDBManager;
 import com.randomappsinc.foodjournal.utils.LocationFetcher;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
-import com.randomappsinc.foodjournal.views.LocationChooser;
 import com.randomappsinc.foodjournal.views.LocationForm;
 
 import java.util.List;
@@ -58,27 +56,8 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private final LocationForm.Listener mLocationFormListener = new LocationForm.Listener() {
         @Override
         public void onLocationEntered(String location) {
-            mCurrentLocation.setId(0);
-            mCurrentLocation.setAddress(location);
+            mCurrentLocation = location;
             fetchRestaurants();
-        }
-    };
-
-    private final LocationChooser.Callback mLocationChoiceCallback = new LocationChooser.Callback() {
-        @Override
-        public void onLocationChosen(SavedLocation savedLocation) {
-            if (mCurrentLocation.getId() != savedLocation.getId()) {
-                // Do a deep-copy so we don't alter the data objects in the location chooser
-                mCurrentLocation.loadLocationInfo(savedLocation);
-
-                if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID) {
-                    fetchCurrentLocation();
-                } else {
-                    UIUtils.showSnackbar(mParent, getString(R.string.current_location_set));
-                    stopFetchingCurrentLocation();
-                    fetchRestaurants();
-                }
-            }
         }
     };
 
@@ -88,8 +67,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private Handler mLocationChecker;
     private Runnable mLocationCheckTask;
     private LocationFetcher mLocationFetcher;
-    private SavedLocation mCurrentLocation;
-    private LocationChooser mLocationChooser;
+    @Nullable private String mCurrentLocation;
     private boolean mDenialLock;
     private boolean mPickerMode;
     private MaterialDialog mLocationDenialDialog;
@@ -135,7 +113,6 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                 .content(R.string.location_services_denial)
                 .positiveText(R.string.location_services_confirm)
                 .negativeText(R.string.enter_location_manually)
-                .neutralText(R.string.choose_from_saved_locations)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -150,22 +127,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                         mDenialLock = false;
                     }
                 })
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mLocationChooser.show();
-                        mDenialLock = false;
-                    }
-                })
                 .build();
-
-        mLocationChooser = new LocationChooser(this, mLocationChoiceCallback);
-        mCurrentLocation = DatabaseManager.get().getLocationsDBManager().getCurrentLocation();
-
-        // Automatically do a search if we have a pre-defined location
-        if (mCurrentLocation.getId() != LocationsDBManager.AUTOMATIC_LOCATION_ID) {
-            fetchRestaurants();
-        }
     }
 
     @Override
@@ -173,7 +135,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         super.onResume();
 
         // Run this here instead of onCreate() to cover the case where they return from turning on location
-        if (mCurrentLocation.getId() == LocationsDBManager.AUTOMATIC_LOCATION_ID && !mDenialLock) {
+        if (mCurrentLocation != null && !mDenialLock) {
             fetchCurrentLocation();
         }
     }
@@ -199,8 +161,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                     public void onLocationUpdated(Location location) {
                         mLocationChecker.removeCallbacks(mLocationCheckTask);
                         mLocationFetched = true;
-                        mCurrentLocation.setId(0);
-                        mCurrentLocation.setAddress(String.valueOf(location.getLatitude()) + ", " + String.valueOf(location.getLongitude()));
+                        mCurrentLocation = String.valueOf(location.getLatitude()) + ", " + String.valueOf(location.getLongitude());
                         fetchRestaurants();
                     }
                 });
@@ -213,7 +174,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         mNoResults.setVisibility(View.GONE);
         mLoading.setVisibility(View.VISIBLE);
 
-        if (mCurrentLocation.getId() != LocationsDBManager.AUTOMATIC_LOCATION_ID) {
+        if (mCurrentLocation != null) {
             fetchRestaurants();
         }
 
@@ -231,7 +192,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
 
     /** Fetches restaurants with the current location and search input */
     private void fetchRestaurants() {
-        mRestClient.fetchRestaurants(mSearchInput.getText().toString(), mCurrentLocation.getAddress());
+        mRestClient.fetchRestaurants(mSearchInput.getText().toString(), mCurrentLocation);
     }
 
     @Override

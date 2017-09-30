@@ -16,7 +16,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.HomepageFragmentController;
-import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.PreferencesManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
@@ -43,10 +42,6 @@ public class MainActivity extends StandardActivity {
                 && getIntent().getAction() != null && getIntent().getAction().equals(Intent.ACTION_MAIN)) {
             finish();
             return;
-        }
-
-        if (PreferencesManager.get().isFirstTime()) {
-            DatabaseManager.get().getLocationsDBManager().init();
         }
 
         setContentView(R.layout.activity_main);
