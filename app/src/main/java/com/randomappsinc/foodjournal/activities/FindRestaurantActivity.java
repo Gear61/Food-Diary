@@ -56,6 +56,10 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private final LocationForm.Listener mLocationFormListener = new LocationForm.Listener() {
         @Override
         public void onLocationEntered(String location) {
+            // Cancel current location fetch when location is manually entered
+            mLocationFetcher.stop();
+            stopFetchingCurrentLocation();
+
             mCurrentLocation = location;
             fetchRestaurants();
         }
