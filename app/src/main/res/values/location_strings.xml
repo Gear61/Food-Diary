@@ -22,4 +22,10 @@
 
     <string name="location_form">Location Form</string>
     <string name="location_form_prompt">Where do you want to search for restaurants?</string>
+
+    <string name="location_permission_needed">Location Permission Needed</string>
+    <string name="location_permission_denial">
+        Food Diary needs permission to access your current location to find restaurants near you.
+    </string>
+    <string name="give_location_permission">Give us location permission</string>
 </resources>

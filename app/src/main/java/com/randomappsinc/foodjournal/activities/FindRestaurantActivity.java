@@ -75,6 +75,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private boolean mDenialLock;
     private boolean mPickerMode;
     private MaterialDialog mLocationDenialDialog;
+    private MaterialDialog mLocationPermissionDialog;
     private LocationForm mLocationForm;
 
     @Override
@@ -132,6 +133,50 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                     }
                 })
                 .build();
+
+        mLocationDenialDialog = new MaterialDialog.Builder(this)
+                .cancelable(false)
+                .title(R.string.location_services_needed)
+                .content(R.string.location_services_denial)
+                .positiveText(R.string.location_services_confirm)
+                .negativeText(R.string.enter_location_manually)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mLocationFetcher.askForLocation(LOCATION_SERVICES_CODE);
+                        mDenialLock = false;
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mLocationForm.show();
+                        mDenialLock = false;
+                    }
+                })
+                .build();
+
+        mLocationPermissionDialog = new MaterialDialog.Builder(this)
+                .cancelable(false)
+                .title(R.string.location_permission_needed)
+                .content(R.string.location_permission_denial)
+                .positiveText(R.string.give_location_permission)
+                .negativeText(R.string.enter_location_manually)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        requestLocationPermission();
+                        mDenialLock = false;
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mLocationForm.show();
+                        mDenialLock = false;
+                    }
+                })
+                .build();
     }
 
     @Override
@@ -152,8 +197,12 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                 mLocationFetcher.askForLocation(LOCATION_SERVICES_CODE);
             }
         } else {
-            PermissionUtils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, 1);
+            requestLocationPermission();
         }
+    }
+
+    private void requestLocationPermission() {
+        PermissionUtils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, 1);
     }
 
     private void runLocationFetch() {
@@ -240,6 +289,9 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             fetchCurrentLocation();
+        } else {
+            mDenialLock = true;
+            mLocationPermissionDialog.show();
         }
     }
 

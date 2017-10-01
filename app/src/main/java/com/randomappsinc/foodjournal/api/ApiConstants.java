@@ -9,7 +9,7 @@ public class ApiConstants {
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    public static final String DEFAULT_SEARCH_TERM = "Food";
+    public static final String DEFAULT_SEARCH_TERM = "Restaurant";
     public static final int DEFAULT_NUM_RESTAURANTS = 10;
 
     public static final int HTTP_STATUS_OK = 200;
