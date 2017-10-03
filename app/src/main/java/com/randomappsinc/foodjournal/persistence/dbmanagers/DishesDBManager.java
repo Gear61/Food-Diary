@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
@@ -18,6 +19,8 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 
 public class DishesDBManager {
+
+    public static final int DISHES_PER_PAGE = 10;
 
     private static DishesDBManager instance;
 
@@ -63,18 +66,40 @@ public class DishesDBManager {
         });
     }
 
-    public List<Dish> getDishes(String restaurantId) {
+    public List<Dish> getDishesPage(String restaurantId, @Nullable Dish lastDish) {
         RestaurantDO restaurantDO = getRealm()
                 .where(RestaurantDO.class)
                 .equalTo("id", restaurantId)
                 .findFirst();
 
         if (restaurantDO != null) {
-            RealmResults<DishDO> dishDOs = restaurantDO.getDishes().sort("timeAdded", Sort.DESCENDING);
+            RealmResults<DishDO> dishDOs;
+            String[] fieldNames = {"timeAdded", "id"};
+            Sort[] sort = {Sort.DESCENDING, Sort.DESCENDING};
+
+            if (lastDish == null) {
+                dishDOs = getRealm()
+                        .where(DishDO.class)
+                        .equalTo("restaurantId", restaurantId)
+                        .findAllSorted(fieldNames, sort);
+            } else {
+                dishDOs = getRealm()
+                        .where(DishDO.class)
+                        .equalTo("restaurantId", restaurantId)
+                        .beginGroup()
+                            .beginGroup()
+                                .equalTo("timeAdded", lastDish.getTimeAdded())
+                                .lessThan("id", lastDish.getId())
+                            .endGroup()
+                            .or()
+                            .lessThan("timeAdded", lastDish.getTimeAdded())
+                        .endGroup()
+                        .findAllSorted(fieldNames, sort);
+            }
 
             List<Dish> dishes = new ArrayList<>();
-            for (DishDO dishDO : dishDOs) {
-                dishes.add(DBConverter.getDishFromDO(dishDO));
+            for (int i = 0; i < DISHES_PER_PAGE && i < dishDOs.size(); i++) {
+                dishes.add(DBConverter.getDishFromDO(dishDOs.get(i)));
             }
             return dishes;
         } else {
@@ -82,14 +107,32 @@ public class DishesDBManager {
         }
     }
 
-    public List<Dish> getAllDishes() {
-        List<DishDO> dishDOs = getRealm()
-                .where(DishDO.class)
-                .findAllSorted("timeAdded", Sort.DESCENDING);
+    public List<Dish> getDishesPage(@Nullable Dish lastDish) {
+        RealmResults<DishDO> dishDOs;
+        String[] fieldNames = {"timeAdded", "id"};
+        Sort[] sort = {Sort.DESCENDING, Sort.DESCENDING};
+
+        if (lastDish == null) {
+            dishDOs = getRealm()
+                    .where(DishDO.class)
+                    .findAllSorted(fieldNames, sort);
+        } else {
+            dishDOs = getRealm()
+                    .where(DishDO.class)
+                    .beginGroup()
+                        .beginGroup()
+                            .equalTo("timeAdded", lastDish.getTimeAdded())
+                            .lessThan("id", lastDish.getId())
+                        .endGroup()
+                        .or()
+                        .lessThan("timeAdded", lastDish.getTimeAdded())
+                    .endGroup()
+                    .findAllSorted(fieldNames, sort);
+        }
 
         List<Dish> dishes = new ArrayList<>();
-        for (DishDO dishDO : dishDOs) {
-            dishes.add(DBConverter.getDishFromDO(dishDO));
+        for (int i = 0; i < DISHES_PER_PAGE && i < dishDOs.size(); i++) {
+            dishes.add(DBConverter.getDishFromDO(dishDOs.get(i)));
         }
         return dishes;
     }

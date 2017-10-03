@@ -18,6 +18,7 @@ import com.randomappsinc.foodjournal.activities.FullPictureActivity;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.persistence.dbmanagers.DishesDBManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DishOptionsPresenter;
@@ -39,6 +40,8 @@ public class DishesAdapter extends BaseAdapter {
     private String mRestaurantId;
     private Drawable mDefaultThumbnail;
     private DishOptionsPresenter mDishOptionsPresenter;
+    private boolean mStopFetching;
+
     private final DishOptionsPresenter.Listener mListener = new DishOptionsPresenter.Listener() {
         @Override
         public void onDishDeleted() {
@@ -61,15 +64,33 @@ public class DishesAdapter extends BaseAdapter {
         resyncWithDB();
     }
 
+    public boolean canFetchMore() {
+        return !mStopFetching;
+    }
+
     public void resyncWithDB() {
         mDishes = mRestaurantId == null
-                ? DatabaseManager.get().getDishesDBManager().getAllDishes()
-                : DatabaseManager.get().getDishesDBManager().getDishes(mRestaurantId);
+                ? DatabaseManager.get().getDishesDBManager().getDishesPage(null)
+                : DatabaseManager.get().getDishesDBManager().getDishesPage(mRestaurantId, null);
+
+        if (mDishes.size() < DishesDBManager.DISHES_PER_PAGE) {
+            mStopFetching = true;
+        }
+
         if (mDishes.isEmpty()) {
             mNoResults.setVisibility(View.VISIBLE);
         } else {
             mNoResults.setVisibility(View.GONE);
         }
+        notifyDataSetChanged();
+    }
+
+    public void fetchNextPage() {
+        Dish lastDish = mDishes.get(getCount() - 1);
+        List<Dish> nextDishes = mRestaurantId == null
+                ? DatabaseManager.get().getDishesDBManager().getDishesPage(lastDish)
+                : DatabaseManager.get().getDishesDBManager().getDishesPage(mRestaurantId, lastDish);
+        mDishes.addAll(nextDishes);
         notifyDataSetChanged();
     }
 

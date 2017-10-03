@@ -14,6 +14,7 @@ import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -40,7 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class DishesFragment extends Fragment {
+public class DishesFragment extends Fragment implements ListView.OnScrollListener {
 
     private static final int CAMERA_PERMISSION_REQUEST = 1;
     private static final int FILES_PERMISSION_REQUEST = 2;
@@ -70,6 +71,7 @@ public class DishesFragment extends Fragment {
     private Uri mTakenPhotoUri;
     private Unbinder mUnbinder;
     private DishesAdapter mDishesAdapter;
+    private int lastIndexToTrigger = 0;
 
     public static DishesFragment newInstance(String restaurantId) {
         DishesFragment fragment = new DishesFragment();
@@ -98,6 +100,7 @@ public class DishesFragment extends Fragment {
 
         mDishesAdapter = new DishesAdapter(this, noDishes, restaurantId);
         mDishesList.setAdapter(mDishesAdapter);
+        mDishesList.setOnScrollListener(this);
 
         return rootView;
     }
@@ -240,6 +243,24 @@ public class DishesFragment extends Fragment {
     public void closeAddDishMenu() {
         if (mSourcePicker != null) {
             mSourcePicker.close(true);
+        }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        int bottomIndexSeen = firstVisibleItem + visibleItemCount;
+
+        // If visible last item's position is the size of the list, then we've hit the bottom
+        if (mDishesAdapter.canFetchMore() && bottomIndexSeen == totalItemCount) {
+            if (lastIndexToTrigger != bottomIndexSeen) {
+                lastIndexToTrigger = bottomIndexSeen;
+                mDishesAdapter.fetchNextPage();
+            }
         }
     }
 
