@@ -44,8 +44,8 @@ public class DishesAdapter extends BaseAdapter {
 
     private final DishOptionsPresenter.Listener mListener = new DishOptionsPresenter.Listener() {
         @Override
-        public void onDishDeleted() {
-            resyncWithDB();
+        public void onDishDeleted(Dish dish) {
+            updateWithDeletedDish(dish);
         }
 
         @Override
@@ -61,14 +61,14 @@ public class DishesAdapter extends BaseAdapter {
         mRestaurantId = restaurantId;
         mDefaultThumbnail = new IconDrawable(mActivity, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         mDishOptionsPresenter = new DishOptionsPresenter(mListener, mActivity);
-        resyncWithDB();
+        fetchFirstPage();
     }
 
     public boolean canFetchMore() {
         return !mStopFetching;
     }
 
-    public void resyncWithDB() {
+    private void fetchFirstPage() {
         mDishes = mRestaurantId == null
                 ? DatabaseManager.get().getDishesDBManager().getDishesPage(null)
                 : DatabaseManager.get().getDishesDBManager().getDishesPage(mRestaurantId, null);
@@ -82,7 +82,6 @@ public class DishesAdapter extends BaseAdapter {
         } else {
             mNoResults.setVisibility(View.GONE);
         }
-        notifyDataSetChanged();
     }
 
     public void fetchNextPage() {
@@ -91,6 +90,41 @@ public class DishesAdapter extends BaseAdapter {
                 ? DatabaseManager.get().getDishesDBManager().getDishesPage(lastDish)
                 : DatabaseManager.get().getDishesDBManager().getDishesPage(mRestaurantId, lastDish);
         mDishes.addAll(nextDishes);
+
+        if (mDishes.size() < DishesDBManager.DISHES_PER_PAGE) {
+            mStopFetching = true;
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void updateWithAddedDish() {
+        Dish dish = DatabaseManager.get().getDishesDBManager().getLastUpdatedDish();
+        mDishes.add(0, dish);
+        if (mNoResults.getVisibility() == View.VISIBLE) {
+            mNoResults.setVisibility(View.GONE);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void updateWithEditedDish() {
+        Dish dish = DatabaseManager.get().getDishesDBManager().getLastUpdatedDish();
+        for (int i = 0; i < mDishes.size(); i++) {
+            if (mDishes.get(i).getId() == dish.getId()) {
+                mDishes.set(i, dish);
+                break;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public void updateWithDeletedDish(Dish dish) {
+        for (int i = 0; i < mDishes.size(); i++) {
+            if (mDishes.get(i).getId() == dish.getId()) {
+                mDishes.remove(i);
+                break;
+            }
+        }
         notifyDataSetChanged();
     }
 

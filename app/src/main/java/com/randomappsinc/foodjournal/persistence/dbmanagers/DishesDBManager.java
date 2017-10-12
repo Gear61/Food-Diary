@@ -260,4 +260,12 @@ public class DishesDBManager {
         Number number = getRealm().where(DishDO.class).findAll().max("id");
         return number == null ? 1 : number.intValue() + 1;
     }
+
+    public Dish getLastUpdatedDish() {
+        DishDO dishDO = getRealm()
+                .where(DishDO.class)
+                .findAllSorted("timeLastUpdated", Sort.DESCENDING)
+                .first();
+        return DBConverter.getDishFromDO(dishDO);
+    }
 }

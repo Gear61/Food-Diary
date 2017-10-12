@@ -15,7 +15,7 @@ import com.randomappsinc.foodjournal.utils.UIUtils;
 public class DishOptionsPresenter {
 
     public interface Listener {
-        void onDishDeleted();
+        void onDishDeleted(Dish dish);
 
         void editDish(Dish dish);
     }
@@ -57,7 +57,7 @@ public class DishOptionsPresenter {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         DatabaseManager.get().getDishesDBManager().deleteDish(mDish);
-                        mListener.onDishDeleted();
+                        mListener.onDishDeleted(mDish);
                     }
                 })
                 .build();

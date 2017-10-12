@@ -214,12 +214,11 @@ public class DishesFragment extends Fragment implements ListView.OnScrollListene
             mTakenPhotoFile.delete();
         }
 
-        if (resultCode == DISH_ADDED || resultCode == DISH_EDITED) {
-            mDishesAdapter.resyncWithDB();
-
-            if (resultCode == DISH_ADDED) {
-                mDishesList.setSelectionAfterHeaderView();
-            }
+        if (resultCode == DISH_ADDED) {
+            mDishesAdapter.updateWithAddedDish();
+            mDishesList.setSelectionAfterHeaderView();
+        } else if (resultCode == DISH_EDITED) {
+            mDishesAdapter.updateWithEditedDish();
         }
     }
 
@@ -247,9 +246,7 @@ public class DishesFragment extends Fragment implements ListView.OnScrollListene
     }
 
     @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-    }
+    public void onScrollStateChanged(AbsListView view, int scrollState) {}
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
