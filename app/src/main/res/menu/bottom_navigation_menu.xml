@@ -16,8 +16,20 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/camera"
+        android:checked="false"
+        android:title="@string/camera"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/check_ins"
         android:checked="false"
         android:title="@string/check_ins"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/favorites"
+        android:checked="false"
+        android:title="@string/favorites"
         app:showAsAction="ifRoom"/>
 </menu>

@@ -11,10 +11,10 @@
         android:layout_height="2dp"
         android:background="@drawable/bottom_nav_shadow"/>
 
-    <android.support.design.widget.BottomNavigationView
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/bottom_nav_height"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         app:elevation="8dp"

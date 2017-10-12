@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.HomepageFragmentController;
@@ -25,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends StandardActivity {
 
-    @BindView(R.id.bottom_navigation) BottomNavigationView mBottomNavigationView;
+    @BindView(R.id.bottom_navigation) BottomNavigationViewEx mBottomNavigationView;
     @BindColor(R.color.dark_gray) int darkGray;
     @BindColor(R.color.app_red) int red;
 
@@ -49,9 +50,16 @@ public class MainActivity extends StandardActivity {
 
         mNavigationController = new HomepageFragmentController(getFragmentManager(), R.id.container);
 
+        mBottomNavigationView.enableAnimation(false);
+        mBottomNavigationView.enableShiftingMode(false);
+        mBottomNavigationView.enableItemShiftingMode(false);
+        mBottomNavigationView.setTextVisibility(false);
+
         UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.home, IoniconsIcons.ion_android_home, this);
         UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.restaurants, IoniconsIcons.ion_android_restaurant, this);
+        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.camera, IoniconsIcons.ion_android_camera, this);
         UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.check_ins, IoniconsIcons.ion_android_checkmark_circle, this);
+        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.favorites, IoniconsIcons.ion_android_favorite, this);
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(mNavItemSelectedListener);
         mBottomNavigationView.setSelectedItemId(R.id.home);

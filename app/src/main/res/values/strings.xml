@@ -4,7 +4,9 @@
 
     <string name="home">Home</string>
     <string name="restaurants">Restaurants</string>
+    <string name="camera">Camera</string>
     <string name="check_ins">Check-Ins</string>
+    <string name="favorites">Favorites</string>
 
     <string name="add_a_dish">Add a dish</string>
     <string name="take_a_picture">Take a picture</string>
@@ -35,9 +37,10 @@
     <string name="add_icon">{ion-android-add}</string>
     <string name="close_icon">{ion-android-close}</string>
     <string name="overflow_icon">{ion-android-more-vertical}</string>
-    <string name="heart_filled_icon">{ion-ios-heart}</string>
-    <string name="heart_icon">{ion-ios-heart-outline}</string>
+    <string name="heart_filled_icon">{ion-android-favorite}</string>
+    <string name="heart_icon">{ion-android-favorite-outline}</string>
     <string name="share_icon">{ion-android-share-alt}</string>
+    <string name="camera_icon">{ion-android-camera}</string>
 
     <string name="confirm_form_exit">
         Are you sure you want to leave? Any unsaved changes will be lost.
