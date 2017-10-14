@@ -2,7 +2,7 @@ package com.randomappsinc.foodjournal.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.view.MenuItem;
+import android.support.annotation.IdRes;
 
 import com.randomappsinc.foodjournal.R;
 
@@ -26,8 +26,8 @@ public class HomepageFragmentController {
         mDishesFragment.closeAddDishMenu();
     }
 
-    public void onNavItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
+    public void onNavItemSelected(@IdRes int viewId) {
+        switch (viewId) {
             case R.id.home:
                 swapInFragment(mDishesFragment);
                 break;
@@ -36,6 +36,9 @@ public class HomepageFragmentController {
                 break;
             case R.id.check_ins:
                 swapInFragment(mCheckInsFragment);
+                break;
+            case R.id.settings:
+                // swapInFragment(mCheckInsFragment);
                 break;
         }
     }

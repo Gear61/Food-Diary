@@ -3,10 +3,12 @@ package com.randomappsinc.foodjournal.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -16,15 +18,28 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.HomepageFragmentController;
 import com.randomappsinc.foodjournal.persistence.PreferencesManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
+import com.randomappsinc.foodjournal.views.BottomNavigationView;
 
-import butterknife.BindColor;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends StandardActivity {
 
-    @BindColor(R.color.dark_gray) int darkGray;
-    @BindColor(R.color.app_red) int red;
+    @BindView(R.id.bottom_navigation) View mBottomNavigation;
 
+    private final BottomNavigationView.Listener mListener = new BottomNavigationView.Listener() {
+        @Override
+        public void onNavItemSelected(@IdRes int viewId) {
+            mNavigationController.onNavItemSelected(viewId);
+        }
+
+        @Override
+        public void takePicture() {
+
+        }
+    };
+
+    private BottomNavigationView mBottomNavigationView;
     private HomepageFragmentController mNavigationController;
 
     @Override
@@ -43,6 +58,7 @@ public class MainActivity extends StandardActivity {
         ButterKnife.bind(this);
 
         mNavigationController = new HomepageFragmentController(getFragmentManager(), R.id.container);
+        mBottomNavigationView = new BottomNavigationView(mBottomNavigation, mListener);
 
         if (PreferencesManager.get().shouldAskForRating()) {
             showRatingPrompt();

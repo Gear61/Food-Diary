@@ -29,10 +29,22 @@
             android:text="@string/restaurants_icon"
             style="@style/bottom_navigation_item"/>
 
-        <com.joanzapata.iconify.widget.IconTextView
+        <FrameLayout
             android:id="@+id/camera"
-            android:text="@string/camera_icon"
-            style="@style/bottom_navigation_item"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.joanzapata.iconify.widget.IconTextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/camera_circle"
+                android:text="@string/camera_icon"
+                android:textColor="@color/white"
+                android:textSize="24dp"/>
+        </FrameLayout>
 
         <com.joanzapata.iconify.widget.IconTextView
             android:id="@+id/check_ins"
