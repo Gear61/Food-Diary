@@ -13,6 +13,7 @@ public class HomepageFragmentController {
     private DishesFragment mDishesFragment;
     private RestaurantsFragment mRestaurantsFragment;
     private CheckInsFragment mCheckInsFragment;
+    private SettingsFragment mSettingsFragment;
 
     public HomepageFragmentController(FragmentManager fragmentManager, int containerId) {
         mFragmentManager = fragmentManager;
@@ -20,6 +21,7 @@ public class HomepageFragmentController {
         mDishesFragment = DishesFragment.newInstance(null);
         mRestaurantsFragment = RestaurantsFragment.newInstance(false);
         mCheckInsFragment = CheckInsFragment.newInstance(null);
+        mSettingsFragment = SettingsFragment.newInstance();
     }
 
     public void closeAddDishMenu() {
@@ -38,7 +40,7 @@ public class HomepageFragmentController {
                 swapInFragment(mCheckInsFragment);
                 break;
             case R.id.settings:
-                // swapInFragment(mCheckInsFragment);
+                swapInFragment(mSettingsFragment);
                 break;
         }
     }

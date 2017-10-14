@@ -63,12 +63,6 @@
         </activity>
 
         <activity
-            android:name=".activities.SettingsActivity"
-            android:label="@string/settings"
-            android:screenOrientation="portrait">
-        </activity>
-
-        <activity
             android:name=".activities.FindRestaurantActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden"
