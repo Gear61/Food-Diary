@@ -46,4 +46,10 @@ public class HomepageFragmentController {
     private void swapInFragment(Fragment fragment) {
         mFragmentManager.beginTransaction().replace(mContainerId, fragment).commit();
     }
+
+    public void takePicture() {
+        if (mDishesFragment != null) {
+            mDishesFragment.takePicture();
+        }
+    }
 }

@@ -116,14 +116,7 @@ public class DishesFragment extends Fragment implements ListView.OnScrollListene
     public void addPicture(View view) {
         switch (view.getId()) {
             case R.id.from_camera:
-                if (PermissionUtils.isPermissionGranted(Manifest.permission.CAMERA)) {
-                    startCameraPage();
-                } else {
-                    PermissionUtils.requestPermission(
-                            this,
-                            Manifest.permission.CAMERA,
-                            CAMERA_PERMISSION_REQUEST);
-                }
+                takePicture();
                 break;
             case R.id.from_files:
                 if (PermissionUtils.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -135,6 +128,17 @@ public class DishesFragment extends Fragment implements ListView.OnScrollListene
                             FILES_PERMISSION_REQUEST);
                 }
                 break;
+        }
+    }
+
+    public void takePicture() {
+        if (PermissionUtils.isPermissionGranted(Manifest.permission.CAMERA)) {
+            startCameraPage();
+        } else {
+            PermissionUtils.requestPermission(
+                    this,
+                    Manifest.permission.CAMERA,
+                    CAMERA_PERMISSION_REQUEST);
         }
     }
 

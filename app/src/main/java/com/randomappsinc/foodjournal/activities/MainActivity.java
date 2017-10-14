@@ -35,7 +35,7 @@ public class MainActivity extends StandardActivity {
 
         @Override
         public void takePicture() {
-
+            mNavigationController.takePicture();
         }
     };
 

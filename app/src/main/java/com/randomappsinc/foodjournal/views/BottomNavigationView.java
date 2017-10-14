@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.views;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -26,10 +27,10 @@ public class BottomNavigationView {
     @BindColor(R.color.dark_gray) int darkGray;
     @BindColor(R.color.app_red) int red;
 
-    private Listener mListener;
+    @NonNull private Listener mListener;
     private TextView mCurrentlySelected;
 
-    public BottomNavigationView(View parent, Listener listener) {
+    public BottomNavigationView(View parent, @NonNull Listener listener) {
         ButterKnife.bind(this, parent);
         mListener = listener;
 
@@ -60,6 +61,11 @@ public class BottomNavigationView {
         mRestaurantsButton.setTextColor(red);
         mCurrentlySelected = mRestaurantsButton;
         mListener.onNavItemSelected(R.id.restaurants);
+    }
+
+    @OnClick(R.id.camera)
+    public void takePicture() {
+        mListener.takePicture();
     }
 
     @OnClick(R.id.check_ins)
