@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="SpUsage">
 
     <View
         android:layout_above="@+id/bottom_navigation"
@@ -11,17 +12,38 @@
         android:layout_height="2dp"
         android:background="@drawable/bottom_nav_shadow"/>
 
-    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+    <LinearLayout
         android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_nav_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        app:elevation="8dp"
-        app:itemBackground="@color/white"
-        app:itemIconTint="@color/bottom_nav_color"
-        app:itemTextColor="@color/bottom_nav_color"
-        app:menu="@menu/bottom_navigation_menu"/>
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white">
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/home"
+            android:text="@string/home_icon"
+            style="@style/bottom_navigation_item"/>
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/restaurants"
+            android:text="@string/restaurants_icon"
+            style="@style/bottom_navigation_item"/>
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/camera"
+            android:text="@string/camera_icon"
+            style="@style/bottom_navigation_item"/>
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/check_ins"
+            android:text="@string/check_in_icon"
+            style="@style/bottom_navigation_item"/>
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/settings"
+            android:text="@string/settings_icon"
+            style="@style/bottom_navigation_item"/>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/container"

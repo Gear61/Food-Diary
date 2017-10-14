@@ -38,5 +38,4 @@ dependencies {
     compile 'com.android.support:animated-vector-drawable:25.3.1'
     compile 'io.nlopez.smartlocation:library:3.2.4'
     compile 'com.google.android.gms:play-services-location:11.2.2'
-    compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.1'
 }

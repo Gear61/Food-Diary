@@ -1,19 +1,16 @@
 package com.randomappsinc.foodjournal.activities;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.HomepageFragmentController;
@@ -21,16 +18,13 @@ import com.randomappsinc.foodjournal.persistence.PreferencesManager;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import butterknife.BindColor;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends StandardActivity {
 
-    @BindView(R.id.bottom_navigation) BottomNavigationViewEx mBottomNavigationView;
     @BindColor(R.color.dark_gray) int darkGray;
     @BindColor(R.color.app_red) int red;
 
-    private int mCurrentNavId = -1;
     private HomepageFragmentController mNavigationController;
 
     @Override
@@ -50,48 +44,10 @@ public class MainActivity extends StandardActivity {
 
         mNavigationController = new HomepageFragmentController(getFragmentManager(), R.id.container);
 
-        mBottomNavigationView.enableAnimation(false);
-        mBottomNavigationView.enableShiftingMode(false);
-        mBottomNavigationView.enableItemShiftingMode(false);
-        mBottomNavigationView.setTextVisibility(false);
-
-        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.home, IoniconsIcons.ion_android_home, this);
-        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.restaurants, IoniconsIcons.ion_android_restaurant, this);
-        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.camera, IoniconsIcons.ion_android_camera, this);
-        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.check_ins, IoniconsIcons.ion_android_checkmark_circle, this);
-        UIUtils.loadBottomNavIcon(mBottomNavigationView, R.id.favorites, IoniconsIcons.ion_android_favorite, this);
-
-        mBottomNavigationView.setOnNavigationItemSelectedListener(mNavItemSelectedListener);
-        mBottomNavigationView.setSelectedItemId(R.id.home);
-
         if (PreferencesManager.get().shouldAskForRating()) {
             showRatingPrompt();
         }
     }
-
-    private final BottomNavigationView.OnNavigationItemSelectedListener mNavItemSelectedListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    if (item.getItemId() == mCurrentNavId) {
-                        return false;
-                    }
-
-                    mNavigationController.onNavItemSelected(item);
-
-                    if (mCurrentNavId != -1) {
-                        mBottomNavigationView
-                                .getMenu()
-                                .findItem(mCurrentNavId)
-                                .getIcon()
-                                .setColorFilter(darkGray, PorterDuff.Mode.SRC_ATOP);
-                    }
-                    item.getIcon().setColorFilter(red, PorterDuff.Mode.SRC_ATOP);
-
-                    mCurrentNavId = item.getItemId();
-                    return true;
-                }
-            };
 
     private void showRatingPrompt() {
         new MaterialDialog.Builder(this)
