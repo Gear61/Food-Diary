@@ -57,6 +57,13 @@ public class DishesFragment extends Fragment implements ListView.OnScrollListene
 
     public void refreshWithAddedDish() {
         mDishesAdapter.updateWithAddedDish();
+        mDishesList.clearFocus();
+        mDishesList.post(new Runnable() {
+            @Override
+            public void run() {
+                mDishesList.setSelection(0);
+            }
+        });
     }
 
     public void editDish(Dish dish) {
