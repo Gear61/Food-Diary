@@ -83,15 +83,6 @@ public class RestaurantViewActivity extends StandardActivity {
                 .build();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.restaurant_menu, menu);
-        UIUtils.loadActionBarIcon(menu, R.id.navigate, IoniconsIcons.ion_android_map, this);
-        UIUtils.loadActionBarIcon(menu, R.id.call, IoniconsIcons.ion_android_call, this);
-        UIUtils.loadActionBarIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
-        return true;
-    }
-
     private void navigateToRestaurant() {
         String mapUri = "google.navigation:q=" + mRestaurant.getAddress() + " " + mRestaurant.getName();
         startActivity(Intent.createChooser(
@@ -105,6 +96,16 @@ public class RestaurantViewActivity extends StandardActivity {
                 new Intent(Intent.ACTION_DIAL, Uri.parse(phoneUri)),
                 getString(R.string.call_with)));
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.restaurant_menu, menu);
+        UIUtils.loadActionBarIcon(menu, R.id.navigate, IoniconsIcons.ion_android_map, this);
+        UIUtils.loadActionBarIcon(menu, R.id.call, IoniconsIcons.ion_android_call, this);
+        UIUtils.loadActionBarIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
+        return true;
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
