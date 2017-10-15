@@ -91,7 +91,7 @@ public class DishFormActivity extends StandardActivity {
 
         mNewDishMode = getIntent().getBooleanExtra(NEW_DISH_KEY, false);
 
-        // Adding a new dish in 1 of 2 ways
+        // Adding a new dish
         if (mNewDishMode) {
             mDish = new Dish();
             mDish.setTimeAdded(System.currentTimeMillis());
@@ -100,20 +100,12 @@ public class DishFormActivity extends StandardActivity {
             String pictureUri = getIntent().getStringExtra(URI_KEY);
             mDish.setUriString(pictureUri);
 
-            mRestaurant = getIntent().getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
-            // From the homepage's dishes feed
-            if (mRestaurant == null) {
-                Restaurant autoFill = CheckInsDBManager.get().getAutoFillRestaurant();
-                if (autoFill == null) {
-                    mRestaurantInfo.setVisibility(View.INVISIBLE);
-                    mChooseRestaurantPrompt.setVisibility(View.VISIBLE);
-                } else {
-                    mRestaurant = autoFill;
-                    loadRestaurantInfo();
-                }
-            }
-            // From a restaurant's dishes feed
-            else {
+            Restaurant autoFill = CheckInsDBManager.get().getAutoFillRestaurant();
+            if (autoFill == null) {
+                mRestaurantInfo.setVisibility(View.INVISIBLE);
+                mChooseRestaurantPrompt.setVisibility(View.VISIBLE);
+            } else {
+                mRestaurant = autoFill;
                 loadRestaurantInfo();
             }
         }

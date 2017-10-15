@@ -118,7 +118,7 @@ public class DishesAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void updateWithDeletedDish(Dish dish) {
+    private void updateWithDeletedDish(Dish dish) {
         for (int i = 0; i < mDishes.size(); i++) {
             if (mDishes.get(i).getId() == dish.getId()) {
                 mDishes.remove(i);

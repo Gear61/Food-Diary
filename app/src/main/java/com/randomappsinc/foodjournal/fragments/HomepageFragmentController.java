@@ -24,10 +24,6 @@ public class HomepageFragmentController {
         mSettingsFragment = SettingsFragment.newInstance();
     }
 
-    public void closeAddDishMenu() {
-        mDishesFragment.closeAddDishMenu();
-    }
-
     public void onNavItemSelected(@IdRes int viewId) {
         switch (viewId) {
             case R.id.home:
@@ -47,11 +43,5 @@ public class HomepageFragmentController {
 
     private void swapInFragment(Fragment fragment) {
         mFragmentManager.beginTransaction().replace(mContainerId, fragment).commit();
-    }
-
-    public void takePicture() {
-        if (mDishesFragment != null) {
-            mDishesFragment.takePicture();
-        }
     }
 }
