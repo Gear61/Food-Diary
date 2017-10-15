@@ -29,12 +29,12 @@
 
     <string name="filter">Filter</string>
 
-    <string name="add_icon">{ion-android-add}</string>
     <string name="close_icon">{ion-android-close}</string>
     <string name="overflow_icon">{ion-android-more-vertical}</string>
     <string name="heart_filled_icon">{ion-ios-heart}</string>
     <string name="heart_icon">{ion-ios-heart-outline}</string>
     <string name="share_icon">{ion-android-share-alt}</string>
+    <string name="tagging_icon">{ion-ios-pricetags}</string>
 
     <!-- Bottom navigation icons -->
     <string name="home_icon">{ion-android-home}</string>
