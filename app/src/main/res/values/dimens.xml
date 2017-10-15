@@ -10,9 +10,6 @@
 
     <dimen name="bottom_nav_height">56dp</dimen>
 
-    <!-- There's some weird built-in margin for the clan FAB library that we need to deal with -->
-    <dimen name="clan_fab_margin">11dp</dimen>
-
     <!-- User restaurants -->
     <dimen name="restaurant_icon_size">28dp</dimen>
     <dimen name="restaurant_icon_text_size">22dp</dimen>

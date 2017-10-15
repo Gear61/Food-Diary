@@ -55,6 +55,10 @@ public class DishesFragment extends Fragment implements ListView.OnScrollListene
         return rootView;
     }
 
+    public void refreshWithAddedDish() {
+        mDishesAdapter.updateWithAddedDish();
+    }
+
     public void editDish(Dish dish) {
         Intent intent = new Intent(getActivity(), DishFormActivity.class);
         intent.putExtra(DishFormActivity.NEW_DISH_KEY, false);

@@ -169,7 +169,6 @@ public class CheckInsDBManager {
 
         int dishId = DatabaseManager.get().getDishesDBManager().getNextDishId();
         dish.setId(dishId);
-        dish.setTimeLastUpdated(System.currentTimeMillis());
         checkIn.addTaggedDish(dish);
 
         addCheckIn(checkIn, true);

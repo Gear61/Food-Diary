@@ -215,6 +215,7 @@ public class DishFormActivity extends StandardActivity {
                         .onAny(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                mDish.setTimeLastUpdated(System.currentTimeMillis());
                                 if (which == DialogAction.POSITIVE) {
                                     DatabaseManager.get().getCheckInsDBManager().autoCreateCheckIn(mDish);
                                 } else {
@@ -227,6 +228,7 @@ public class DishFormActivity extends StandardActivity {
                         .show();
             } else {
                 // Auto-tag to recent check-in
+                mDish.setTimeLastUpdated(System.currentTimeMillis());
                 DatabaseManager.get().getDishesDBManager().addDish(mDish);
                 checkIn.addTaggedDish(mDish);
                 DatabaseManager.get().getCheckInsDBManager().updateCheckIn(checkIn);

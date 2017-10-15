@@ -82,6 +82,7 @@ public class MainActivity extends StandardActivity {
 
         mNavigationController = new HomepageFragmentController(getFragmentManager(), R.id.container);
         mBottomNavigationView = new BottomNavigationView(mBottomNavigation, mListener);
+        mNavigationController.loadHome();
 
         if (PreferencesManager.get().shouldAskForRating()) {
             showRatingPrompt();
@@ -211,6 +212,8 @@ public class MainActivity extends StandardActivity {
 
         if (resultCode == DishesFragment.DISH_ADDED) {
             // Tab to dishes fragment and have the list pull in the new dish
+            mBottomNavigationView.onHomeClicked();
+            mNavigationController.refreshHomepageWithAddedDish();
         }
     }
 

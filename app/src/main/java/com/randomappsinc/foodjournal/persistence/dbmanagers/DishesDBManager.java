@@ -60,7 +60,6 @@ public class DishesDBManager {
             @Override
             public void execute(Realm realm) {
                 DishDO dishDO = dish.toDishDO();
-                dishDO.setTimeLastUpdated(System.currentTimeMillis());
                 restaurantDO.getDishes().add(dishDO);
             }
         });

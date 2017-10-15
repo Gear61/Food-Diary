@@ -36,7 +36,6 @@ public class BottomNavigationView {
 
         mCurrentlySelected = mHomeButton;
         mHomeButton.setTextColor(red);
-        mListener.onNavItemSelected(R.id.home);
     }
 
     @OnClick(R.id.home)
