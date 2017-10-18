@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +17,8 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,10 +69,20 @@ public class FullPictureActivity extends AppCompatActivity{
 
     @OnClick(R.id.share)
     public void sharePicture() {
+        String filePath = mImageUri.substring(mImageUri.lastIndexOf('/'));
+        String completePath = Environment.getExternalStorageDirectory().getPath()
+                + "/Android/data/com.randomappsinc.foodjournal/files/Pictures"
+                + filePath;
+        File imageFile = new File(completePath);
+        if (!imageFile.exists()) {
+            return;
+        }
+        Uri cleanImageUri = FileProvider.getUriForFile(this, "com.randomappsinc.foodjournal.fileprovider", imageFile);
+
         Intent shareIntent = ShareCompat.IntentBuilder.from(this)
-                .setStream(Uri.parse(mImageUri))
+                .setStream(cleanImageUri)
                 .getIntent();
-        shareIntent.setData(Uri.parse(mImageUri));
+        shareIntent.setData(cleanImageUri);
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         if (shareIntent.resolveActivity(getPackageManager()) != null) {

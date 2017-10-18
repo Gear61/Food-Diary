@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
-import android.net.Uri;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.randomappsinc.foodjournal.models.CheckIn;
@@ -139,17 +140,24 @@ public class DishesDBManager {
     public void deleteDish(final Dish dish) {
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
-                realm.where(DishDO.class)
+            public void execute(@NonNull Realm realm) {
+                DishDO dishDO = realm.where(DishDO.class)
                         .equalTo("id", dish.getId())
-                        .findFirst()
-                        .deleteFromRealm();
+                        .findFirst();
+                if (dishDO != null) {
+                    dishDO.deleteFromRealm();
+                }
             }
         });
 
-        String imagePath = Uri.parse(dish.getUriString()).getPath();
-        File imageFile = new File(imagePath);
-        imageFile.delete();
+        String filePath = dish.getUriString().substring(dish.getUriString().lastIndexOf('/'));
+        String completePath = Environment.getExternalStorageDirectory().getPath()
+                + "/Android/data/com.randomappsinc.foodjournal/files/Pictures"
+                + filePath;
+        File imageFile = new File(completePath);
+        if (imageFile.exists()) {
+            imageFile.delete();
+        }
     }
 
     public void updateDish(final Dish dish) {
