@@ -8,6 +8,7 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 public class StandardActivity extends AppCompatActivity {
+
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         UIUtils.hideKeyboard(this);

@@ -134,28 +134,6 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                 })
                 .build();
 
-        mLocationDenialDialog = new MaterialDialog.Builder(this)
-                .cancelable(false)
-                .title(R.string.location_services_needed)
-                .content(R.string.location_services_denial)
-                .positiveText(R.string.location_services_confirm)
-                .negativeText(R.string.enter_location_manually)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mLocationFetcher.askForLocation(LOCATION_SERVICES_CODE);
-                        mDenialLock = false;
-                    }
-                })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        mLocationForm.show();
-                        mDenialLock = false;
-                    }
-                })
-                .build();
-
         mLocationPermissionDialog = new MaterialDialog.Builder(this)
                 .cancelable(false)
                 .title(R.string.location_permission_needed)

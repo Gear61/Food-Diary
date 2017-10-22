@@ -14,12 +14,7 @@ public class LocationForm {
         void onLocationEntered(String location);
     }
 
-    private static final Listener DUMMY_LISTENER = new Listener() {
-        @Override
-        public void onLocationEntered(String location) {}
-    };
-
-    @NonNull private Listener mListener = DUMMY_LISTENER;
+    @NonNull private Listener mListener;
     private MaterialDialog mLocationDialog;
 
     public LocationForm(Context context, @NonNull Listener listener) {

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.View;
@@ -43,15 +42,11 @@ public class UIUtils {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static void loadBottomNavIcon(BottomNavigationView bottomView, int itemId, Icon icon, Context context) {
-        loadMenuIcon(bottomView.getMenu(), itemId, icon, context, R.color.dark_gray);
-    }
-
     public static void loadActionBarIcon(Menu menu, int itemId, Icon icon, Context context) {
         loadMenuIcon(menu, itemId, icon, context, R.color.white);
     }
 
-    public static void loadMenuIcon(Menu menu, int itemId, Icon icon, Context context, @ColorRes int colorId) {
+    private static void loadMenuIcon(Menu menu, int itemId, Icon icon, Context context, @ColorRes int colorId) {
         menu.findItem(itemId).setIcon(
                 new IconDrawable(context, icon)
                         .colorRes(colorId)
