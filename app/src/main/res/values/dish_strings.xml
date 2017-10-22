@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dish_form">Dish Form</string>
+    <string name="dish_page_title">Dish</string>
     <string name="dish_icon">{ion-pizza}</string>
 
     <string name="dish_name_hint">What is this dish called?</string>

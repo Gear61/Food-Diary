@@ -51,7 +51,7 @@
 
         <activity
             android:name=".activities.DishFormActivity"
-            android:label="@string/dish_form"
+            android:label="@string/dish_page_title"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:screenOrientation="portrait">
         </activity>
@@ -77,7 +77,7 @@
 
         <activity
             android:name=".activities.CheckInFormActivity"
-            android:label="@string/check_in_form"
+            android:label="@string/check_in_page_title"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:screenOrientation="portrait">
         </activity>

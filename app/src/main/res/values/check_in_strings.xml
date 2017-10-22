@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="check_in_form">Check-In Form</string>
+    <string name="check_in_page_title">Check-In</string>
     <string name="check_in_location_prompt">Where did you go?</string>
 
     <string name="no_check_ins">
