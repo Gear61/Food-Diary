@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.models.Dish;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -19,14 +21,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class PictureFullViewFragment extends Fragment {
+public class DishFullViewFragment extends Fragment {
 
-    public static final String IMAGE_URL_KEY = "imageUrl";
+    public static final String DISH_KEY = "dish";
 
-    public static PictureFullViewFragment newInstance(String imageUrl) {
-        PictureFullViewFragment fragment = new PictureFullViewFragment();
+    public static DishFullViewFragment newInstance(Dish dish) {
+        DishFullViewFragment fragment = new DishFullViewFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(IMAGE_URL_KEY, imageUrl);
+        bundle.putParcelable(DISH_KEY, dish);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -45,22 +47,25 @@ public class PictureFullViewFragment extends Fragment {
 
     @BindView(R.id.parent) View mParent;
     @BindView(R.id.picture) ImageView mPicture;
+    @BindView(R.id.picture_label) TextView mPictureLabel;
 
     private Unbinder mUnbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.picture_full_view_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.dish_full_view, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
         Drawable defaultThumbnail = new IconDrawable(getActivity(), IoniconsIcons.ion_image).colorRes(R.color.dark_gray);
-        String imageUrl = getArguments().getString(IMAGE_URL_KEY);
+        Dish dish = getArguments().getParcelable(DISH_KEY);
         Picasso.with(getActivity())
-                .load(imageUrl)
+                .load(dish.getUriString())
                 .error(defaultThumbnail)
                 .fit()
                 .centerInside()
                 .into(mPicture, mImageLoadingCallback);
+
+        mPictureLabel.setText(dish.getTitle());
 
         return rootView;
     }

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.activities.PictureFullViewActivity;
+import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
@@ -199,10 +199,10 @@ public class DishesAdapter extends BaseAdapter {
         @OnClick(R.id.dish_picture)
         void dishPictureClicked() {
             Dish dish = getItem(mPosition);
-            Intent intent = new Intent(mActivity, PictureFullViewActivity.class);
-            ArrayList<String> imagePath = new ArrayList<>();
-            imagePath.add(dish.getUriString());
-            intent.putStringArrayListExtra(PictureFullViewActivity.IMAGE_PATHS_KEY, imagePath);
+            Intent intent = new Intent(mActivity, DishesFullViewGalleryActivity.class);
+            ArrayList<Dish> dishList = new ArrayList<>();
+            dishList.add(dish);
+            intent.putParcelableArrayListExtra(DishesFullViewGalleryActivity.DISHES_KEY, dishList);
             mActivity.startActivity(intent);
             mActivity.overridePendingTransition(0, 0);
         }

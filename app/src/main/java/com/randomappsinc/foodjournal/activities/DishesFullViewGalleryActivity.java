@@ -10,7 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.adapters.PictureFullViewGalleryAdapter;
+import com.randomappsinc.foodjournal.adapters.DishesFullViewGalleryAdapter;
+import com.randomappsinc.foodjournal.models.Dish;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,23 +20,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PictureFullViewActivity extends AppCompatActivity {
+public class DishesFullViewGalleryActivity extends AppCompatActivity {
 
-    public static final String IMAGE_PATHS_KEY = "imageUrls";
+    public static final String DISHES_KEY = "dishes";
     public static final String POSITION_KEY = "position";
 
     @BindView(R.id.pictures_pager) ViewPager mPicturesPager;
 
-    private PictureFullViewGalleryAdapter mGalleryAdapter;
+    private DishesFullViewGalleryAdapter mGalleryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.picture_full_view_activity);
+        setContentView(R.layout.dishes_full_view_gallery);
         ButterKnife.bind(this);
 
-        ArrayList<String> imageUrls = getIntent().getStringArrayListExtra(IMAGE_PATHS_KEY);
-        mGalleryAdapter = new PictureFullViewGalleryAdapter(getFragmentManager(), imageUrls);
+        ArrayList<Dish> dishes = getIntent().getParcelableArrayListExtra(DISHES_KEY);
+        mGalleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dishes);
         mPicturesPager.setAdapter(mGalleryAdapter);
         mPicturesPager.setCurrentItem(getIntent().getIntExtra(POSITION_KEY, 0));
     }

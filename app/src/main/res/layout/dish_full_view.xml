@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:background="@color/theater_black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0"
+    tools:ignore="ContentDescription, SpUsage">
+
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/picture_label"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="19dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:shadowColor="@color/shadow_black"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"/>
+</FrameLayout>

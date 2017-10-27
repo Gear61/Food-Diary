@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.activities.PictureFullViewActivity;
+import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.squareup.picasso.Picasso;
 
@@ -26,14 +26,13 @@ import butterknife.OnClick;
 public class DishGalleryAdapter extends RecyclerView.Adapter<DishGalleryAdapter.DishThumbnailViewHolder> {
 
     private Activity mActivity;
-    private List<Dish> mDishes;
-    private ArrayList<String> mImagePaths;
+    private ArrayList<Dish> mDishes;
     private Drawable mDefaultThumbnail;
 
     public DishGalleryAdapter(Activity activity) {
         mActivity = activity;
         mDishes = new ArrayList<>();
-        mImagePaths = new ArrayList<>();
+        mDishes = new ArrayList<>();
         mDefaultThumbnail = new IconDrawable(activity, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
     }
 
@@ -41,11 +40,6 @@ public class DishGalleryAdapter extends RecyclerView.Adapter<DishGalleryAdapter.
         mDishes.clear();
         mDishes.addAll(dishes);
         notifyDataSetChanged();
-
-        mImagePaths.clear();
-        for (Dish dish : mDishes) {
-            mImagePaths.add(dish.getUriString());
-        }
     }
 
     @Override
@@ -84,9 +78,9 @@ public class DishGalleryAdapter extends RecyclerView.Adapter<DishGalleryAdapter.
 
         @OnClick(R.id.dish_picture)
         void onPictureClicked() {
-            Intent intent = new Intent(mActivity, PictureFullViewActivity.class);
-            intent.putStringArrayListExtra(PictureFullViewActivity.IMAGE_PATHS_KEY, mImagePaths);
-            intent.putExtra(PictureFullViewActivity.POSITION_KEY, getAdapterPosition());
+            Intent intent = new Intent(mActivity, DishesFullViewGalleryActivity.class);
+            intent.putParcelableArrayListExtra(DishesFullViewGalleryActivity.DISHES_KEY, mDishes);
+            intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, getAdapterPosition());
             mActivity.startActivity(intent);
             mActivity.overridePendingTransition(0, 0);
         }
