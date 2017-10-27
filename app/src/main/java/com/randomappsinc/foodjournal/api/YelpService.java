@@ -11,6 +11,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface YelpService {
+
     @FormUrlEncoded
     @POST("oauth2/token")
     Call<TokenResponse> fetchToken(@Field("client_id") String clientId,
@@ -20,5 +21,6 @@ public interface YelpService {
     @GET("v3/businesses/search")
     Call<RestaurantResults> fetchRestaurants(@Query("term") String term,
                                              @Query("location") String location,
-                                             @Query("limit") int limit);
+                                             @Query("limit") int limit,
+                                             @Query("sort_by") String sortBy);
 }

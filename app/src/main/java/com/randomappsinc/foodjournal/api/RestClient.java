@@ -79,7 +79,8 @@ public class RestClient {
                                 ? ApiConstants.DEFAULT_SEARCH_TERM
                                 : searchTerm + " " + ApiConstants.DEFAULT_SEARCH_TERM,
                         location,
-                        ApiConstants.DEFAULT_NUM_RESTAURANTS);
+                        ApiConstants.DEFAULT_NUM_RESTAURANTS,
+                        searchTerm.isEmpty() ? ApiConstants.DISTANCE : ApiConstants.BEST_MATCH);
                 mCurrentRestaurantsCall.enqueue(new FetchRestaurantsCallback());
             }
         });
