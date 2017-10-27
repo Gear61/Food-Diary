@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.activities.FullPictureActivity;
+import com.randomappsinc.foodjournal.activities.PictureFullViewActivity;
 import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
@@ -24,6 +24,7 @@ import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DishOptionsPresenter;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindColor;
@@ -143,7 +144,7 @@ public class DishesAdapter extends BaseAdapter {
         return position;
     }
 
-    public class DishViewHolder {
+    class DishViewHolder {
 
         @BindView(R.id.dish_info_text) TextView mDishInfoText;
         @BindView(R.id.dish_date) TextView mDishDate;
@@ -157,11 +158,11 @@ public class DishesAdapter extends BaseAdapter {
 
         private int mPosition;
 
-        public DishViewHolder(View view) {
+        DishViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
 
-        public void loadItem(int position) {
+        void loadItem(int position) {
             mPosition = position;
 
             Dish dish = getItem(position);
@@ -196,22 +197,24 @@ public class DishesAdapter extends BaseAdapter {
         }
 
         @OnClick(R.id.dish_picture)
-        public void dishPictureClicked() {
+        void dishPictureClicked() {
             Dish dish = getItem(mPosition);
-            Intent intent = new Intent(mActivity, FullPictureActivity.class);
-            intent.putExtra(FullPictureActivity.IMAGE_URI_KEY, dish.getUriString());
+            Intent intent = new Intent(mActivity, PictureFullViewActivity.class);
+            ArrayList<String> imagePath = new ArrayList<>();
+            imagePath.add(dish.getUriString());
+            intent.putStringArrayListExtra(PictureFullViewActivity.IMAGE_PATHS_KEY, imagePath);
             mActivity.startActivity(intent);
             mActivity.overridePendingTransition(0, 0);
         }
 
         @OnClick(R.id.overflow_menu)
-        public void overflowClicked() {
+        void overflowClicked() {
             Dish dish = getItem(mPosition);
             mDishOptionsPresenter.showOptions(dish);
         }
 
         @OnClick(R.id.favorite_toggle)
-        public void toggleFavorite() {
+        void toggleFavorite() {
             Dish dish = getItem(mPosition);
             boolean isFavorited = dish.isFavorited();
             dish.setIsFavorited(!isFavorited);
