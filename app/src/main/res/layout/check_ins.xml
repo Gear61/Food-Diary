@@ -12,10 +12,7 @@
 
     <ListView
         android:id="@+id/check_ins"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/list_fab_offset"
-        android:clipToPadding="false"/>
+        style="@style/content_list"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_check_in"

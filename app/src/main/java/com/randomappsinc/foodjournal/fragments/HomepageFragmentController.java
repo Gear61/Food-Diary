@@ -12,7 +12,7 @@ public class HomepageFragmentController {
     private int mContainerId;
     private HomepageDishesFragment mDishesFragment;
     private RestaurantsFragment mRestaurantsFragment;
-    private CheckInsFragment mCheckInsFragment;
+    private HomepageCheckInsFragment mCheckInsFragment;
     private SettingsFragment mSettingsFragment;
     @IdRes private int mCurrentViewId;
 
@@ -21,7 +21,7 @@ public class HomepageFragmentController {
         mContainerId = containerId;
         mDishesFragment = HomepageDishesFragment.newInstance();
         mRestaurantsFragment = RestaurantsFragment.newInstance(false);
-        mCheckInsFragment = CheckInsFragment.newInstance(null);
+        mCheckInsFragment = HomepageCheckInsFragment.newInstance();
         mSettingsFragment = SettingsFragment.newInstance();
     }
 
