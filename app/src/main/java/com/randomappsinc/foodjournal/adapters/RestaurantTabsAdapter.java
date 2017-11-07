@@ -6,10 +6,11 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.CheckInsFragment;
-import com.randomappsinc.foodjournal.fragments.DishesFragment;
+import com.randomappsinc.foodjournal.fragments.RestaurantDishesFragment;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 
 public class RestaurantTabsAdapter extends FragmentStatePagerAdapter {
+
     private String[] mRestaurantTabs;
     private String mRestaurantId;
 
@@ -23,7 +24,7 @@ public class RestaurantTabsAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return DishesFragment.newInstance(mRestaurantId);
+                return RestaurantDishesFragment.newInstance(mRestaurantId);
             case 1:
                 return CheckInsFragment.newInstance(mRestaurantId);
             default:

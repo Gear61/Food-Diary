@@ -15,13 +15,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DateTimeAdder;
@@ -221,7 +221,7 @@ public class DishFormActivity extends StandardActivity {
                                 } else {
                                     DatabaseManager.get().getDishesDBManager().addDish(mDish);
                                 }
-                                setResult(DishesFragment.DISH_ADDED);
+                                setResult(Constants.DISH_ADDED);
                                 finish();
                             }
                         })
@@ -232,12 +232,12 @@ public class DishFormActivity extends StandardActivity {
                 DatabaseManager.get().getDishesDBManager().addDish(mDish);
                 checkIn.addTaggedDish(mDish);
                 DatabaseManager.get().getCheckInsDBManager().updateCheckIn(checkIn);
-                setResult(DishesFragment.DISH_ADDED);
+                setResult(Constants.DISH_ADDED);
                 finish();
             }
         } else {
             DatabaseManager.get().getDishesDBManager().updateDish(mDish);
-            setResult(DishesFragment.DISH_EDITED);
+            setResult(Constants.DISH_EDITED);
             finish();
         }
     }

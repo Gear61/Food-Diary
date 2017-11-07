@@ -20,10 +20,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DishesFragment extends Fragment implements ListView.OnScrollListener {
+public class RestaurantDishesFragment extends Fragment
+        implements ListView.OnScrollListener, DishesAdapter.Listener {
+
+    public static RestaurantDishesFragment newInstance(String restaurantId) {
+        RestaurantDishesFragment fragment = new RestaurantDishesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(RestaurantsActivity.ID_KEY, restaurantId);
+        fragment.setArguments(bundle);
+        fragment.setRetainInstance(true);
+        return fragment;
+    }
 
     // Result codes
-    public static final int DISH_ADDED = 1;
     public static final int DISH_EDITED = 2;
 
     @BindView(R.id.dishes) ListView mDishesList;
@@ -33,43 +42,20 @@ public class DishesFragment extends Fragment implements ListView.OnScrollListene
     private DishesAdapter mDishesAdapter;
     private int lastIndexToTrigger = 0;
 
-    public static DishesFragment newInstance(String restaurantId) {
-        DishesFragment fragment = new DishesFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(RestaurantsActivity.ID_KEY, restaurantId);
-        fragment.setArguments(bundle);
-        fragment.setRetainInstance(true);
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.dishes, container, false);
+        View rootView = inflater.inflate(R.layout.restaurant_dishes, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
         String restaurantId = getArguments() != null ? getArguments().getString(RestaurantsActivity.ID_KEY) : null;
-        mDishesAdapter = new DishesAdapter(this, noDishes, restaurantId);
+        mDishesAdapter = new DishesAdapter(this, getActivity(), noDishes, restaurantId);
         mDishesList.setAdapter(mDishesAdapter);
         mDishesList.setOnScrollListener(this);
 
         return rootView;
     }
 
-    public void refreshWithAddedDish() {
-        if (mDishesList == null) {
-            return;
-        }
-
-        mDishesAdapter.updateWithAddedDish();
-        mDishesList.clearFocus();
-        mDishesList.post(new Runnable() {
-            @Override
-            public void run() {
-                mDishesList.setSelection(0);
-            }
-        });
-    }
-
+    @Override
     public void editDish(Dish dish) {
         Intent intent = new Intent(getActivity(), DishFormActivity.class);
         intent.putExtra(DishFormActivity.NEW_DISH_KEY, false);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
-import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.DishesDBManager;
@@ -34,8 +34,12 @@ import butterknife.OnClick;
 
 public class DishesAdapter extends BaseAdapter {
 
+    public interface Listener {
+        void editDish(Dish dish);
+    }
+
     private List<Dish> mDishes;
-    private DishesFragment mDishesFragment;
+    @NonNull private Listener mListener;
     private Activity mActivity;
     private View mNoResults;
     private String mRestaurantId;
@@ -43,7 +47,7 @@ public class DishesAdapter extends BaseAdapter {
     private DishOptionsPresenter mDishOptionsPresenter;
     private boolean mStopFetching;
 
-    private final DishOptionsPresenter.Listener mListener = new DishOptionsPresenter.Listener() {
+    private final DishOptionsPresenter.Listener mDishOptionsListener = new DishOptionsPresenter.Listener() {
         @Override
         public void onDishDeleted(Dish dish) {
             updateWithDeletedDish(dish);
@@ -51,17 +55,17 @@ public class DishesAdapter extends BaseAdapter {
 
         @Override
         public void editDish(Dish dish) {
-            mDishesFragment.editDish(dish);
+            mListener.editDish(dish);
         }
     };
 
-    public DishesAdapter(DishesFragment dishesFragment, View noResults, String restaurantId) {
-        mDishesFragment = dishesFragment;
-        mActivity = dishesFragment.getActivity();
+    public DishesAdapter(@NonNull Listener listener, Activity activity, View noResults, String restaurantId) {
+        mListener = listener;
+        mActivity = activity;
         mNoResults = noResults;
         mRestaurantId = restaurantId;
         mDefaultThumbnail = new IconDrawable(mActivity, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
-        mDishOptionsPresenter = new DishOptionsPresenter(mListener, mActivity);
+        mDishOptionsPresenter = new DishOptionsPresenter(mDishOptionsListener, mActivity);
         fetchFirstPage();
     }
 

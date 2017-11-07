@@ -21,9 +21,9 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.fragments.DishesFragment;
 import com.randomappsinc.foodjournal.fragments.HomepageFragmentController;
 import com.randomappsinc.foodjournal.persistence.PreferencesManager;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
@@ -47,7 +47,6 @@ public class MainActivity extends StandardActivity {
 
     // Opening dish form
     public static final int DISH_FORM_ADD = 3;
-
 
     @BindView(R.id.bottom_navigation) View mBottomNavigation;
     @BindString(R.string.choose_image_from) String mChooseImageFrom;
@@ -214,7 +213,7 @@ public class MainActivity extends StandardActivity {
             mTakenPhotoFile.delete();
         }
 
-        if (resultCode == DishesFragment.DISH_ADDED) {
+        if (resultCode == Constants.DISH_ADDED) {
             // Tab to dishes fragment and have the list pull in the new dish
             mBottomNavigationView.onHomeClicked();
             mNavigationController.refreshHomepageWithAddedDish();
@@ -244,7 +243,6 @@ public class MainActivity extends StandardActivity {
         UIUtils.loadActionBarIcon(menu, R.id.upload_from_gallery, IoniconsIcons.ion_android_folder, this);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

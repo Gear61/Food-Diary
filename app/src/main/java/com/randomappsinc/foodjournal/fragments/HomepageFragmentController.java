@@ -10,7 +10,7 @@ public class HomepageFragmentController {
 
     private FragmentManager mFragmentManager;
     private int mContainerId;
-    private DishesFragment mDishesFragment;
+    private HomepageDishesFragment mDishesFragment;
     private RestaurantsFragment mRestaurantsFragment;
     private CheckInsFragment mCheckInsFragment;
     private SettingsFragment mSettingsFragment;
@@ -19,7 +19,7 @@ public class HomepageFragmentController {
     public HomepageFragmentController(FragmentManager fragmentManager, int containerId) {
         mFragmentManager = fragmentManager;
         mContainerId = containerId;
-        mDishesFragment = DishesFragment.newInstance(null);
+        mDishesFragment = HomepageDishesFragment.newInstance();
         mRestaurantsFragment = RestaurantsFragment.newInstance(false);
         mCheckInsFragment = CheckInsFragment.newInstance(null);
         mSettingsFragment = SettingsFragment.newInstance();
