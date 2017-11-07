@@ -3,6 +3,7 @@ package com.randomappsinc.foodjournal.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ public class HomepageDishesFragment extends Fragment
         mUnbinder = ButterKnife.bind(this, rootView);
 
         mToolbar.setTitle(R.string.app_name);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
 
         mDishesAdapter = new DishesAdapter(this, getActivity(), noDishes, null);
         mDishesList.setAdapter(mDishesAdapter);
