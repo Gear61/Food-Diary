@@ -14,7 +14,6 @@ public class RestaurantsActivity extends StandardActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.restaurants_activity);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         RestaurantsFragment restaurantsFragment = RestaurantsFragment.newInstance(true);
         getFragmentManager().beginTransaction().add(R.id.container, restaurantsFragment).commit();

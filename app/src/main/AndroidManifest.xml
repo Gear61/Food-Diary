@@ -59,8 +59,8 @@
 
         <activity
             android:name=".activities.RestaurantsActivity"
-            android:label="@string/restaurants"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity

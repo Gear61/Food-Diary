@@ -222,18 +222,20 @@ public class MainActivity extends StandardActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            switch (requestCode) {
-                case CAMERA_PERMISSION_REQUEST:
-                    startCameraPage();
-                    break;
-                case FILES_PERMISSION_REQUEST:
-                    openFilePicker();
-                    break;
-                default:
-                    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-                    break;
-            }
+        if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        switch (requestCode) {
+            case CAMERA_PERMISSION_REQUEST:
+                startCameraPage();
+                break;
+            case FILES_PERMISSION_REQUEST:
+                openFilePicker();
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
         }
     }
 

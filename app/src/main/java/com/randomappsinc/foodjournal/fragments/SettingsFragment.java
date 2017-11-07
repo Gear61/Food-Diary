@@ -4,10 +4,12 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.IconItemsAdapter;
@@ -25,7 +27,7 @@ public class SettingsFragment extends Fragment {
     public static final String OTHER_APPS_URL = "https://play.google.com/store/apps/dev?id=9093438553713389916";
     public static final String REPO_URL = "https://github.com/Gear61/Food-Journal";
 
-    @BindView(R.id.parent) View parent;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.settings_options) ListView settingsOptions;
     @BindString(R.string.feedback_subject) String feedbackSubject;
     @BindString(R.string.send_email) String sendEmail;
@@ -42,6 +44,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.settings, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
+        mToolbar.setTitle(R.string.settings);
         settingsOptions.setAdapter(new IconItemsAdapter(getActivity(), R.array.settings_options, R.array.settings_icons));
         return rootView;
     }
@@ -63,7 +66,7 @@ public class SettingsFragment extends Fragment {
                 Uri uri =  Uri.parse("market://details?id=" + getActivity().getPackageName());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 if (!(getActivity().getPackageManager().queryIntentActivities(intent, 0).size() > 0)) {
-                    UIUtils.showSnackbar(parent, getString(R.string.play_store_error));
+                    UIUtils.showToast(R.string.play_store_error, Toast.LENGTH_LONG);
                     return;
                 }
                 break;

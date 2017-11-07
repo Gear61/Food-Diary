@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,7 @@ public class RestaurantsFragment extends Fragment {
     public static final int RESTAURANT_DELETED_CODE = 1;
 
     @BindView(R.id.parent) View mParent;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.search_input) EditText mSearchInput;
     @BindView(R.id.clear_search) View mClearSearch;
     @BindView(R.id.no_results) TextView mNoResults;
@@ -67,7 +70,13 @@ public class RestaurantsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.restaurants, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
+        mToolbar.setTitle(R.string.restaurants);
         mPickerMode = getArguments().getBoolean(RestaurantsActivity.PICKER_MODE_KEY, false);
+        if (mPickerMode) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         mAddRestaurant.setImageDrawable(new IconDrawable(getActivity(), IoniconsIcons.ion_android_add).colorRes(R.color.white));
         mAdapter = new UserRestaurantsAdapter(getActivity(), mNoResults);
         mRestaurantsList.setAdapter(mAdapter);

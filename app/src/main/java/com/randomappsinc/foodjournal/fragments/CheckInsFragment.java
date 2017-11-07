@@ -27,6 +27,15 @@ import butterknife.Unbinder;
 
 public class CheckInsFragment extends Fragment {
 
+    public static CheckInsFragment newInstance(String restaurantId) {
+        CheckInsFragment fragment = new CheckInsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(RestaurantsActivity.ID_KEY, restaurantId);
+        fragment.setArguments(bundle);
+        fragment.setRetainInstance(true);
+        return fragment;
+    }
+
     public static final int CHECK_IN_FORM = 1;
 
     public static final int ADDED_RESULT = 1;
@@ -41,15 +50,6 @@ public class CheckInsFragment extends Fragment {
     private CheckInsAdapter mCheckInsAdapter;
     private String mRestaurantId;
     private Unbinder mUnbinder;
-
-    public static CheckInsFragment newInstance(String restaurantId) {
-        CheckInsFragment fragment = new CheckInsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(RestaurantsActivity.ID_KEY, restaurantId);
-        fragment.setArguments(bundle);
-        fragment.setRetainInstance(true);
-        return fragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,21 +85,24 @@ public class CheckInsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CHECK_IN_FORM) {
-            switch (resultCode) {
-                case ADDED_RESULT:
-                    mCheckInsAdapter.resyncWithDB();
-                    UIUtils.showSnackbar(mParent, getString(R.string.check_in_added));
-                    break;
-                case EDITED_RESULT:
-                    mCheckInsAdapter.resyncWithDB();
-                    UIUtils.showSnackbar(mParent, getString(R.string.check_in_edited));
-                    break;
-                case DELETED_RESULT:
-                    mCheckInsAdapter.resyncWithDB();
-                    UIUtils.showSnackbar(mParent, getString(R.string.check_in_deleted));
-                    break;
-            }
+
+        if (requestCode != CHECK_IN_FORM) {
+            return;
+        }
+
+        switch (resultCode) {
+            case ADDED_RESULT:
+                mCheckInsAdapter.resyncWithDB();
+                UIUtils.showSnackbar(mParent, getString(R.string.check_in_added));
+                break;
+            case EDITED_RESULT:
+                mCheckInsAdapter.resyncWithDB();
+                UIUtils.showSnackbar(mParent, getString(R.string.check_in_edited));
+                break;
+            case DELETED_RESULT:
+                mCheckInsAdapter.resyncWithDB();
+                UIUtils.showSnackbar(mParent, getString(R.string.check_in_deleted));
+                break;
         }
     }
 

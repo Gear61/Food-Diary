@@ -3,6 +3,7 @@ package com.randomappsinc.foodjournal.fragments;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import android.widget.ListView;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
-import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.DishesAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.utils.Constants;
@@ -30,6 +30,7 @@ public class HomepageDishesFragment extends Fragment
         return fragment;
     }
 
+    @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.dishes) ListView mDishesList;
     @BindView(R.id.no_dishes) View noDishes;
 
@@ -42,8 +43,9 @@ public class HomepageDishesFragment extends Fragment
         View rootView = inflater.inflate(R.layout.homepage, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
-        String restaurantId = getArguments() != null ? getArguments().getString(RestaurantsActivity.ID_KEY) : null;
-        mDishesAdapter = new DishesAdapter(this, getActivity(), noDishes, restaurantId);
+        mToolbar.setTitle(R.string.app_name);
+
+        mDishesAdapter = new DishesAdapter(this, getActivity(), noDishes, null);
         mDishesList.setAdapter(mDishesAdapter);
         mDishesList.setOnScrollListener(this);
 
