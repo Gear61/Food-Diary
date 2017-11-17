@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +45,7 @@ public class DishesAdapter extends BaseAdapter {
     @NonNull private Listener mListener;
     private Activity mActivity;
     private View mNoResults;
-    private String mRestaurantId;
+    @Nullable private String mRestaurantId;
     private Drawable mDefaultThumbnail;
     private DishOptionsPresenter mDishOptionsPresenter;
     private boolean mStopFetching;
@@ -59,7 +62,7 @@ public class DishesAdapter extends BaseAdapter {
         }
     };
 
-    public DishesAdapter(@NonNull Listener listener, Activity activity, View noResults, String restaurantId) {
+    public DishesAdapter(@NonNull Listener listener, Activity activity, View noResults, @Nullable String restaurantId) {
         mListener = listener;
         mActivity = activity;
         mNoResults = noResults;
@@ -164,6 +167,7 @@ public class DishesAdapter extends BaseAdapter {
 
         DishViewHolder(View view) {
             ButterKnife.bind(this, view);
+            mDishInfoText.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         void loadItem(int position) {
@@ -171,7 +175,7 @@ public class DishesAdapter extends BaseAdapter {
 
             Dish dish = getItem(position);
 
-            mDishInfoText.setText(dish.getDishInfoText());
+            mDishInfoText.setText(Html.fromHtml(dish.getDishInfoText(mRestaurantId == null)));
             mDishDate.setText(TimeUtils.getTimeText(dish.getTimeAdded()));
 
             mFavoriteToggle.clearAnimation();

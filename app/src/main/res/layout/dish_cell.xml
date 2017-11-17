@@ -25,14 +25,15 @@
             android:textColor="@color/dark_gray"
             android:textSize="32dp"/>
 
-        <com.joanzapata.iconify.widget.IconTextView
+        <TextView
             android:id="@+id/dish_info_text"
             android:layout_toLeftOf="@id/overflow_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:textColor="@color/black"
-            android:textSize="21dp"/>
+            android:textSize="21dp"
+            android:linksClickable="true"/>
 
         <TextView
             android:id="@+id/dish_date"

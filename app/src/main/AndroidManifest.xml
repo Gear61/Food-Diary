@@ -74,6 +74,15 @@
             android:name=".activities.RestaurantViewActivity"
             android:label="@string/restaurant_view"
             android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="food_diary"/>
+                <data android:host="restaurant"/>
+                <data android:pathPattern="/.*"/>
+            </intent-filter>
         </activity>
 
         <activity

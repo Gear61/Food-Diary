@@ -47,7 +47,16 @@ public class RestaurantViewActivity extends StandardActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mRestaurant = getIntent().getParcelableExtra(RESTAURANT_KEY);
+        if (getIntent().getData() != null) {
+            // Coming from here an implicit intent via clicking on a dish title
+            String path = getIntent().getData().getPath();
+
+            // Remove the / that starts the path
+            String restaurantId = path.substring(1);
+            mRestaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(restaurantId);
+        } else {
+            mRestaurant = getIntent().getParcelableExtra(RESTAURANT_KEY);
+        }
 
         Drawable defaultThumbnail = new IconDrawable(
                 this,

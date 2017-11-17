@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 import com.randomappsinc.foodjournal.utils.TextUtils;
 
@@ -126,9 +127,15 @@ public class Dish implements Parcelable {
         mIsFavorited = isFavorited;
     }
 
-    public String getDishInfoText() {
+    public String getDishInfoText(boolean onHomepage) {
         String template = MyApplication.getAppContext().getString(R.string.dish_title);
-        return String.format(template, mTitle, mRestaurantName);
+        if (onHomepage) {
+            String restaurantLink = "<a href=\"" + Constants.RESTAURANT_VIEW_INTENT + mRestaurantId + "\">"
+                    + mRestaurantName + "</a>";
+            return String.format(template, mTitle, restaurantLink);
+        } else {
+            return String.format(template, mTitle, mRestaurantName);
+        }
     }
 
     public String getRatingText() {
