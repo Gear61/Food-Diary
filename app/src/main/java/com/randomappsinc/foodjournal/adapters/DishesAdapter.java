@@ -38,7 +38,7 @@ public class DishesAdapter extends BaseAdapter {
         void editDish(Dish dish);
     }
 
-    private List<Dish> mDishes;
+    private ArrayList<Dish> mDishes;
     @NonNull private Listener mListener;
     private Activity mActivity;
     private View mNoResults;
@@ -202,11 +202,9 @@ public class DishesAdapter extends BaseAdapter {
 
         @OnClick(R.id.dish_picture)
         void dishPictureClicked() {
-            Dish dish = getItem(mPosition);
             Intent intent = new Intent(mActivity, DishesFullViewGalleryActivity.class);
-            ArrayList<Dish> dishList = new ArrayList<>();
-            dishList.add(dish);
-            intent.putParcelableArrayListExtra(DishesFullViewGalleryActivity.DISHES_KEY, dishList);
+            intent.putParcelableArrayListExtra(DishesFullViewGalleryActivity.DISHES_KEY, mDishes);
+            intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, mPosition);
             mActivity.startActivity(intent);
             mActivity.overridePendingTransition(0, 0);
         }
