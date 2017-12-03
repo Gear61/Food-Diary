@@ -37,4 +37,5 @@ dependencies {
     compile 'com.android.support:animated-vector-drawable:26.0.1'
     compile 'io.nlopez.smartlocation:library:3.2.4'
     compile 'com.google.android.gms:play-services-location:11.2.2'
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'
 }
