@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
+import com.randomappsinc.foodjournal.models.RestaurantCategory;
 import com.randomappsinc.foodjournal.persistence.DBConverter;
+import com.randomappsinc.foodjournal.persistence.models.RestaurantCategoryDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import io.realm.Case;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -101,10 +104,48 @@ public class RestaurantsDBManager {
                 .equalTo("id", dish.getRestaurantId())
                 .findFirst();
 
+        if (restaurantDO == null) {
+            return;
+        }
+
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(@NonNull Realm realm) {
                 restaurantDO.getDishes().add(dish.toDishDO());
+            }
+        });
+    }
+
+    public void updateRestaurantInfo(final Restaurant restaurant) {
+        getRealm().executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(@NonNull Realm realm) {
+                RestaurantDO restaurantDO = getRealm()
+                        .where(RestaurantDO.class)
+                        .equalTo("id", restaurant.getId())
+                        .findFirst();
+
+                if (restaurantDO == null) {
+                    return;
+                }
+
+                restaurantDO.setName(restaurant.getName());
+                restaurantDO.setImageUrl(restaurant.getImageUrl());
+                restaurantDO.setPhoneNumber(restaurant.getPhoneNumber());
+                restaurantDO.setCity(restaurant.getCity());
+                restaurantDO.setZipCode(restaurant.getZipCode());
+                restaurantDO.setState(restaurant.getState());
+                restaurantDO.setCountry(restaurant.getCountry());
+                restaurantDO.setAddress(restaurant.getAddress());
+                restaurantDO.setLatitude(restaurant.getLatitude());
+                restaurantDO.setLongitude(restaurant.getLongitude());
+
+                RealmList<RestaurantCategoryDO> categories = new RealmList<>();
+                for (RestaurantCategory category : restaurant.getCategories()) {
+                    RestaurantCategoryDO categoryDO = realm.copyToRealm(category.toRestaurantCategoryDO());
+                    categories.add(categoryDO);
+                }
+                restaurantDO.setCategories(categories);
             }
         });
     }

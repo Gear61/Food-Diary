@@ -3,6 +3,7 @@ package com.randomappsinc.foodjournal.api;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import com.randomappsinc.foodjournal.api.callbacks.FetchRestaurantInfoCallback;
 import com.randomappsinc.foodjournal.api.callbacks.FetchRestaurantsCallback;
 import com.randomappsinc.foodjournal.api.callbacks.FetchTokenCallback;
 import com.randomappsinc.foodjournal.api.models.RestaurantResults;
@@ -101,5 +102,9 @@ public class RestClient {
                 }
             }
         });
+    }
+
+    public void updateRestaurantInfo(Restaurant restaurant) {
+        mYelpService.fetchRestaurantInfo(restaurant.getId()).enqueue(new FetchRestaurantInfoCallback());
     }
 }

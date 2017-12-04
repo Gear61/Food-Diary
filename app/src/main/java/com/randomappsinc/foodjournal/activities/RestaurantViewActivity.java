@@ -19,6 +19,7 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.RestaurantTabsAdapter;
+import com.randomappsinc.foodjournal.api.RestClient;
 import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
@@ -59,6 +60,8 @@ public class RestaurantViewActivity extends StandardActivity {
         } else {
             mRestaurant = getIntent().getParcelableExtra(RESTAURANT_KEY);
         }
+
+        RestClient.getInstance().updateRestaurantInfo(mRestaurant);
 
         Drawable defaultThumbnail = new IconDrawable(
                 this,
