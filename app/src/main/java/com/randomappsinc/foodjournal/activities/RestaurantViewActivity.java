@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class RestaurantViewActivity extends StandardActivity {
     @BindView(R.id.restaurant_thumbnail) ImageView mThumbnail;
     @BindView(R.id.restaurant_name) TextView mName;
     @BindView(R.id.restaurant_address) TextView mAddress;
+    @BindView(R.id.restaurant_categories) TextView mCategories;
     @BindView(R.id.tab_layout) TabLayout mRestaurantOptions;
     @BindView(R.id.view_pager) ViewPager mOptionsPager;
 
@@ -72,6 +74,12 @@ public class RestaurantViewActivity extends StandardActivity {
         }
         mName.setText(mRestaurant.getName());
         mAddress.setText(mRestaurant.getAddress());
+        if (mRestaurant.getCategoriesListText().isEmpty()) {
+            mCategories.setVisibility(View.GONE);
+        } else {
+            mCategories.setText(mRestaurant.getCategoriesListText());
+            mCategories.setVisibility(View.VISIBLE);
+        }
 
         mOptionsPager.setAdapter(new RestaurantTabsAdapter(getFragmentManager(), mRestaurant.getId()));
         mRestaurantOptions.setupWithViewPager(mOptionsPager);
