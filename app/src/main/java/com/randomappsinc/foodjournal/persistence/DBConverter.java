@@ -3,8 +3,10 @@ package com.randomappsinc.foodjournal.persistence;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
+import com.randomappsinc.foodjournal.models.RestaurantCategory;
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
+import com.randomappsinc.foodjournal.persistence.models.RestaurantCategoryDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 
 import java.util.ArrayList;
@@ -39,7 +41,20 @@ public class DBConverter {
         }
         restaurant.setCheckIns(checkInList);
 
+        List<RestaurantCategory> categories = new ArrayList<>();
+        for (RestaurantCategoryDO categoryDO : restaurantDO.getCategories()) {
+            categories.add(getRestaurantCategoryFromDO(categoryDO));
+        }
+        restaurant.setCategories(categories);
+
         return restaurant;
+    }
+
+    private static RestaurantCategory getRestaurantCategoryFromDO(RestaurantCategoryDO categoryDO) {
+        RestaurantCategory category = new RestaurantCategory();
+        category.setAlias(categoryDO.getAlias());
+        category.setTitle(categoryDO.getTitle());
+        return category;
     }
 
     public static Dish getDishFromDO(DishDO dishDO) {

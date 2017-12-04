@@ -5,6 +5,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class RestaurantDO extends RealmObject {
+
     @PrimaryKey
     private String id;
 
@@ -21,6 +22,7 @@ public class RestaurantDO extends RealmObject {
     private long timeAdded;
     private RealmList<DishDO> dishes;
     private RealmList<CheckInDO> checkIns;
+    private RealmList<RestaurantCategoryDO> categories;
 
     public String getId() {
         return id;
@@ -132,5 +134,13 @@ public class RestaurantDO extends RealmObject {
 
     public void setCheckIns(RealmList<CheckInDO> checkIns) {
         this.checkIns = checkIns;
+    }
+
+    public RealmList<RestaurantCategoryDO> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(RealmList<RestaurantCategoryDO> categories) {
+        this.categories = categories;
     }
 }

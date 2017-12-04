@@ -35,5 +35,12 @@
             android:layout_height="wrap_content"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/restaurant_address_size"/>
+
+        <TextView
+            android:id="@+id/restaurant_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:textSize="15sp"/>
     </LinearLayout>
 </LinearLayout>

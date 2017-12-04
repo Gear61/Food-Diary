@@ -1,5 +1,7 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
+import android.support.annotation.NonNull;
+
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DBConverter;
@@ -61,7 +63,7 @@ public class RestaurantsDBManager {
     public void addRestaurant(final Restaurant restaurant) {
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
                 RestaurantDO restaurantDO = restaurant.toRestaurantDO();
                 restaurantDO.setTimeAdded(System.currentTimeMillis());
                 realm.insert(restaurantDO);
@@ -77,7 +79,7 @@ public class RestaurantsDBManager {
 
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
                 restaurantDO.getDishes().deleteAllFromRealm();
                 restaurantDO.getCheckIns().deleteAllFromRealm();
                 restaurantDO.deleteFromRealm();
@@ -93,7 +95,7 @@ public class RestaurantsDBManager {
         return DBConverter.getRestaurantFromDO(restaurantDO);
     }
 
-    public void tagDishToRestaurant(final Dish dish) {
+    void tagDishToRestaurant(final Dish dish) {
         final RestaurantDO restaurantDO = getRealm()
                 .where(RestaurantDO.class)
                 .equalTo("id", dish.getRestaurantId())
@@ -101,7 +103,7 @@ public class RestaurantsDBManager {
 
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
                 restaurantDO.getDishes().add(dish.toDishDO());
             }
         });

@@ -54,6 +54,7 @@ public class RestaurantSearchResultsAdapter extends BaseAdapter {
         @BindView(R.id.restaurant_thumbnail) ImageView thumbnail;
         @BindView(R.id.restaurant_name) TextView name;
         @BindView(R.id.restaurant_address) TextView address;
+        @BindView(R.id.restaurant_categories) TextView categories;
 
         public RestaurantViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -76,6 +77,12 @@ public class RestaurantSearchResultsAdapter extends BaseAdapter {
             }
             name.setText(restaurant.getName());
             address.setText(restaurant.getAddress());
+            if (restaurant.getCategoriesListText().isEmpty()) {
+                categories.setVisibility(View.GONE);
+            } else {
+                categories.setText(restaurant.getCategoriesListText());
+                categories.setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package com.randomappsinc.foodjournal.api.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.randomappsinc.foodjournal.models.Restaurant;
+import com.randomappsinc.foodjournal.models.RestaurantCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +106,28 @@ public class RestaurantResults {
             }
         }
 
+        @SerializedName("categories")
+        @Expose
+        private List<Category> categories;
+
+        class Category {
+            @SerializedName("alias")
+            @Expose
+            private String alias;
+
+            @SerializedName("title")
+            @Expose
+            private String title;
+
+            String getAlias() {
+                return alias;
+            }
+
+            String getTitle() {
+                return title;
+            }
+        }
+
         public Restaurant toRestaurant() {
             Restaurant restaurant = new Restaurant();
             restaurant.setId(id);
@@ -118,6 +141,16 @@ public class RestaurantResults {
             restaurant.setAddress(location.getAddress());
             restaurant.setLatitude(coordinates.getLatitude());
             restaurant.setLongitude(coordinates.getLongitude());
+
+            List<RestaurantCategory> restaurantCategories = new ArrayList<>();
+            for (Category category : categories) {
+                RestaurantCategory restaurantCategory = new RestaurantCategory();
+                restaurantCategory.setAlias(category.getAlias());
+                restaurantCategory.setTitle(category.getTitle());
+                restaurantCategories.add(restaurantCategory);
+            }
+            restaurant.setCategories(restaurantCategories);
+
             return restaurant;
         }
     }

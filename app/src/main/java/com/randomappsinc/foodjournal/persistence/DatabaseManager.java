@@ -1,5 +1,7 @@
 package com.randomappsinc.foodjournal.persistence;
 
+import android.support.annotation.NonNull;
+
 import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.DishesDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.RestaurantsDBManager;
@@ -14,7 +16,7 @@ import io.realm.RealmSchema;
 
 public class DatabaseManager {
 
-    private static final int CURRENT_REALM_VERSION = 3;
+    private static final int CURRENT_REALM_VERSION = 4;
 
     private static DatabaseManager instance;
 
@@ -51,7 +53,7 @@ public class DatabaseManager {
 
     private RealmMigration migration = new RealmMigration() {
         @Override
-        public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+        public void migrate(@NonNull DynamicRealm realm, long oldVersion, long newVersion) {
             RealmSchema schema = realm.getSchema();
 
             // Support for dish tagging
@@ -77,6 +79,21 @@ public class DatabaseManager {
             // Drop saved locations feature since it's clunky
             if (oldVersion == 2) {
                 schema.remove("SavedLocationDO");
+                oldVersion++;
+            }
+
+            // Support for restaurant categories
+            if (oldVersion == 3) {
+                RealmObjectSchema categorySchema = schema.create("RestaurantCategoryDO")
+                        .addField("alias", String.class)
+                        .addField("title", String.class);
+
+                RealmObjectSchema restaurantSchema = schema.get("RestaurantDO");
+                if (restaurantSchema != null) {
+                    restaurantSchema.addRealmListField("categories", categorySchema);
+                } else {
+                    throw new IllegalStateException("RestaurantDO doesn't exist.");
+                }
             }
         }
     };

@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
+import com.randomappsinc.foodjournal.persistence.models.RestaurantCategoryDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class Restaurant implements Parcelable {
     private long timeAdded;
     private List<Dish> dishes = new ArrayList<>();
     private List<CheckIn> checkIns = new ArrayList<>();
+    private List<RestaurantCategory> categories = new ArrayList<>();
 
     public Restaurant() {}
 
@@ -119,6 +121,21 @@ public class Restaurant implements Parcelable {
         this.checkIns = checkIns;
     }
 
+    public String getCategoriesListText() {
+        StringBuilder categoriesList = new StringBuilder();
+        for (RestaurantCategory placeCategory : categories) {
+            if (categoriesList.length() > 0) {
+                categoriesList.append(", ");
+            }
+            categoriesList.append(placeCategory.getTitle());
+        }
+        return categoriesList.toString();
+    }
+
+    public void setCategories(List<RestaurantCategory> categories) {
+        this.categories = categories;
+    }
+
     public RestaurantDO toRestaurantDO() {
         RestaurantDO restaurantDO = new RestaurantDO();
         restaurantDO.setId(id);
@@ -145,6 +162,12 @@ public class Restaurant implements Parcelable {
             checkInDOs.add(checkIn.toCheckInDO());
         }
         restaurantDO.setCheckIns(checkInDOs);
+
+        RealmList<RestaurantCategoryDO> categoryDOs = new RealmList<>();
+        for (RestaurantCategory category : categories) {
+            categoryDOs.add(category.toRestaurantCategoryDO());
+        }
+        restaurantDO.setCategories(categoryDOs);
 
         return restaurantDO;
     }
@@ -173,6 +196,12 @@ public class Restaurant implements Parcelable {
             in.readList(checkIns, CheckIn.class.getClassLoader());
         } else {
             checkIns = null;
+        }
+        if (in.readByte() == 0x01) {
+            categories = new ArrayList<>();
+            in.readList(categories, RestaurantCategory.class.getClassLoader());
+        } else {
+            categories = null;
         }
     }
 
@@ -206,6 +235,12 @@ public class Restaurant implements Parcelable {
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(checkIns);
+        }
+        if (categories == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(categories);
         }
     }
 

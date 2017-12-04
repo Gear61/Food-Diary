@@ -64,6 +64,7 @@ public class UserRestaurantsAdapter extends BaseAdapter {
         @BindView(R.id.restaurant_thumbnail) ImageView thumbnail;
         @BindView(R.id.restaurant_name) TextView name;
         @BindView(R.id.restaurant_address) TextView address;
+        @BindView(R.id.restaurant_categories) TextView categories;
         @BindView(R.id.num_dishes) TextView numDishes;
         @BindView(R.id.num_checkins) TextView numCheckIns;
 
@@ -89,6 +90,12 @@ public class UserRestaurantsAdapter extends BaseAdapter {
             }
             name.setText(restaurant.getName());
             address.setText(restaurant.getAddress());
+            if (restaurant.getCategoriesListText().isEmpty()) {
+                categories.setVisibility(View.GONE);
+            } else {
+                categories.setText(restaurant.getCategoriesListText());
+                categories.setVisibility(View.VISIBLE);
+            }
             numDishes.setText(restaurant.getDishes().size() == 1
                     ? mContext.getString(R.string.one_dish)
                     : String.format(mContext.getString(R.string.num_dishes), restaurant.getDishes().size()));
