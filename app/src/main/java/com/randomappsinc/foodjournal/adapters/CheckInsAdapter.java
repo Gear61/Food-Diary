@@ -40,7 +40,7 @@ public class CheckInsAdapter extends BaseAdapter {
     public void resyncWithDB() {
         mCheckIns = mRestaurantId == null
                 ? DatabaseManager.get().getCheckInsDBManager().getAllCheckIns()
-                : DatabaseManager.get().getCheckInsDBManager().getCheckIns(mRestaurantId);
+                : DatabaseManager.get().getCheckInsDBManager().getCheckInsForRestaurant(mRestaurantId);
         if (mCheckIns.isEmpty()) {
             mNoResults.setVisibility(View.VISIBLE);
         } else {
@@ -68,6 +68,7 @@ public class CheckInsAdapter extends BaseAdapter {
 
         @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
         @BindView(R.id.restaurant_name) TextView mRestaurantName;
+        @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
         @BindView(R.id.check_in_date) TextView mCheckInDate;
         @BindView(R.id.num_dishes) TextView numDishes;
         @BindView(R.id.check_in_message) TextView mCheckInMessage;
@@ -94,7 +95,7 @@ public class CheckInsAdapter extends BaseAdapter {
                 mRestaurantThumbnail.setImageDrawable(defaultThumbnail);
             }
             mRestaurantName.setText(restaurant.getName());
-
+            mRestaurantAddress.setText(restaurant.getAddress());
             mCheckInDate.setText(TimeUtils.getTimeText(checkIn.getTimeAdded()));
             numDishes.setText(checkIn.getTaggedDishes().size() == 1
                     ? mContext.getString(R.string.one_dish)

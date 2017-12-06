@@ -6,7 +6,7 @@ import android.os.HandlerThread;
 import com.randomappsinc.foodjournal.api.callbacks.FetchRestaurantInfoCallback;
 import com.randomappsinc.foodjournal.api.callbacks.FetchRestaurantsCallback;
 import com.randomappsinc.foodjournal.api.callbacks.FetchTokenCallback;
-import com.randomappsinc.foodjournal.api.models.RestaurantResults;
+import com.randomappsinc.foodjournal.api.models.RestaurantSearchResults;
 import com.randomappsinc.foodjournal.models.Restaurant;
 
 import java.util.HashSet;
@@ -28,7 +28,7 @@ public class RestClient {
     private YelpService mYelpService;
     private Set<RestaurantResultsHandler> mRestaurantResultsHandlers;
     private Handler mHandler;
-    private Call<RestaurantResults> mCurrentRestaurantsCall;
+    private Call<RestaurantSearchResults> mCurrentRestaurantsCall;
 
     public static RestClient getInstance() {
         if (mInstance == null) {

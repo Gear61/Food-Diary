@@ -13,91 +13,91 @@ import io.realm.RealmList;
 
 public class CheckIn implements Parcelable {
 
-    private int mCheckInId;
-    private String mMessage = "";
-    private long mTimeAdded;
-    private String mRestaurantId;
-    private String mRestaurantName;
-    private ArrayList<Dish> mTaggedDishes = new ArrayList<>();
+    private int checkInId;
+    private String message = "";
+    private long timeAdded;
+    private String restaurantId;
+    private String restaurantName;
+    private ArrayList<Dish> taggedDishes = new ArrayList<>();
 
     public CheckIn() {}
 
     public CheckIn(CheckIn other) {
-        mCheckInId = other.getCheckInId();
-        mMessage = other.getMessage();
-        mTimeAdded = other.getTimeAdded();
-        mRestaurantId = other.getRestaurantId();
-        mRestaurantName = other.getRestaurantName();
-        mTaggedDishes = other.getTaggedDishes();
+        checkInId = other.getCheckInId();
+        message = other.getMessage();
+        timeAdded = other.getTimeAdded();
+        restaurantId = other.getRestaurantId();
+        restaurantName = other.getRestaurantName();
+        taggedDishes = other.getTaggedDishes();
     }
 
     public int getCheckInId() {
-        return mCheckInId;
+        return checkInId;
     }
 
     public void setCheckInId(int checkInId) {
-        mCheckInId = checkInId;
+        this.checkInId = checkInId;
     }
 
     public String getMessage() {
-        return mMessage;
+        return message;
     }
 
     public void setMessage(String message) {
-        mMessage = message;
+        this.message = message;
     }
 
     public long getTimeAdded() {
-        return mTimeAdded;
+        return timeAdded;
     }
 
     public void setTimeAdded(long timeAdded) {
-        mTimeAdded = timeAdded;
+        this.timeAdded = timeAdded;
     }
 
     public String getRestaurantId() {
-        return mRestaurantId;
+        return restaurantId;
     }
 
     public void setRestaurantId(String restaurantId) {
-        mRestaurantId = restaurantId;
+        this.restaurantId = restaurantId;
     }
 
     public String getRestaurantName() {
-        return mRestaurantName;
+        return restaurantName;
     }
 
     public void setRestaurantName(String restaurantName) {
-        mRestaurantName = restaurantName;
+        this.restaurantName = restaurantName;
     }
 
     public ArrayList<Dish> getTaggedDishes() {
-        return mTaggedDishes;
+        return taggedDishes;
     }
 
     public void setTaggedDishes(ArrayList<Dish> taggedDishes) {
-        mTaggedDishes = taggedDishes;
-        for (Dish taggedDish : mTaggedDishes) {
-            taggedDish.setCheckInId(mCheckInId);
+        this.taggedDishes = taggedDishes;
+        for (Dish taggedDish : this.taggedDishes) {
+            taggedDish.setCheckInId(checkInId);
         }
     }
 
     public void addTaggedDish(Dish dish) {
-        if (mTaggedDishes != null) {
-            mTaggedDishes.add(dish);
+        if (taggedDishes != null) {
+            taggedDishes.add(dish);
         }
     }
 
     public CheckInDO toCheckInDO() {
         CheckInDO checkInDO = new CheckInDO();
-        checkInDO.setCheckInId(mCheckInId);
-        checkInDO.setMessage(mMessage);
-        checkInDO.setTimeAdded(mTimeAdded);
-        checkInDO.setRestaurantId(mRestaurantId);
-        checkInDO.setRestaurantName(mRestaurantName);
+        checkInDO.setCheckInId(checkInId);
+        checkInDO.setMessage(message);
+        checkInDO.setTimeAdded(timeAdded);
+        checkInDO.setRestaurantId(restaurantId);
+        checkInDO.setRestaurantName(restaurantName);
 
         RealmList<DishDO> dishDOs = new RealmList<>();
-        for (Dish dish : mTaggedDishes) {
+        for (Dish dish : taggedDishes) {
             dishDOs.add(dish.toDishDO());
         }
         checkInDO.setTaggedDishes(dishDOs);
@@ -107,20 +107,20 @@ public class CheckIn implements Parcelable {
 
     /** Restaurant, time added, experience, and tagged dishes can change */
     public boolean hasChangedFromForm(CheckIn other) {
-        if (!TextUtils.compareStrings(mRestaurantId, other.getRestaurantId())) {
+        if (!TextUtils.compareStrings(restaurantId, other.getRestaurantId())) {
             return true;
         }
-        if (mTimeAdded != other.getTimeAdded()) {
+        if (timeAdded != other.getTimeAdded()) {
             return true;
         }
-        if (!TextUtils.compareStrings(mMessage, other.getMessage())) {
+        if (!TextUtils.compareStrings(message, other.getMessage())) {
             return true;
         }
-        if (mTaggedDishes.size() != other.getTaggedDishes().size()) {
+        if (taggedDishes.size() != other.getTaggedDishes().size()) {
             return true;
         }
-        for (int i = 0; i < mTaggedDishes.size(); i++) {
-            if (mTaggedDishes.get(i).getId() != other.getTaggedDishes().get(i).getId()) {
+        for (int i = 0; i < taggedDishes.size(); i++) {
+            if (taggedDishes.get(i).getId() != other.getTaggedDishes().get(i).getId()) {
                 return true;
             }
         }
@@ -128,16 +128,16 @@ public class CheckIn implements Parcelable {
     }
 
     protected CheckIn(Parcel in) {
-        mCheckInId = in.readInt();
-        mMessage = in.readString();
-        mTimeAdded = in.readLong();
-        mRestaurantId = in.readString();
-        mRestaurantName = in.readString();
+        checkInId = in.readInt();
+        message = in.readString();
+        timeAdded = in.readLong();
+        restaurantId = in.readString();
+        restaurantName = in.readString();
         if (in.readByte() == 0x01) {
-            mTaggedDishes = new ArrayList<>();
-            in.readList(mTaggedDishes, Dish.class.getClassLoader());
+            taggedDishes = new ArrayList<>();
+            in.readList(taggedDishes, Dish.class.getClassLoader());
         } else {
-            mTaggedDishes = null;
+            taggedDishes = null;
         }
     }
 
@@ -148,16 +148,16 @@ public class CheckIn implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mCheckInId);
-        dest.writeString(mMessage);
-        dest.writeLong(mTimeAdded);
-        dest.writeString(mRestaurantId);
-        dest.writeString(mRestaurantName);
-        if (mTaggedDishes == null) {
+        dest.writeInt(checkInId);
+        dest.writeString(message);
+        dest.writeLong(timeAdded);
+        dest.writeString(restaurantId);
+        dest.writeString(restaurantName);
+        if (taggedDishes == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(mTaggedDishes);
+            dest.writeList(taggedDishes);
         }
     }
 

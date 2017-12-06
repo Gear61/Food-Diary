@@ -1,5 +1,7 @@
 package com.randomappsinc.foodjournal.api.models;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.randomappsinc.foodjournal.models.Restaurant;
@@ -8,7 +10,7 @@ import com.randomappsinc.foodjournal.models.RestaurantCategory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestaurantResults {
+public class RestaurantSearchResults {
 
     @SerializedName("businesses")
     @Expose
@@ -58,6 +60,10 @@ public class RestaurantResults {
         private Location location;
 
         public class Location {
+            @SerializedName("address1")
+            @Expose
+            private String address1;
+
             @SerializedName("city")
             @Expose
             private String city;
@@ -74,34 +80,28 @@ public class RestaurantResults {
             @Expose
             private String state;
 
-            @SerializedName("display_address")
-            @Expose
-            private List<String> displayAddress;
-
-            public String getCity() {
+            String getCity() {
                 return city;
             }
 
-            public String getZipCode() {
+            String getZipCode() {
                 return zipCode;
             }
 
-            public String getCountry() {
+            String getCountry() {
                 return country;
             }
 
-            public String getState() {
+            String getState() {
                 return state;
             }
 
-            public String getAddress() {
+            String getAddress() {
                 StringBuilder address = new StringBuilder();
-                for (int i = 0; i < displayAddress.size(); i++) {
-                    if (i > 0) {
-                        address.append(", ");
-                    }
-                    address.append(displayAddress.get(i));
+                if (!TextUtils.isEmpty(address1)) {
+                    address.append(address1).append(", ");
                 }
+                address.append(city);
                 return address.toString();
             }
         }
@@ -128,7 +128,7 @@ public class RestaurantResults {
             }
         }
 
-        public Restaurant toRestaurant() {
+        Restaurant toRestaurant() {
             Restaurant restaurant = new Restaurant();
             restaurant.setId(id);
             restaurant.setName(name);

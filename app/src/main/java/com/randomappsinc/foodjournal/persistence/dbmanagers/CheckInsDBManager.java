@@ -38,14 +38,14 @@ public class CheckInsDBManager {
         return Realm.getDefaultInstance();
     }
 
-    public int addCheckIn(final CheckIn checkIn, boolean autoCreate) {
+    public void addCheckIn(final CheckIn checkIn, boolean autoCreate) {
         final RestaurantDO restaurantDO = getRealm()
                 .where(RestaurantDO.class)
                 .equalTo("id", checkIn.getRestaurantId())
                 .findFirst();
 
         if (restaurantDO == null) {
-            return -1;
+            return;
         }
 
         Number number = getRealm().where(CheckInDO.class).findAll().max("checkInId");
@@ -64,8 +64,6 @@ public class CheckInsDBManager {
                 restaurantDO.getCheckIns().add(checkInDO);
             }
         });
-
-        return checkInId;
     }
 
     public void updateCheckIn(final CheckIn checkIn) {
@@ -96,7 +94,7 @@ public class CheckInsDBManager {
         DatabaseManager.get().getDishesDBManager().untagDishes(checkIn.getCheckInId());
     }
 
-    public List<CheckIn> getCheckIns(String restaurantId) {
+    public List<CheckIn> getCheckInsForRestaurant(String restaurantId) {
         RestaurantDO restaurantDO = getRealm()
                 .where(RestaurantDO.class)
                 .equalTo("id", restaurantId)
