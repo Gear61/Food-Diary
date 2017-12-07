@@ -120,12 +120,11 @@ public class RestaurantViewActivity extends StandardActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.restaurant_menu, menu);
-        UIUtils.loadActionBarIcon(menu, R.id.navigate, IoniconsIcons.ion_android_map, this);
+        UIUtils.loadActionBarIcon(menu, R.id.navigate, IoniconsIcons.ion_navigate, this);
         UIUtils.loadActionBarIcon(menu, R.id.call, IoniconsIcons.ion_android_call, this);
         UIUtils.loadActionBarIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
