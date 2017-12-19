@@ -58,6 +58,7 @@ public class CheckInFormActivity extends StandardActivity {
     @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
     @BindView(R.id.restaurant_name) TextView mRestaurantName;
     @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
+    @BindView(R.id.restaurant_categories) TextView mRestaurantCategories;
     @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
     @BindView(R.id.experience_input) EditText mExperienceInput;
     @BindView(R.id.date_input) TextView mDateTimeInput;
@@ -94,7 +95,9 @@ public class CheckInFormActivity extends StandardActivity {
             }
         } else {
             mCheckIn = getIntent().getParcelableExtra(CHECK_IN_KEY);
-            Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(mCheckIn.getRestaurantId());
+            Restaurant restaurant = DatabaseManager.get()
+                    .getRestaurantsDBManager()
+                    .getRestaurant(mCheckIn.getRestaurantId());
             loadRestaurantInfo(restaurant);
             mExperienceInput.setText(mCheckIn.getMessage());
         }
@@ -157,6 +160,12 @@ public class CheckInFormActivity extends StandardActivity {
         if (mRestaurantInfo.getVisibility() != View.VISIBLE) {
             mRestaurantInfo.setVisibility(View.VISIBLE);
         }
+        if (restaurant.getCategoriesListText().isEmpty()) {
+            mRestaurantCategories.setVisibility(View.GONE);
+        } else {
+            mRestaurantCategories.setText(restaurant.getCategoriesListText());
+            mRestaurantCategories.setVisibility(View.VISIBLE);
+        }
         if (mChooseRestaurantPrompt.getVisibility() != View.GONE) {
             mChooseRestaurantPrompt.setVisibility(View.INVISIBLE);
         }
@@ -165,7 +174,8 @@ public class CheckInFormActivity extends StandardActivity {
     @OnClick(R.id.restaurant_info_section)
     public void chooseRestaurant() {
         boolean noRestaurants = DatabaseManager.get().getRestaurantsDBManager().getNumUserRestaurants() == 0;
-        Intent intent = new Intent(this, noRestaurants ? FindRestaurantActivity.class : RestaurantsActivity.class);
+        Intent intent = new Intent(this,
+                noRestaurants ? FindRestaurantActivity.class : RestaurantsActivity.class);
         intent.putExtra(RestaurantsActivity.PICKER_MODE_KEY, true);
         startActivityForResult(intent, RESTAURANT_CODE);
     }

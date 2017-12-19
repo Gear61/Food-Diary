@@ -54,6 +54,7 @@ public class DishFormActivity extends StandardActivity {
     @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
     @BindView(R.id.restaurant_name) TextView mRestaurantName;
     @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
+    @BindView(R.id.restaurant_categories) TextView mRestaurantCategories;
     @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
     @BindView(R.id.date_text) TextView mDateTimeText;
     @BindView(R.id.dish_description_input) EditText mDishDescriptionInput;
@@ -153,6 +154,12 @@ public class DishFormActivity extends StandardActivity {
         mRestaurantAddress.setText(mRestaurant.getAddress());
         if (mRestaurantInfo.getVisibility() != View.VISIBLE) {
             mRestaurantInfo.setVisibility(View.VISIBLE);
+        }
+        if (mRestaurant.getCategoriesListText().isEmpty()) {
+            mRestaurantCategories.setVisibility(View.GONE);
+        } else {
+            mRestaurantCategories.setText(mRestaurant.getCategoriesListText());
+            mRestaurantCategories.setVisibility(View.VISIBLE);
         }
         if (mChooseRestaurantPrompt.getVisibility() != View.GONE) {
             mChooseRestaurantPrompt.setVisibility(View.INVISIBLE);
