@@ -20,6 +20,7 @@
 
         <com.joanzapata.iconify.widget.IconTextView
             android:id="@+id/no_results"
+            android:layout_below="@id/toolbar"
             android:text="@string/no_check_ins"
             style="@style/no_content"/>
 
