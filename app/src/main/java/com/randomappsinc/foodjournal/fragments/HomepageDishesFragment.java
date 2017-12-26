@@ -15,6 +15,8 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
 import com.randomappsinc.foodjournal.adapters.DishesAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.persistence.dbmanagers.RestaurantsDBManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
@@ -23,7 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class HomepageDishesFragment extends Fragment
-        implements ListView.OnScrollListener, DishesAdapter.Listener {
+        implements ListView.OnScrollListener, DishesAdapter.Listener, RestaurantsDBManager.Listener {
 
     public static HomepageDishesFragment newInstance() {
         HomepageDishesFragment fragment = new HomepageDishesFragment();
@@ -51,7 +53,14 @@ public class HomepageDishesFragment extends Fragment
         mDishesList.setAdapter(mDishesAdapter);
         mDishesList.setOnScrollListener(this);
 
+        DatabaseManager.get().getRestaurantsDBManager().registerListener(this);
+
         return rootView;
+    }
+
+    @Override
+    public void onRestaurantDeleted(String restaurantId) {
+        mDishesAdapter.updateWithDeletedRestaurant(restaurantId);
     }
 
     public void refreshWithAddedDish() {
@@ -112,6 +121,7 @@ public class HomepageDishesFragment extends Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        DatabaseManager.get().getRestaurantsDBManager().unregisterListener(this);
         mUnbinder.unbind();
     }
 }

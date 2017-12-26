@@ -28,6 +28,7 @@ import com.randomappsinc.foodjournal.views.DishOptionsPresenter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindColor;
@@ -132,6 +133,23 @@ public class DishesAdapter extends BaseAdapter {
                 mDishes.remove(i);
                 break;
             }
+        }
+        if (getCount() == 0) {
+            mNoResults.setVisibility(View.VISIBLE);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void updateWithDeletedRestaurant(String restaurantId) {
+        Iterator<Dish> iterator = mDishes.iterator();
+        while (iterator.hasNext()) {
+            Dish dish = iterator.next();
+            if (dish.getRestaurantId().equals(restaurantId)) {
+                iterator.remove();
+            }
+        }
+        if (getCount() == 0) {
+            mNoResults.setVisibility(View.VISIBLE);
         }
         notifyDataSetChanged();
     }

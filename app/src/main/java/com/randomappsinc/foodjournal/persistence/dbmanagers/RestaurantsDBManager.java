@@ -10,7 +10,9 @@ import com.randomappsinc.foodjournal.persistence.models.RestaurantCategoryDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.realm.Case;
 import io.realm.Realm;
@@ -35,6 +37,20 @@ public class RestaurantsDBManager {
             instance = new RestaurantsDBManager();
         }
         return instance;
+    }
+
+    public interface Listener {
+        void onRestaurantDeleted(String restaurantId);
+    }
+
+    private Set<Listener> listeners = new HashSet<>();
+
+    public void registerListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    public void unregisterListener(Listener listener) {
+        listeners.remove(listener);
     }
 
     private Realm getRealm() {
@@ -86,6 +102,10 @@ public class RestaurantsDBManager {
                 restaurantDO.getDishes().deleteAllFromRealm();
                 restaurantDO.getCheckIns().deleteAllFromRealm();
                 restaurantDO.deleteFromRealm();
+
+                for (Listener listener : listeners) {
+                    listener.onRestaurantDeleted(restaurant.getId());
+                }
             }
         });
     }
