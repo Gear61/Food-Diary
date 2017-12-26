@@ -23,6 +23,7 @@ import com.randomappsinc.foodjournal.api.RestClient;
 import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.squareup.picasso.Picasso;
 
@@ -50,7 +51,9 @@ public class RestaurantViewActivity extends StandardActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (getIntent().getData() != null) {
+        if (savedInstanceState != null) {
+            mRestaurant = savedInstanceState.getParcelable(Constants.RESTAURANT_KEY);
+        } else if (getIntent().getData() != null) {
             // Coming from here an implicit intent via clicking on a dish title
             String path = getIntent().getData().getPath();
 
@@ -101,6 +104,12 @@ public class RestaurantViewActivity extends StandardActivity {
                     }
                 })
                 .build();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(Constants.RESTAURANT_KEY, mRestaurant);
+        super.onSaveInstanceState(outState);
     }
 
     private void navigateToRestaurant() {

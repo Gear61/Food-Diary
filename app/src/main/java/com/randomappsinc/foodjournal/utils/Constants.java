@@ -8,4 +8,5 @@ public class Constants {
     public static final String RESTAURANT_VIEW_INTENT = "food_diary://restaurant:/";
 
     public static final String RESTAURANT_ID_KEY = "restaurantId";
+    public static final String RESTAURANT_KEY = "restaurant";
 }
