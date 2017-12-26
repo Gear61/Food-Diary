@@ -14,9 +14,9 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.CheckInFormActivity;
-import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.CheckInsAdapter;
 import com.randomappsinc.foodjournal.models.CheckIn;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import butterknife.BindView;
@@ -30,7 +30,7 @@ public class CheckInsFragment extends Fragment {
     public static CheckInsFragment newInstance(String restaurantId) {
         CheckInsFragment fragment = new CheckInsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(RestaurantsActivity.ID_KEY, restaurantId);
+        bundle.putString(Constants.RESTAURANT_ID_KEY, restaurantId);
         fragment.setArguments(bundle);
         fragment.setRetainInstance(true);
         return fragment;
@@ -56,7 +56,7 @@ public class CheckInsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.check_ins, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
-        mRestaurantId = getArguments().getString(RestaurantsActivity.ID_KEY);
+        mRestaurantId = getArguments().getString(Constants.RESTAURANT_ID_KEY);
         mAddCheckIn.setImageDrawable(new IconDrawable(getActivity(), IoniconsIcons.ion_android_add).colorRes(R.color.white));
 
         mCheckInsAdapter = new CheckInsAdapter(getActivity(), mNoResults, mRestaurantId);

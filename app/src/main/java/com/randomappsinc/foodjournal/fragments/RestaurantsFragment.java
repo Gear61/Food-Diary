@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.FindRestaurantActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantViewActivity;
-import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.UserRestaurantsAdapter;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.utils.UIUtils;
@@ -53,14 +51,10 @@ public class RestaurantsFragment extends Fragment {
     @BindView(R.id.add_restaurant) FloatingActionButton mAddRestaurant;
 
     private UserRestaurantsAdapter mAdapter;
-    private boolean mPickerMode;
     private Unbinder mUnbinder;
 
-    public static RestaurantsFragment newInstance(boolean pickerMode) {
+    public static RestaurantsFragment newInstance() {
         RestaurantsFragment fragment = new RestaurantsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(RestaurantsActivity.PICKER_MODE_KEY, pickerMode);
-        fragment.setArguments(bundle);
         fragment.setRetainInstance(true);
         return fragment;
     }
@@ -71,11 +65,6 @@ public class RestaurantsFragment extends Fragment {
         mUnbinder = ButterKnife.bind(this, rootView);
 
         mToolbar.setTitle(R.string.restaurants);
-        mPickerMode = getArguments().getBoolean(RestaurantsActivity.PICKER_MODE_KEY, false);
-        if (mPickerMode) {
-            ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         mAddRestaurant.setImageDrawable(new IconDrawable(getActivity(), IoniconsIcons.ion_android_add).colorRes(R.color.white));
         mAdapter = new UserRestaurantsAdapter(getActivity(), mNoResults);
@@ -108,22 +97,15 @@ public class RestaurantsFragment extends Fragment {
     @OnItemClick(R.id.restaurants)
     public void onRestaurantSelected(int position) {
         Restaurant restaurant = mAdapter.getItem(position);
-        if (mPickerMode) {
-            Intent returnRestaurant = new Intent();
-            returnRestaurant.putExtra(RESTAURANT_KEY, restaurant);
-            getActivity().setResult(Activity.RESULT_OK, returnRestaurant);
-            getActivity().finish();
-        } else {
-            Intent intent = new Intent(getActivity(), RestaurantViewActivity.class);
-            intent.putExtra(RestaurantViewActivity.RESTAURANT_KEY, restaurant);
-            startActivityForResult(intent, RESTAURANT_VIEW_CODE);
-        }
+        Intent intent = new Intent(getActivity(), RestaurantViewActivity.class);
+        intent.putExtra(RestaurantViewActivity.RESTAURANT_KEY, restaurant);
+        startActivityForResult(intent, RESTAURANT_VIEW_CODE);
     }
 
     @OnClick(R.id.add_restaurant)
     public void addRestaurant() {
         Intent intent = new Intent(getActivity(), FindRestaurantActivity.class);
-        intent.putExtra(RestaurantsActivity.PICKER_MODE_KEY, mPickerMode);
+        intent.putExtra(FindRestaurantActivity.PICKER_MODE_KEY, false);
         startActivityForResult(intent, ADD_RESTAURANT_CODE);
     }
 
@@ -132,16 +114,8 @@ public class RestaurantsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         // Restaurant successfully added, refresh list to reflect that
         if (requestCode == ADD_RESTAURANT_CODE && resultCode == Activity.RESULT_OK) {
-            if (mPickerMode) {
-                Intent returnRestaurant = new Intent();
-                Restaurant restaurant = data.getParcelableExtra(RESTAURANT_KEY);
-                returnRestaurant.putExtra(RESTAURANT_KEY, restaurant);
-                getActivity().setResult(Activity.RESULT_OK, returnRestaurant);
-                getActivity().finish();
-            } else {
-                mAdapter.resyncWithDB(mSearchInput.getText().toString());
-                UIUtils.showSnackbar(mParent, getString(R.string.restaurant_added));
-            }
+            mAdapter.resyncWithDB(mSearchInput.getText().toString());
+            UIUtils.showSnackbar(mParent, getString(R.string.restaurant_added));
         } else if (requestCode == RESTAURANT_VIEW_CODE && resultCode == RESTAURANT_DELETED_CODE) {
             mAdapter.resyncWithDB(mSearchInput.getText().toString());
             UIUtils.showSnackbar(mParent, getString(R.string.restaurant_deleted));

@@ -11,9 +11,9 @@ import android.widget.ListView;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
-import com.randomappsinc.foodjournal.activities.RestaurantsActivity;
 import com.randomappsinc.foodjournal.adapters.DishesAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import butterknife.BindView;
@@ -26,7 +26,7 @@ public class RestaurantDishesFragment extends Fragment
     public static RestaurantDishesFragment newInstance(String restaurantId) {
         RestaurantDishesFragment fragment = new RestaurantDishesFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(RestaurantsActivity.ID_KEY, restaurantId);
+        bundle.putString(Constants.RESTAURANT_ID_KEY, restaurantId);
         fragment.setArguments(bundle);
         fragment.setRetainInstance(true);
         return fragment;
@@ -47,7 +47,9 @@ public class RestaurantDishesFragment extends Fragment
         View rootView = inflater.inflate(R.layout.restaurant_dishes, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
-        String restaurantId = getArguments() != null ? getArguments().getString(RestaurantsActivity.ID_KEY) : null;
+        String restaurantId = getArguments() != null
+                ? getArguments().getString(Constants.RESTAURANT_ID_KEY)
+                : null;
         mDishesAdapter = new DishesAdapter(this, getActivity(), noDishes, restaurantId);
         mDishesList.setAdapter(mDishesAdapter);
         mDishesList.setOnScrollListener(this);

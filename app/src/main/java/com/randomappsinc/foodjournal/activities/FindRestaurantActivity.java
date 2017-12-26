@@ -42,6 +42,8 @@ import io.nlopez.smartlocation.SmartLocation;
 
 public class FindRestaurantActivity extends StandardActivity implements RestClient.RestaurantResultsHandler {
 
+    public static final String PICKER_MODE_KEY = "pickerMode";
+
     private static final int LOCATION_SERVICES_CODE = 1;
 
     @BindView(R.id.parent) View mParent;
@@ -88,7 +90,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mPickerMode = getIntent().getBooleanExtra(RestaurantsActivity.PICKER_MODE_KEY, false);
+        mPickerMode = getIntent().getBooleanExtra(PICKER_MODE_KEY, false);
 
         mRestClient = RestClient.getInstance();
         mRestClient.registerRestaurantResultsHandler(this);

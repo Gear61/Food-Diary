@@ -6,4 +6,6 @@ public class Constants {
     public static final int DISH_EDITED = 2;
 
     public static final String RESTAURANT_VIEW_INTENT = "food_diary://restaurant:/";
+
+    public static final String RESTAURANT_ID_KEY = "restaurantId";
 }

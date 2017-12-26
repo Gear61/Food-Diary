@@ -20,7 +20,7 @@ public class HomepageFragmentController {
         mFragmentManager = fragmentManager;
         mContainerId = containerId;
         mDishesFragment = HomepageDishesFragment.newInstance();
-        mRestaurantsFragment = RestaurantsFragment.newInstance(false);
+        mRestaurantsFragment = RestaurantsFragment.newInstance();
         mCheckInsFragment = HomepageCheckInsFragment.newInstance();
         mSettingsFragment = SettingsFragment.newInstance();
     }

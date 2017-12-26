@@ -131,7 +131,9 @@ public class CheckInsDBManager {
                 // Before now
                 .lessThan("timeAdded", System.currentTimeMillis())
                 // Less than 30 minutes ago
-                .greaterThanOrEqualTo("timeAdded", System.currentTimeMillis() - TimeUtils.MILLIS_IN_30_MINUTES)
+                .greaterThanOrEqualTo(
+                        "timeAdded",
+                        System.currentTimeMillis() - TimeUtils.MILLIS_IN_3_HOURS)
                 // Get most recent check-in
                 .findAllSorted("timeAdded", Sort.DESCENDING);
         if (checkInDOs.isEmpty()) {
