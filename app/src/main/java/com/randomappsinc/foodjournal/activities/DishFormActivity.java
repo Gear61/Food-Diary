@@ -22,11 +22,14 @@ import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
 import com.randomappsinc.foodjournal.utils.Constants;
+import com.randomappsinc.foodjournal.utils.PictureUtils;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DateTimeAdder;
 import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,7 +87,10 @@ public class DishFormActivity extends StandardActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        setResult(RESULT_CANCELED);
+                        if (mNewDishMode) {
+                            File imageFile = PictureUtils.getPictureFileFromUri(mDish.getUriString());
+                            imageFile.delete();
+                        }
                         finish();
                     }
                 })
@@ -211,7 +217,9 @@ public class DishFormActivity extends StandardActivity {
         if (mNewDishMode) {
             CheckIn checkIn = DatabaseManager.get().getCheckInsDBManager().getAutoTagCheckIn(mDish);
             if (checkIn == null) {
-                String ask = String.format(getString(R.string.auto_create_check_in), mDish.getRestaurantName());
+                String ask = String.format(
+                        getString(R.string.auto_create_check_in),
+                        mDish.getRestaurantName());
                 new MaterialDialog.Builder(this)
                         .cancelable(false)
                         .title(R.string.create_check_in)

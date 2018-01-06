@@ -1,6 +1,5 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -9,6 +8,7 @@ import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DBConverter;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
+import com.randomappsinc.foodjournal.utils.PictureUtils;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 
 import java.io.File;
@@ -150,11 +150,7 @@ public class DishesDBManager {
             }
         });
 
-        String filePath = dish.getUriString().substring(dish.getUriString().lastIndexOf('/'));
-        String completePath = Environment.getExternalStorageDirectory().getPath()
-                + "/Android/data/com.randomappsinc.foodjournal/files/Pictures"
-                + filePath;
-        File imageFile = new File(completePath);
+        File imageFile = PictureUtils.getPictureFileFromUri(dish.getUriString());
         if (imageFile.exists()) {
             imageFile.delete();
         }

@@ -82,4 +82,12 @@ public class PictureUtils {
 
         return newFile;
     }
+
+    public static File getPictureFileFromUri(String uri) {
+        String filePath = uri.substring(uri.lastIndexOf('/'));
+        String completePath = Environment.getExternalStorageDirectory().getPath()
+                + "/Android/data/com.randomappsinc.foodjournal/files/Pictures"
+                + filePath;
+        return new File(completePath);
+    }
 }

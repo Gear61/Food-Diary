@@ -182,7 +182,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     }
 
     private void requestLocationPermission() {
-        PermissionUtils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, 1);
+        PermissionUtils.requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     private void runLocationFetch() {
