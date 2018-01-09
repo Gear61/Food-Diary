@@ -10,7 +10,11 @@ import android.support.v4.content.ContextCompat;
 public class PermissionUtils {
 
     public static void requestPermission(Activity activity, String permission) {
-        ActivityCompat.requestPermissions(activity, new String[]{permission}, 1);
+        requestPermission(activity, permission, 1);
+    }
+
+    public static void requestPermission(Activity activity, String permission, int requestCode) {
+        ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
     }
 
     public static void requestPermission(Fragment fragment, String permission) {

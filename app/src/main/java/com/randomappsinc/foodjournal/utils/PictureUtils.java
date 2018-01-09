@@ -83,11 +83,18 @@ public class PictureUtils {
         return newFile;
     }
 
-    public static File getPictureFileFromUri(String uri) {
+    public static void deleteFileWithUri(String uri) {
+        if (uri == null || uri.isEmpty()) {
+            return;
+        }
+
         String filePath = uri.substring(uri.lastIndexOf('/'));
         String completePath = Environment.getExternalStorageDirectory().getPath()
                 + "/Android/data/com.randomappsinc.foodjournal/files/Pictures"
                 + filePath;
-        return new File(completePath);
+        File imageFile = new File(completePath);
+        if (imageFile.exists()) {
+            imageFile.delete();
+        }
     }
 }

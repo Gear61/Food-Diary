@@ -179,7 +179,8 @@ public class Dish implements Parcelable {
                 && mRating == other.getRating()
                 && TextUtils.compareStrings(mRestaurantId, other.getRestaurantId())
                 && mTimeAdded == other.getTimeAdded()
-                && TextUtils.compareStrings(mDescription, other.getDescription()));
+                && TextUtils.compareStrings(mDescription, other.getDescription())
+                && TextUtils.compareStrings(mUriString, other.getUriString()));
     }
 
     @Override

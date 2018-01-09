@@ -11,7 +11,6 @@ import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -149,11 +148,7 @@ public class DishesDBManager {
                 }
             }
         });
-
-        File imageFile = PictureUtils.getPictureFileFromUri(dish.getUriString());
-        if (imageFile.exists()) {
-            imageFile.delete();
-        }
+        PictureUtils.deleteFileWithUri(dish.getUriString());
     }
 
     public void updateDish(final Dish dish) {

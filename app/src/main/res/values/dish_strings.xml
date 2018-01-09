@@ -48,4 +48,10 @@
         Would you like to create one now and tag this dish to it?
     </string>
     <string name="create_check_in">Create Check-In</string>
+
+    <string-array name="dish_photo_options">
+        <item>View full photo</item>
+        <item>Retake with camera</item>
+        <item>Reupload from gallery</item>
+    </string-array>
 </resources>

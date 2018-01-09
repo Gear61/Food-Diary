@@ -22,6 +22,7 @@ import butterknife.OnClick;
 
 public class DishesFullViewGalleryActivity extends AppCompatActivity {
 
+    public static final String DISH_KEY = "dish";
     public static final String DISHES_KEY = "dishes";
     public static final String POSITION_KEY = "position";
 
@@ -35,8 +36,15 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
         setContentView(R.layout.dishes_full_view_gallery);
         ButterKnife.bind(this);
 
-        ArrayList<Dish> dishes = getIntent().getParcelableArrayListExtra(DISHES_KEY);
-        mGalleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dishes);
+        Dish dish = getIntent().getParcelableExtra(DISH_KEY);
+        if (dish == null) {
+            ArrayList<Dish> dishes = getIntent().getParcelableArrayListExtra(DISHES_KEY);
+            mGalleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dishes);
+        } else {
+            ArrayList<Dish> singleDish = new ArrayList<>();
+            singleDish.add(dish);
+            mGalleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), singleDish);
+        }
         mPicturesPager.setAdapter(mGalleryAdapter);
         mPicturesPager.setCurrentItem(getIntent().getIntExtra(POSITION_KEY, 0));
     }
