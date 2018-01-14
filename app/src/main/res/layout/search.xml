@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:background="@color/app_red">
 
-        <FrameLayout
+        <EditText
+            android:id="@+id/search_input"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:hint="@string/search"
+            android:background="@null"
+            android:textColor="@color/white_80_percent"
+            android:textColorHint="@color/half_white"
+            android:textCursorDrawable="@null"
+            android:paddingLeft="44dp"
+            android:paddingRight="40dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:imeOptions="actionDone"/>
 
-            <EditText
-                android:id="@+id/search_input"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:hint="@string/search"
-                android:background="@null"
-                android:textCursorDrawable="@null"
-                android:paddingRight="40dp"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:imeOptions="actionDone"/>
+        <com.joanzapata.iconify.widget.IconTextView
+            android:text="@string/search_icon"
+            android:layout_height="44dp"
+            android:layout_width="44dp"
+            android:layout_gravity="start|center_vertical"
+            style="@style/toolbar_icon"/>
 
-            <com.joanzapata.iconify.widget.IconTextView
-                android:id="@+id/clear_search"
-                android:textColor="@color/white"
-                style="@style/clear_icon"/>
-        </FrameLayout>
-    </android.support.v7.widget.Toolbar>
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/clear_search"
+            style="@style/clear_icon"/>
+    </FrameLayout>
 </LinearLayout>

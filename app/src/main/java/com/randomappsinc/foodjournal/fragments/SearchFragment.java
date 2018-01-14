@@ -2,7 +2,6 @@ package com.randomappsinc.foodjournal.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +27,6 @@ public class SearchFragment extends Fragment implements SearchResultsDBManager.L
         return fragment;
     }
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.search_input) EditText searchInput;
     @BindView(R.id.clear_search) View clearSearch;
 
@@ -40,7 +38,6 @@ public class SearchFragment extends Fragment implements SearchResultsDBManager.L
         View rootView = inflater.inflate(R.layout.search, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
-        toolbar.setTitle(R.string.search);
         searchManager = DatabaseManager.get().getSearchResultsDBManager();
         searchManager.setListener(this);
 
