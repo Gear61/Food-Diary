@@ -69,7 +69,7 @@ public class CheckInsFragment extends Fragment {
     public void addCheckIn() {
         Intent addCheckIn = new Intent(getActivity(), CheckInFormActivity.class);
         addCheckIn.putExtra(CheckInFormActivity.ADDER_MODE_KEY, true);
-        addCheckIn.putExtra(CheckInFormActivity.RESTAURANT_ID_KEY, mRestaurantId);
+        addCheckIn.putExtra(Constants.RESTAURANT_ID_KEY, mRestaurantId);
         startActivityForResult(addCheckIn, CHECK_IN_FORM);
     }
 

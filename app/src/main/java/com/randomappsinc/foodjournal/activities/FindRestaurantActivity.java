@@ -22,9 +22,9 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.RestaurantSearchResultsAdapter;
 import com.randomappsinc.foodjournal.api.RestClient;
-import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.LocationFetcher;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
@@ -41,8 +41,6 @@ import io.nlopez.smartlocation.OnLocationUpdatedListener;
 import io.nlopez.smartlocation.SmartLocation;
 
 public class FindRestaurantActivity extends StandardActivity implements RestClient.RestaurantResultsHandler {
-
-    public static final String PICKER_MODE_KEY = "pickerMode";
 
     private static final int LOCATION_SERVICES_CODE = 1;
 
@@ -75,7 +73,6 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private LocationFetcher mLocationFetcher;
     @Nullable private String mCurrentLocation;
     private boolean mDenialLock;
-    private boolean mPickerMode;
     private MaterialDialog mLocationDenialDialog;
     private MaterialDialog mLocationPermissionDialog;
     private LocationForm mLocationForm;
@@ -89,8 +86,6 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        mPickerMode = getIntent().getBooleanExtra(PICKER_MODE_KEY, false);
 
         mRestClient = RestClient.getInstance();
         mRestClient.registerRestaurantResultsHandler(this);
@@ -242,22 +237,14 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     @OnItemClick(R.id.restaurants)
     public void onRestaurantClicked(int position) {
         Restaurant restaurant = mAdapter.getItem(position);
-        if (!mPickerMode && DatabaseManager.get().getRestaurantsDBManager().userAlreadyHasRestaurant(restaurant)) {
-            UIUtils.showSnackbar(mParent, getString(R.string.restaurant_already_added));
-        } else {
-            if (!DatabaseManager.get().getRestaurantsDBManager().userAlreadyHasRestaurant(restaurant)) {
-                DatabaseManager.get().getRestaurantsDBManager().addRestaurant(restaurant);
-            }
-
-            if (mPickerMode) {
-                Intent returnRestaurant = new Intent();
-                returnRestaurant.putExtra(RestaurantsFragment.RESTAURANT_KEY, restaurant);
-                setResult(RESULT_OK, returnRestaurant);
-            } else {
-                setResult(RESULT_OK);
-            }
-            finish();
+        if (!DatabaseManager.get().getRestaurantsDBManager().userAlreadyHasRestaurant(restaurant)) {
+            DatabaseManager.get().getRestaurantsDBManager().addRestaurant(restaurant);
         }
+
+        Intent returnRestaurant = new Intent();
+        returnRestaurant.putExtra(Constants.RESTAURANT_KEY, restaurant);
+        setResult(RESULT_OK, returnRestaurant);
+        finish();
     }
 
     @OnClick(R.id.set_location)

@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- User restaurants -->
-    <string name="one_check_in">1 check-in</string>
-    <string name="num_check_ins">%d check-ins</string>
     <string name="one_dish">1 dish attached</string>
     <string name="num_dishes">%d dishes attached</string>
-    <string name="restaurant_added">Restaurant added.</string>
     <string name="restaurant_deleted">Restaurant deleted.</string>
-    <string name="no_restaurants_added">
-        Hit the {ion-android-add} in the bottom right to add your first restaurant!
-    </string>
 
     <!-- Find restaurant -->
     <string name="find_restaurant">Find Restaurant</string>
@@ -17,7 +11,6 @@
     <string name="clear_icon">{ion-android-close}</string>
     <string name="no_restaurants_found">No restaurants match your input.</string>
     <string name="powered_by_yelp">Powered by Yelp</string>
-    <string name="restaurant_already_added">You have already added this restaurant to your Food Diary.</string>
 
     <!-- Restaurant view -->
     <string name="restaurant_view">Restaurant View</string>

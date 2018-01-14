@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -20,7 +21,6 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.RestaurantTabsAdapter;
 import com.randomappsinc.foodjournal.api.RestClient;
-import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.Constants;
@@ -99,7 +99,7 @@ public class RestaurantViewActivity extends StandardActivity {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         DatabaseManager.get().getRestaurantsDBManager().deleteRestaurant(mRestaurant);
-                        setResult(RestaurantsFragment.RESTAURANT_DELETED_CODE);
+                        UIUtils.showToast(R.string.restaurant_deleted, Toast.LENGTH_LONG);
                         finish();
                     }
                 })

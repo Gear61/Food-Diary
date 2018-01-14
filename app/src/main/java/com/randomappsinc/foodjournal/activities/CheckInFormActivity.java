@@ -19,11 +19,11 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.DishGalleryAdapter;
 import com.randomappsinc.foodjournal.fragments.CheckInsFragment;
-import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DateTimeAdder;
@@ -42,7 +42,6 @@ public class CheckInFormActivity extends StandardActivity {
     private static final int DISH_TAGGING_CODE = 2;
 
     public static final String ADDER_MODE_KEY = "adderMode";
-    public static final String RESTAURANT_ID_KEY = "restaurantId";
     public static final String CHECK_IN_KEY = "checkIn";
 
     private final DateTimeAdder.Listener mDateTimeListener = new DateTimeAdder.Listener() {
@@ -88,7 +87,7 @@ public class CheckInFormActivity extends StandardActivity {
             mCheckIn = new CheckIn();
             mCheckIn.setTimeAdded(System.currentTimeMillis());
 
-            String restaurantId = getIntent().getStringExtra(RESTAURANT_ID_KEY);
+            String restaurantId = getIntent().getStringExtra(Constants.RESTAURANT_ID_KEY);
             if (restaurantId != null) {
                 Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(restaurantId);
                 loadRestaurantInfo(restaurant);
@@ -174,7 +173,6 @@ public class CheckInFormActivity extends StandardActivity {
     @OnClick(R.id.restaurant_info_section)
     public void chooseRestaurant() {
         Intent intent = new Intent(this, FindRestaurantActivity.class);
-        intent.putExtra(FindRestaurantActivity.PICKER_MODE_KEY, true);
         startActivityForResult(intent, RESTAURANT_CODE);
     }
 
@@ -187,7 +185,7 @@ public class CheckInFormActivity extends StandardActivity {
 
         switch (requestCode) {
             case RESTAURANT_CODE:
-                Restaurant restaurant = data.getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
+                Restaurant restaurant = data.getParcelableExtra(Constants.RESTAURANT_KEY);
                 loadRestaurantInfo(restaurant);
                 break;
             case DISH_TAGGING_CODE:

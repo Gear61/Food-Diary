@@ -9,17 +9,11 @@ import com.randomappsinc.foodjournal.persistence.DBConverter;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantCategoryDO;
 import com.randomappsinc.foodjournal.persistence.models.RestaurantDO;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
-import io.realm.Sort;
 
 public class RestaurantsDBManager {
 
@@ -55,24 +49,6 @@ public class RestaurantsDBManager {
 
     private Realm getRealm() {
         return Realm.getDefaultInstance();
-    }
-
-    public List<Restaurant> getUserRestaurants(String searchTerm) {
-        List<Restaurant> locations = new ArrayList<>();
-        RealmQuery<RestaurantDO> restaurantQuery = getRealm()
-                .where(RestaurantDO.class);
-        if (!searchTerm.isEmpty()) {
-            restaurantQuery = restaurantQuery.contains("name", searchTerm.toLowerCase(), Case.INSENSITIVE);
-        }
-        RealmResults<RestaurantDO> restaurantDOs = restaurantQuery.findAllSorted("timeAdded", Sort.DESCENDING);
-        for (RestaurantDO restaurantDO : restaurantDOs) {
-            locations.add(DBConverter.getRestaurantFromDO(restaurantDO));
-        }
-        return locations;
-    }
-
-    public int getNumUserRestaurants() {
-        return getRealm().where(RestaurantDO.class).findAll().size();
     }
 
     public boolean userAlreadyHasRestaurant(Restaurant restaurant) {

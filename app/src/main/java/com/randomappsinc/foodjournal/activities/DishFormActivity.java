@@ -22,7 +22,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.fragments.RestaurantsFragment;
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
@@ -279,7 +278,6 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     @OnClick(R.id.restaurant_info_section)
     public void chooseRestaurant() {
         Intent intent = new Intent(this, FindRestaurantActivity.class);
-        intent.putExtra(FindRestaurantActivity.PICKER_MODE_KEY, true);
         startActivityForResult(intent, RESTAURANT_SOURCE_CODE);
     }
 
@@ -317,7 +315,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                 loadDishPhoto();
                 break;
             case RESTAURANT_SOURCE_CODE:
-                mRestaurant = data.getParcelableExtra(RestaurantsFragment.RESTAURANT_KEY);
+                mRestaurant = data.getParcelableExtra(Constants.RESTAURANT_KEY);
                 loadRestaurantInfo();
                 break;
         }
