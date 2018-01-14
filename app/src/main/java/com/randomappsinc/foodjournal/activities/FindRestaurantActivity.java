@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
@@ -45,7 +44,6 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     private static final int LOCATION_SERVICES_CODE = 1;
 
     @BindView(R.id.parent) View mParent;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
     @BindView(R.id.search_input) EditText mSearchInput;
     @BindView(R.id.clear_search) View mClearSearch;
     @BindView(R.id.restaurants) ListView mRestaurants;
@@ -82,10 +80,6 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_restaurant);
         ButterKnife.bind(this);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mRestClient = RestClient.getInstance();
         mRestClient.registerRestaurantResultsHandler(this);
@@ -279,6 +273,11 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
                 mLocationDenialDialog.show();
             }
         }
+    }
+
+    @OnClick(R.id.back_button)
+    public void goBack() {
+        finish();
     }
 
     @Override

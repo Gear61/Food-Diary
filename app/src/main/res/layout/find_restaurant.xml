@@ -11,35 +11,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
+        <FrameLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            android:background="@color/app_red"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-            <FrameLayout
+            <EditText
+                android:id="@+id/search_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:hint="@string/search"
+                android:background="@null"
+                android:textColor="@color/white_80_percent"
+                android:textColorHint="@color/half_white"
+                android:textCursorDrawable="@null"
+                android:paddingLeft="?attr/actionBarSize"
+                android:paddingRight="40dp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:imeOptions="actionDone"/>
 
-                <EditText
-                    android:id="@+id/search_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/search"
-                    android:textCursorDrawable="@null"
-                    android:paddingRight="40dp"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:imeOptions="actionDone"/>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:id="@+id/back_button"
+                android:text="@string/back_icon"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_gravity="start|center_vertical"
+                style="@style/toolbar_icon"/>
 
-                <com.joanzapata.iconify.widget.IconTextView
-                    android:id="@+id/clear_search"
-                    android:textColor="@color/white"
-                    style="@style/clear_icon"/>
-            </FrameLayout>
-        </android.support.v7.widget.Toolbar>
+            <com.joanzapata.iconify.widget.IconTextView
+                android:id="@+id/clear_search"
+                style="@style/clear_icon"/>
+        </FrameLayout>
 
         <android.support.percent.PercentRelativeLayout
             android:layout_below="@id/toolbar"

@@ -47,4 +47,6 @@
         Are you sure you want to leave? Any unsaved changes will be lost.
     </string>
     <string name="image_load_fail">Failed to load image.</string>
+
+    <string name="back_icon">{ion-android-arrow-back}</string>
 </resources>
