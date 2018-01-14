@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.DishesDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.RestaurantsDBManager;
+import com.randomappsinc.foodjournal.persistence.dbmanagers.SearchResultsDBManager;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 
 import io.realm.DynamicRealm;
@@ -37,6 +38,7 @@ public class DatabaseManager {
     private CheckInsDBManager mCheckInsDBManager;
     private RestaurantsDBManager mRestaurantsDBManager;
     private DishesDBManager mDishesDBManager;
+    private SearchResultsDBManager mSearchResultsDBManager;
 
     private DatabaseManager() {
         Realm.init(MyApplication.getAppContext());
@@ -49,6 +51,7 @@ public class DatabaseManager {
         mCheckInsDBManager = CheckInsDBManager.get();
         mRestaurantsDBManager = RestaurantsDBManager.get();
         mDishesDBManager = DishesDBManager.get();
+        mSearchResultsDBManager = SearchResultsDBManager.get();
     }
 
     private RealmMigration migration = new RealmMigration() {
@@ -108,5 +111,9 @@ public class DatabaseManager {
 
     public DishesDBManager getDishesDBManager() {
         return mDishesDBManager;
+    }
+
+    public SearchResultsDBManager getSearchResultsDBManager() {
+        return mSearchResultsDBManager;
     }
 }
