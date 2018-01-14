@@ -38,7 +38,7 @@
 
     <!-- Bottom navigation icons -->
     <string name="home_icon">{ion-android-home}</string>
-    <string name="restaurants_icon">{ion-android-restaurant}</string>
+    <string name="search_icon">{ion-android-search}</string>
     <string name="camera_icon">{ion-android-camera}</string>
     <string name="check_in_icon">{ion-android-checkmark-circle}</string>
     <string name="settings_icon">{ion-android-settings}</string>

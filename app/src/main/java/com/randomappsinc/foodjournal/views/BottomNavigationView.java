@@ -21,7 +21,7 @@ public class BottomNavigationView {
     }
 
     @BindView(R.id.home) TextView mHomeButton;
-    @BindView(R.id.restaurants) TextView mRestaurantsButton;
+    @BindView(R.id.search) TextView mSearchButton;
     @BindView(R.id.check_ins) TextView mCheckInsButton;
     @BindView(R.id.settings) TextView mSettingsButton;
     @BindColor(R.color.dark_gray) int darkGray;
@@ -50,15 +50,15 @@ public class BottomNavigationView {
         mListener.onNavItemSelected(R.id.home);
     }
 
-    @OnClick(R.id.restaurants)
-    public void onRestaurantsClicked() {
-        if (mCurrentlySelected == mRestaurantsButton) {
+    @OnClick(R.id.search)
+    public void onSearchClicked() {
+        if (mCurrentlySelected == mSearchButton) {
             return;
         }
 
         mCurrentlySelected.setTextColor(darkGray);
-        mRestaurantsButton.setTextColor(red);
-        mCurrentlySelected = mRestaurantsButton;
+        mSearchButton.setTextColor(red);
+        mCurrentlySelected = mSearchButton;
         mListener.onNavItemSelected(R.id.restaurants);
     }
 

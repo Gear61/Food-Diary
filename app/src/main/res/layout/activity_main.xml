@@ -25,8 +25,8 @@
             style="@style/bottom_navigation_item"/>
 
         <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/restaurants"
-            android:text="@string/restaurants_icon"
+            android:id="@+id/search"
+            android:text="@string/search_icon"
             style="@style/bottom_navigation_item"/>
 
         <FrameLayout

@@ -11,7 +11,7 @@ public class HomepageFragmentController {
     private FragmentManager mFragmentManager;
     private int mContainerId;
     private HomepageDishesFragment mDishesFragment;
-    private RestaurantsFragment mRestaurantsFragment;
+    private SearchFragment mSearchFragment;
     private HomepageCheckInsFragment mCheckInsFragment;
     private SettingsFragment mSettingsFragment;
     @IdRes private int mCurrentViewId;
@@ -20,7 +20,7 @@ public class HomepageFragmentController {
         mFragmentManager = fragmentManager;
         mContainerId = containerId;
         mDishesFragment = HomepageDishesFragment.newInstance();
-        mRestaurantsFragment = RestaurantsFragment.newInstance();
+        mSearchFragment = SearchFragment.newInstance();
         mCheckInsFragment = HomepageCheckInsFragment.newInstance();
         mSettingsFragment = SettingsFragment.newInstance();
     }
@@ -36,7 +36,7 @@ public class HomepageFragmentController {
                 swapInFragment(mDishesFragment);
                 break;
             case R.id.restaurants:
-                swapInFragment(mRestaurantsFragment);
+                swapInFragment(mSearchFragment);
                 break;
             case R.id.check_ins:
                 swapInFragment(mCheckInsFragment);

@@ -1,0 +1,72 @@
+package com.randomappsinc.foodjournal.fragments;
+
+import android.app.Fragment;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+
+import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.models.SearchResults;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.persistence.dbmanagers.SearchResultsDBManager;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
+import butterknife.Unbinder;
+
+public class SearchFragment extends Fragment implements SearchResultsDBManager.Listener {
+
+    public static SearchFragment newInstance() {
+        SearchFragment fragment = new SearchFragment();
+        fragment.setRetainInstance(true);
+        return fragment;
+    }
+
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.search_input) EditText searchInput;
+    @BindView(R.id.clear_search) View clearSearch;
+
+    private Unbinder unbinder;
+    private SearchResultsDBManager searchManager;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.search, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
+
+        toolbar.setTitle(R.string.search);
+        searchManager = DatabaseManager.get().getSearchResultsDBManager();
+        searchManager.setListener(this);
+
+        return rootView;
+    }
+
+    @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void afterTextChanged(Editable input) {
+        searchManager.doSearch(input.toString());
+        clearSearch.setVisibility(input.length() == 0 ? View.GONE : View.VISIBLE);
+    }
+
+    @OnClick(R.id.clear_search)
+    public void clearSearch() {
+        searchInput.setText("");
+    }
+
+    @Override
+    public void onSearchComplete(SearchResults searchResults) {
+        // TODO: Process search results
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        searchManager.unregisterListener();
+        unbinder.unbind();
+    }
+}

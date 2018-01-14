@@ -106,6 +106,7 @@ public class SearchResultsDBManager {
     }
 
     public void unregisterListener() {
+        cancelSearches();
         this.listener = null;
     }
 
@@ -163,9 +164,9 @@ public class SearchResultsDBManager {
                         .or()
                         .contains("restaurantName", searchTerm, Case.INSENSITIVE)
                         .or()
-                        .contains("dishes.title", searchTerm, Case.INSENSITIVE)
+                        .contains("taggedDishes.title", searchTerm, Case.INSENSITIVE)
                         .or()
-                        .contains("dishes.description", searchTerm, Case.INSENSITIVE)
+                        .contains("taggedDishes.description", searchTerm, Case.INSENSITIVE)
                     .endGroup()
                     .findAllAsync();
         }
@@ -175,9 +176,15 @@ public class SearchResultsDBManager {
         checkInQuery.addChangeListener(checkInListener);
     }
 
-    public void cancelSearches() {
-        dishQuery.removeAllChangeListeners();
-        restaurantQuery.removeAllChangeListeners();
-        checkInQuery.removeAllChangeListeners();
+    private void cancelSearches() {
+        if (dishQuery != null) {
+            dishQuery.removeAllChangeListeners();
+        }
+        if (restaurantQuery != null) {
+            restaurantQuery.removeAllChangeListeners();
+        }
+        if (checkInQuery != null) {
+            checkInQuery.removeAllChangeListeners();
+        }
     }
 }
