@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.adapters.SearchDishesAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.SearchResults;
@@ -73,6 +75,10 @@ public class SearchFragment extends Fragment implements
 
     @Override
     public void onDishClicked(Dish dish) {
+        Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);
+        intent.putExtra(DishesFullViewGalleryActivity.DISH_KEY, dish);
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     @Override
