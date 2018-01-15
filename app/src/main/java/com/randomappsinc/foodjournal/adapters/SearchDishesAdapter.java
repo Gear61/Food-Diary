@@ -62,32 +62,44 @@ public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapte
 
     @Override
     public int getItemCount() {
-        return dishes.size();
+        return dishes.isEmpty() ? 1 : dishes.size();
     }
 
     class DishThumbnailViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.result_container) View resultContainer;
         @BindView(R.id.search_result_picture) ImageView dishPicture;
         @BindView(R.id.search_result_text) TextView dishTitle;
+        @BindView(R.id.no_results_text) TextView noResults;
 
         DishThumbnailViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            noResults.setText(R.string.no_dish_matches);
         }
 
         void loadDish(int position) {
-            Picasso.with(context)
-                    .load(dishes.get(position).getUriString())
-                    .error(defaultThumbnail)
-                    .fit()
-                    .centerCrop()
-                    .into(dishPicture);
-            dishTitle.setText(dishes.get(position).getTitle());
+            if (dishes.isEmpty()) {
+                resultContainer.setVisibility(View.GONE);
+                noResults.setVisibility(View.VISIBLE);
+            } else {
+                noResults.setVisibility(View.GONE);
+                Picasso.with(context)
+                        .load(dishes.get(position).getUriString())
+                        .error(defaultThumbnail)
+                        .fit()
+                        .centerCrop()
+                        .into(dishPicture);
+                dishTitle.setText(dishes.get(position).getTitle());
+                resultContainer.setVisibility(View.VISIBLE);
+            }
         }
 
         @OnClick(R.id.parent)
         void onDishClicked() {
-            listener.onDishClicked(dishes.get(getAdapterPosition()));
+            if (!dishes.isEmpty()) {
+                listener.onDishClicked(dishes.get(getAdapterPosition()));
+            }
         }
     }
 }

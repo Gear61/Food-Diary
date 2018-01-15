@@ -7,11 +7,13 @@
     android:layout_width="152dp"
     android:layout_height="140dp"
     android:layout_marginTop="0dp"
+    android:foreground="?android:attr/selectableItemBackground"
     card_view:contentPadding="0dp"
     tools:ignore="ContentDescription, SpUsage"
     style="@style/form_card">
 
     <RelativeLayout
+        android:id="@+id/result_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -34,4 +36,13 @@
             android:maxLines="2"
             android:ellipsize="end"/>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/no_results_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        android:gravity="center"
+        android:textColor="@color/dark_gray"
+        android:textSize="17dp"/>
 </android.support.v7.widget.CardView>

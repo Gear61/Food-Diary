@@ -62,36 +62,48 @@ public class SearchRestaurantsAdapter extends RecyclerView.Adapter<SearchRestaur
 
     @Override
     public int getItemCount() {
-        return restaurants.size();
+        return restaurants.isEmpty() ? 1 : restaurants.size();
     }
 
     class RestaurantViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.result_container) View resultContainer;
         @BindView(R.id.search_result_picture) ImageView picture;
         @BindView(R.id.search_result_text) TextView title;
+        @BindView(R.id.no_results_text) TextView noResults;
 
         RestaurantViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            noResults.setText(R.string.no_restaurant_matches);
         }
 
         void loadRestaurant(int position) {
-            String imageUrl = restaurants.get(position).getImageUrl();
-            if (!imageUrl.isEmpty()) {
-                Picasso.with(context)
-                        .load(imageUrl)
-                        .error(defaultThumbnail)
-                        .fit().centerCrop()
-                        .into(picture);
+            if (restaurants.isEmpty()) {
+                resultContainer.setVisibility(View.GONE);
+                noResults.setVisibility(View.VISIBLE);
             } else {
-                picture.setImageDrawable(defaultThumbnail);
+                noResults.setVisibility(View.GONE);
+                String imageUrl = restaurants.get(position).getImageUrl();
+                if (!imageUrl.isEmpty()) {
+                    Picasso.with(context)
+                            .load(imageUrl)
+                            .error(defaultThumbnail)
+                            .fit().centerCrop()
+                            .into(picture);
+                } else {
+                    picture.setImageDrawable(defaultThumbnail);
+                }
+                title.setText(restaurants.get(position).getSearchText());
+                resultContainer.setVisibility(View.VISIBLE);
             }
-            title.setText(restaurants.get(position).getSearchText());
         }
 
         @OnClick(R.id.parent)
         void onRestaurantClicked() {
-            listener.onRestaurantClicked(restaurants.get(getAdapterPosition()));
+            if (!restaurants.isEmpty()) {
+                listener.onRestaurantClicked(restaurants.get(getAdapterPosition()));
+            }
         }
     }
 }

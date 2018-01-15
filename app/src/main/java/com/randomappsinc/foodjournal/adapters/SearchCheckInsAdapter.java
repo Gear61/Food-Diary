@@ -64,38 +64,50 @@ public class SearchCheckInsAdapter extends RecyclerView.Adapter<SearchCheckInsAd
 
     @Override
     public int getItemCount() {
-        return checkIns.size();
+        return checkIns.isEmpty() ? 1 : checkIns.size();
     }
 
     class CheckInViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.result_container) View resultContainer;
         @BindView(R.id.search_result_picture) ImageView picture;
         @BindView(R.id.search_result_text) TextView title;
+        @BindView(R.id.no_results_text) TextView noResults;
 
         CheckInViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            noResults.setText(R.string.no_check_in_matches);
         }
 
         void loadCheckIn(int position) {
-            CheckIn checkIn = checkIns.get(position);
-            Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(checkIn.getRestaurantId());
-            String imageUrl = restaurant.getImageUrl();
-            if (!imageUrl.isEmpty()) {
-                Picasso.with(context)
-                        .load(imageUrl)
-                        .error(defaultThumbnail)
-                        .fit().centerCrop()
-                        .into(picture);
+            if (checkIns.isEmpty()) {
+                resultContainer.setVisibility(View.GONE);
+                noResults.setVisibility(View.VISIBLE);
             } else {
-                picture.setImageDrawable(defaultThumbnail);
+                noResults.setVisibility(View.GONE);
+                CheckIn checkIn = checkIns.get(position);
+                Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(checkIn.getRestaurantId());
+                String imageUrl = restaurant.getImageUrl();
+                if (!imageUrl.isEmpty()) {
+                    Picasso.with(context)
+                            .load(imageUrl)
+                            .error(defaultThumbnail)
+                            .fit().centerCrop()
+                            .into(picture);
+                } else {
+                    picture.setImageDrawable(defaultThumbnail);
+                }
+                title.setText(checkIn.getSearchText());
+                resultContainer.setVisibility(View.VISIBLE);
             }
-            title.setText(checkIn.getSearchText());
         }
 
         @OnClick(R.id.parent)
         void onRestaurantClicked() {
-            listener.onCheckInClicked(checkIns.get(getAdapterPosition()));
+            if (!checkIns.isEmpty()) {
+                listener.onCheckInClicked(checkIns.get(getAdapterPosition()));
+            }
         }
     }
 }

@@ -2,5 +2,5 @@
 <resources>
     <string name="no_dish_matches">None of your dishes match your search criteria.</string>
     <string name="no_restaurant_matches">None of your restaurants match your search criteria.</string>
-    <string name="no_check_in_matches">None of your check-ins match your search criteria</string>
+    <string name="no_check_in_matches">None of your check-ins match your search criteria.</string>
 </resources>
