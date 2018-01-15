@@ -2,6 +2,7 @@ package com.randomappsinc.foodjournal.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.adapters.SearchDishesAdapter;
+import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.SearchResults;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.SearchResultsDBManager;
@@ -19,7 +22,8 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 
-public class SearchFragment extends Fragment implements SearchResultsDBManager.Listener {
+public class SearchFragment extends Fragment implements
+        SearchResultsDBManager.Listener, SearchDishesAdapter.Listener {
 
     public static SearchFragment newInstance() {
         SearchFragment fragment = new SearchFragment();
@@ -29,9 +33,11 @@ public class SearchFragment extends Fragment implements SearchResultsDBManager.L
 
     @BindView(R.id.search_input) EditText searchInput;
     @BindView(R.id.clear_search) View clearSearch;
+    @BindView(R.id.dishes) RecyclerView dishResults;
 
     private Unbinder unbinder;
     private SearchResultsDBManager searchManager;
+    private SearchDishesAdapter dishesAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +46,11 @@ public class SearchFragment extends Fragment implements SearchResultsDBManager.L
 
         searchManager = DatabaseManager.get().getSearchResultsDBManager();
         searchManager.setListener(this);
+
+        dishesAdapter = new SearchDishesAdapter(this, getActivity());
+        dishResults.setAdapter(dishesAdapter);
+
+        searchManager.doSearch("");
 
         return rootView;
     }
@@ -57,7 +68,11 @@ public class SearchFragment extends Fragment implements SearchResultsDBManager.L
 
     @Override
     public void onSearchComplete(SearchResults searchResults) {
-        // TODO: Process search results
+        dishesAdapter.setDishes(searchResults.getDishes());
+    }
+
+    @Override
+    public void onDishClicked(Dish dish) {
     }
 
     @Override

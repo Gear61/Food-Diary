@@ -19,7 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.adapters.RestaurantSearchResultsAdapter;
+import com.randomappsinc.foodjournal.adapters.YelpSearchResultsAdapter;
 import com.randomappsinc.foodjournal.api.RestClient;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
@@ -64,7 +64,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
     };
 
     private RestClient mRestClient;
-    private RestaurantSearchResultsAdapter mAdapter;
+    private YelpSearchResultsAdapter mAdapter;
     private boolean mLocationFetched;
     private Handler mLocationChecker;
     private Runnable mLocationCheckTask;
@@ -84,7 +84,7 @@ public class FindRestaurantActivity extends StandardActivity implements RestClie
         mRestClient = RestClient.getInstance();
         mRestClient.registerRestaurantResultsHandler(this);
 
-        mAdapter = new RestaurantSearchResultsAdapter(this);
+        mAdapter = new YelpSearchResultsAdapter(this);
         mRestaurants.setAdapter(mAdapter);
 
         mSetLocation.setImageDrawable(new IconDrawable(this, IoniconsIcons.ion_android_map).colorRes(R.color.white));

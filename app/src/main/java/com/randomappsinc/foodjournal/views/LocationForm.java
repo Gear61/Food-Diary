@@ -22,7 +22,6 @@ public class LocationForm {
 
         String location = context.getString(R.string.location);
         mLocationDialog = new MaterialDialog.Builder(context)
-                .title(R.string.location_form)
                 .content(R.string.location_form_prompt)
                 .positiveText(android.R.string.yes)
                 .negativeText(android.R.string.cancel)

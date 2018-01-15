@@ -32,7 +32,6 @@ public class DishGalleryAdapter extends RecyclerView.Adapter<DishGalleryAdapter.
     public DishGalleryAdapter(Activity activity) {
         mActivity = activity;
         mDishes = new ArrayList<>();
-        mDishes = new ArrayList<>();
         mDefaultThumbnail = new IconDrawable(activity, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
     }
 

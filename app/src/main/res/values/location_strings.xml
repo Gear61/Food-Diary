@@ -20,7 +20,6 @@
 
     <string name="location_services_on">Location services turned on. Fetching current location&#8230;</string>
 
-    <string name="location_form">Location Form</string>
     <string name="location_form_prompt">Where do you want to search for restaurants?</string>
 
     <string name="location_permission_needed">Location Permission Needed</string>

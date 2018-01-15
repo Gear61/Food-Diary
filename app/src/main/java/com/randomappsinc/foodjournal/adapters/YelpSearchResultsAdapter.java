@@ -21,12 +21,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RestaurantSearchResultsAdapter extends BaseAdapter {
+public class YelpSearchResultsAdapter extends BaseAdapter {
 
     private List<Restaurant> mRestaurants = new ArrayList<>();
     private Context mContext;
 
-    public RestaurantSearchResultsAdapter(Context context) {
+    public YelpSearchResultsAdapter(Context context) {
         mContext = context;
     }
 
