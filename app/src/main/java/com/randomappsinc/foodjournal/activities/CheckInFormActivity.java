@@ -48,7 +48,7 @@ public class CheckInFormActivity extends StandardActivity {
         @Override
         public void onDateTimeChosen(long timeChosen) {
             mCheckIn.setTimeAdded(timeChosen);
-            mDateTimeInput.setText(TimeUtils.getTimeText(timeChosen));
+            mDateTimeInput.setText(TimeUtils.getDefaultTimeText(timeChosen));
         }
     };
 
@@ -102,7 +102,7 @@ public class CheckInFormActivity extends StandardActivity {
         }
         mOriginalCheckIn = new CheckIn(mCheckIn);
 
-        mDateTimeInput.setText(TimeUtils.getTimeText(mCheckIn.getTimeAdded()));
+        mDateTimeInput.setText(TimeUtils.getDefaultTimeText(mCheckIn.getTimeAdded()));
 
         mDeleteConfirmationDialog = new MaterialDialog.Builder(this)
                 .title(R.string.check_in_delete_title)

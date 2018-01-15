@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
-    android:layout_width="128dp"
-    android:layout_height="164dp"
+    android:layout_width="152dp"
+    android:layout_height="140dp"
     android:layout_marginTop="0dp"
     card_view:contentPadding="0dp"
     tools:ignore="ContentDescription, SpUsage"
@@ -19,18 +19,18 @@
             android:id="@+id/search_result_picture"
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
-            android:layout_height="128dp"/>
+            android:layout_height="100dp"/>
 
         <TextView
             android:id="@+id/search_result_text"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="40dp"
             android:padding="4dp"
             android:background="@color/white"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:textColor="@color/dark_gray"
-            android:textSize="11dp"
+            android:textSize="13dp"
             android:maxLines="2"
             android:ellipsize="end"/>
     </RelativeLayout>

@@ -137,10 +137,6 @@ public class Restaurant implements Parcelable {
         this.dishes = dishes;
     }
 
-    public List<CheckIn> getCheckIns() {
-        return checkIns;
-    }
-
     public void setCheckIns(List<CheckIn> checkIns) {
         this.checkIns = checkIns;
     }
@@ -162,6 +158,10 @@ public class Restaurant implements Parcelable {
             categoriesList.append(placeCategory.getTitle());
         }
         return categoriesList.toString();
+    }
+
+    public String getSearchText() {
+        return name + ", " + city;
     }
 
     public RestaurantDO toRestaurantDO() {

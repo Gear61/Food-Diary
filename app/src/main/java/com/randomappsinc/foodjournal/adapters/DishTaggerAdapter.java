@@ -95,7 +95,7 @@ public class DishTaggerAdapter extends BaseAdapter {
                     .into(mDishPicture);
 
             mDishName.setText(dish.getTitle());
-            mDishDate.setText(TimeUtils.getTimeText(dish.getTimeAdded()));
+            mDishDate.setText(TimeUtils.getDefaultTimeText(dish.getTimeAdded()));
 
             if (dish.getDescription().isEmpty()) {
                 mDishDescription.setVisibility(View.GONE);

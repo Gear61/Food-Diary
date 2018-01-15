@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
 import com.randomappsinc.foodjournal.utils.TextUtils;
+import com.randomappsinc.foodjournal.utils.TimeUtils;
 
 import java.util.ArrayList;
 
@@ -86,6 +87,10 @@ public class CheckIn implements Parcelable {
         if (taggedDishes != null) {
             taggedDishes.add(dish);
         }
+    }
+
+    public String getSearchText() {
+        return restaurantName + ", " + TimeUtils.getCheckInSearchTimeText(timeAdded);
     }
 
     public CheckInDO toCheckInDO() {

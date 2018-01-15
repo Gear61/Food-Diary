@@ -138,7 +138,7 @@ public class SearchResultsDBManager {
                         .or()
                         .contains("restaurantName", searchTerm, Case.INSENSITIVE)
                     .endGroup()
-                    .findAllAsync();
+                    .findAllSortedAsync(dishFieldsToSort, dishSorts);;
 
             restaurantQuery = getRealm()
                     .where(RestaurantDO.class)
@@ -155,7 +155,7 @@ public class SearchResultsDBManager {
                         .or()
                         .contains("dishes.description", searchTerm, Case.INSENSITIVE)
                     .endGroup()
-                    .findAllAsync();
+                    .findAllSortedAsync("timeAdded", Sort.DESCENDING);
 
             checkInQuery = getRealm()
                     .where(CheckInDO.class)
@@ -168,7 +168,7 @@ public class SearchResultsDBManager {
                         .or()
                         .contains("taggedDishes.description", searchTerm, Case.INSENSITIVE)
                     .endGroup()
-                    .findAllAsync();
+                    .findAllSortedAsync("timeAdded", Sort.DESCENDING);
         }
 
         dishQuery.addChangeListener(dishListener);

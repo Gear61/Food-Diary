@@ -44,7 +44,7 @@ public class DishTaggerActivity extends StandardActivity {
         String header = String.format(
                 getString(R.string.dish_tagger_header),
                 checkIn.getRestaurantName(),
-                TimeUtils.getTimeText(checkIn.getTimeAdded()));
+                TimeUtils.getDefaultTimeText(checkIn.getTimeAdded()));
         mDescription.setText(header);
 
         if (checkIn.getTaggedDishes().isEmpty() &&

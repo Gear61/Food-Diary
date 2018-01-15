@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapter.DishThumbnailViewHolder>{
+public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapter.DishThumbnailViewHolder> {
 
     public interface Listener {
         void onDishClicked(Dish dish);

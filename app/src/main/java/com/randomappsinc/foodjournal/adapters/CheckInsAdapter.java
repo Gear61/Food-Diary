@@ -96,7 +96,7 @@ public class CheckInsAdapter extends BaseAdapter {
             }
             mRestaurantName.setText(restaurant.getName());
             mRestaurantAddress.setText(restaurant.getAddress());
-            mCheckInDate.setText(TimeUtils.getTimeText(checkIn.getTimeAdded()));
+            mCheckInDate.setText(TimeUtils.getDefaultTimeText(checkIn.getTimeAdded()));
             numDishes.setText(checkIn.getTaggedDishes().size() == 1
                     ? mContext.getString(R.string.one_dish)
                     : String.format(mContext.getString(R.string.num_dishes), checkIn.getTaggedDishes().size()));

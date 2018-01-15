@@ -63,7 +63,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
         @Override
         public void onDateTimeChosen(long timeChosen) {
             mDish.setTimeAdded(timeChosen);
-            mDateTimeText.setText(TimeUtils.getTimeText(timeChosen));
+            mDateTimeText.setText(TimeUtils.getDefaultTimeText(timeChosen));
         }
     };
 
@@ -120,7 +120,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
         if (mNewDishMode) {
             mDish = new Dish();
             mDish.setTimeAdded(System.currentTimeMillis());
-            mDateTimeText.setText(TimeUtils.getTimeText(mDish.getTimeAdded()));
+            mDateTimeText.setText(TimeUtils.getDefaultTimeText(mDish.getTimeAdded()));
 
             String pictureUri = getIntent().getStringExtra(URI_KEY);
             mDish.setUriString(pictureUri);
@@ -239,7 +239,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
         mRatingView.loadRating(mDish.getRating());
         mDishNameInput.setText(mDish.getTitle());
         loadRestaurantInfo();
-        mDateTimeText.setText(TimeUtils.getTimeText(mDish.getTimeAdded()));
+        mDateTimeText.setText(TimeUtils.getDefaultTimeText(mDish.getTimeAdded()));
         mDishDescriptionInput.setText(mDish.getDescription());
     }
 

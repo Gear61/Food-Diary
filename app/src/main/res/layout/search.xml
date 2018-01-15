@@ -54,6 +54,25 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/dishes"
                 style="@style/horizontal_gallery"/>
+
+            <TextView
+                android:text="@string/restaurants"
+                android:layout_marginTop="12dp"
+                style="@style/search_results_title"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/restaurants"
+                style="@style/horizontal_gallery"/>
+
+            <TextView
+                android:text="@string/check_ins"
+                android:layout_marginTop="12dp"
+                style="@style/search_results_title"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/check_ins"
+                android:layout_marginBottom="4dp"
+                style="@style/horizontal_gallery"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

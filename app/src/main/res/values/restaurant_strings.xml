@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- User restaurants -->
     <string name="one_dish">1 dish attached</string>
     <string name="num_dishes">%d dishes attached</string>
     <string name="restaurant_deleted">Restaurant deleted.</string>

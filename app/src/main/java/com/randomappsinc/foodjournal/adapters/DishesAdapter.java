@@ -194,7 +194,7 @@ public class DishesAdapter extends BaseAdapter {
             Dish dish = getItem(position);
 
             mDishInfoText.setText(Html.fromHtml(dish.getDishInfoText(mRestaurantId == null)));
-            mDishDate.setText(TimeUtils.getTimeText(dish.getTimeAdded()));
+            mDishDate.setText(TimeUtils.getDefaultTimeText(dish.getTimeAdded()));
 
             mFavoriteToggle.clearAnimation();
             mFavoriteToggle.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);

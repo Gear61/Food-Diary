@@ -1,0 +1,97 @@
+package com.randomappsinc.foodjournal.adapters;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.IoniconsIcons;
+import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.models.Restaurant;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class SearchRestaurantsAdapter extends RecyclerView.Adapter<SearchRestaurantsAdapter.RestaurantViewHolder> {
+
+    public interface Listener {
+        void onRestaurantClicked(Restaurant restaurant);
+    }
+
+    private @NonNull Listener listener;
+    private Context context;
+    private List<Restaurant> restaurants;
+    private Drawable defaultThumbnail;
+
+    public SearchRestaurantsAdapter(@NonNull Listener listener, Context context) {
+        this.listener = listener;
+        this.context = context;
+        this.restaurants = new ArrayList<>();
+        this.defaultThumbnail = new IconDrawable(
+                context,
+                IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
+    }
+
+    public void setRestaurants(List<Restaurant> restaurants) {
+        this.restaurants.clear();
+        this.restaurants.addAll(restaurants);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public RestaurantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(context).inflate(R.layout.local_search_cell, parent, false);
+        return new RestaurantViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(RestaurantViewHolder holder, int position) {
+        holder.loadRestaurant(position);
+    }
+
+    @Override
+    public int getItemCount() {
+        return restaurants.size();
+    }
+
+    class RestaurantViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.search_result_picture) ImageView picture;
+        @BindView(R.id.search_result_text) TextView title;
+
+        RestaurantViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        void loadRestaurant(int position) {
+            String imageUrl = restaurants.get(position).getImageUrl();
+            if (!imageUrl.isEmpty()) {
+                Picasso.with(context)
+                        .load(imageUrl)
+                        .error(defaultThumbnail)
+                        .fit().centerCrop()
+                        .into(picture);
+            } else {
+                picture.setImageDrawable(defaultThumbnail);
+            }
+            title.setText(restaurants.get(position).getSearchText());
+        }
+
+        @OnClick(R.id.parent)
+        void onRestaurantClicked() {
+            listener.onRestaurantClicked(restaurants.get(getAdapterPosition()));
+        }
+    }
+}
