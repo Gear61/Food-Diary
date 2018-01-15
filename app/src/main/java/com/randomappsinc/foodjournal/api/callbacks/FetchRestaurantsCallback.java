@@ -13,7 +13,9 @@ import retrofit2.Response;
 public class FetchRestaurantsCallback implements Callback<RestaurantSearchResults> {
 
     @Override
-    public void onResponse(@NonNull Call<RestaurantSearchResults> call, @NonNull Response<RestaurantSearchResults> response) {
+    public void onResponse(
+            @NonNull Call<RestaurantSearchResults> call,
+            @NonNull Response<RestaurantSearchResults> response) {
         if (response.code() == ApiConstants.HTTP_STATUS_OK) {
             RestClient.getInstance().processResults(response.body().getRestaurants());
         } else if (response.code() == ApiConstants.HTTP_STATUS_UNAUTHORIZED) {

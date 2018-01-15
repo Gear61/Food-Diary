@@ -126,7 +126,10 @@ public class RestaurantInfo {
     public Restaurant getRestaurant() {
         Restaurant restaurant = new Restaurant();
         restaurant.setId(id);
-        restaurant.setName(name);
+
+        // Trim the name because Yelp API returns it with leading whitespace sometimes for some reason
+        restaurant.setName(name.trim());
+
         restaurant.setImageUrl(imageUrl);
         restaurant.setPhoneNumber(phoneNumber);
         restaurant.setCity(location.getCity());
