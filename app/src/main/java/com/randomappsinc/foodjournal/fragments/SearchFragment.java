@@ -68,9 +68,13 @@ public class SearchFragment extends Fragment implements
         checkInsAdapter = new SearchCheckInsAdapter(this, getActivity());
         checkInResults.setAdapter(checkInsAdapter);
 
-        searchManager.doSearch("");
-
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        searchManager.doSearch(searchInput.getText().toString());
     }
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
