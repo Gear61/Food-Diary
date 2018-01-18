@@ -32,7 +32,7 @@
     <string name="tag_with_number">Tag (%d)</string>
     <string name="no_dishes_to_tag">No dishes to display.</string>
 
-    <string name="dish_title">%1$s from %2$s</string>
+    <string name="dish_title">%1$s @ %2$s</string>
 
     <string name="edit_dish">Edit dish</string>
     <string name="delete_dish">Delete dish</string>

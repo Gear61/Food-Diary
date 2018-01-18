@@ -52,6 +52,7 @@ public class SearchFragment extends Fragment implements
     private SearchDishesAdapter dishesAdapter;
     private SearchRestaurantsAdapter restaurantsAdapter;
     private SearchCheckInsAdapter checkInsAdapter;
+    private boolean typedSearch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +60,6 @@ public class SearchFragment extends Fragment implements
         unbinder = ButterKnife.bind(this, rootView);
 
         searchManager = DatabaseManager.get().getSearchResultsDBManager();
-        searchManager.setListener(this);
 
         dishesAdapter = new SearchDishesAdapter(this, getActivity());
         dishResults.setAdapter(dishesAdapter);
@@ -74,11 +74,13 @@ public class SearchFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        searchManager.setListener(this);
         searchManager.doSearch(searchInput.getText().toString());
     }
 
     @OnTextChanged(value = R.id.search_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     public void afterTextChanged(Editable input) {
+        typedSearch = true;
         searchManager.doSearch(input.toString());
         clearSearch.setVisibility(input.length() == 0 ? View.GONE : View.VISIBLE);
     }
@@ -91,13 +93,17 @@ public class SearchFragment extends Fragment implements
     @Override
     public void onSearchComplete(SearchResults searchResults) {
         dishesAdapter.setDishes(searchResults.getDishes());
-        dishResults.scrollToPosition(0);
-
         restaurantsAdapter.setRestaurants(searchResults.getRestaurants());
-        restaurantResults.scrollToPosition(0);
-
         checkInsAdapter.setCheckIns(searchResults.getCheckIns());
-        checkInResults.scrollToPosition(0);
+
+        // Only scroll lists back to the beginning if the user is doing a new search
+        if (typedSearch) {
+            dishResults.scrollToPosition(0);
+            restaurantResults.scrollToPosition(0);
+            checkInResults.scrollToPosition(0);
+        }
+
+        typedSearch = false;
     }
 
     @Override

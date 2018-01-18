@@ -127,9 +127,9 @@ public class Dish implements Parcelable {
         mIsFavorited = isFavorited;
     }
 
-    public String getDishInfoText(boolean onHomepage) {
+    public String getDishInfoText(boolean showRestaurantLink) {
         String template = MyApplication.getAppContext().getString(R.string.dish_title);
-        if (onHomepage) {
+        if (showRestaurantLink) {
             String restaurantLink = "<a href=\"" + Constants.RESTAURANT_VIEW_INTENT + mRestaurantId + "\">"
                     + mRestaurantName + "</a>";
             return String.format(template, mTitle, restaurantLink);

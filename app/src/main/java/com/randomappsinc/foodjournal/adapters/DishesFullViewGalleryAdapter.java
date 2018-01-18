@@ -7,28 +7,38 @@ import android.support.v13.app.FragmentStatePagerAdapter;
 import com.randomappsinc.foodjournal.fragments.DishFullViewFragment;
 import com.randomappsinc.foodjournal.models.Dish;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DishesFullViewGalleryAdapter extends FragmentStatePagerAdapter {
 
-    private List<Dish> mDishes;
+    private List<Dish> dishes;
+    private boolean fromRestaurant;
 
-    public DishesFullViewGalleryAdapter(FragmentManager fragmentManager, List<Dish> dishes) {
+    public DishesFullViewGalleryAdapter(FragmentManager fragmentManager, List<Dish> dishes, boolean fromRestaurant) {
         super(fragmentManager);
-        mDishes = dishes;
+        this.dishes = dishes;
+        this.fromRestaurant = fromRestaurant;
+    }
+
+    public DishesFullViewGalleryAdapter(FragmentManager fragmentManager, Dish dish, boolean fromRestaurant) {
+        super(fragmentManager);
+        this.dishes = new ArrayList<>();
+        this.dishes.add(dish);
+        this.fromRestaurant = fromRestaurant;
     }
 
     public String getImagePath(int position) {
-        return mDishes.get(position).getUriString();
+        return dishes.get(position).getUriString();
     }
 
     @Override
     public Fragment getItem(int position) {
-        return DishFullViewFragment.newInstance(mDishes.get(position));
+        return DishFullViewFragment.newInstance(dishes.get(position), fromRestaurant);
     }
 
     @Override
     public int getCount() {
-        return mDishes.size();
+        return dishes.size();
     }
 }

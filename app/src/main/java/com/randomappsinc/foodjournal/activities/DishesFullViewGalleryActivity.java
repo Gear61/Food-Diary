@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.DishesFullViewGalleryAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.utils.Constants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,9 +27,9 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
     public static final String DISHES_KEY = "dishes";
     public static final String POSITION_KEY = "position";
 
-    @BindView(R.id.pictures_pager) ViewPager mPicturesPager;
+    @BindView(R.id.pictures_pager) ViewPager picturesPager;
 
-    private DishesFullViewGalleryAdapter mGalleryAdapter;
+    private DishesFullViewGalleryAdapter galleryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +37,17 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
         setContentView(R.layout.dishes_full_view_gallery);
         ButterKnife.bind(this);
 
+        boolean fromRestaurant = getIntent().getBooleanExtra(Constants.FROM_RESTAURANT_KEY, false);
+
         Dish dish = getIntent().getParcelableExtra(DISH_KEY);
         if (dish == null) {
             ArrayList<Dish> dishes = getIntent().getParcelableArrayListExtra(DISHES_KEY);
-            mGalleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dishes);
+            galleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dishes, fromRestaurant);
         } else {
-            ArrayList<Dish> singleDish = new ArrayList<>();
-            singleDish.add(dish);
-            mGalleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), singleDish);
+            galleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dish, fromRestaurant);
         }
-        mPicturesPager.setAdapter(mGalleryAdapter);
-        mPicturesPager.setCurrentItem(getIntent().getIntExtra(POSITION_KEY, 0));
+        picturesPager.setAdapter(galleryAdapter);
+        picturesPager.setCurrentItem(getIntent().getIntExtra(POSITION_KEY, 0));
     }
 
     @OnClick(R.id.close)
@@ -56,8 +57,8 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
 
     @OnClick(R.id.share)
     public void sharePicture() {
-        int currentPosition = mPicturesPager.getCurrentItem();
-        String imagePath = mGalleryAdapter.getImagePath(currentPosition);
+        int currentPosition = picturesPager.getCurrentItem();
+        String imagePath = galleryAdapter.getImagePath(currentPosition);
         String filePath = imagePath.substring(imagePath.lastIndexOf('/'));
         String completePath = Environment.getExternalStorageDirectory().getPath()
                 + "/Android/data/com.randomappsinc.foodjournal/files/Pictures"
@@ -66,7 +67,10 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
         if (!imageFile.exists()) {
             return;
         }
-        Uri cleanImageUri = FileProvider.getUriForFile(this, "com.randomappsinc.foodjournal.fileprovider", imageFile);
+        Uri cleanImageUri = FileProvider.getUriForFile(
+                this,
+                "com.randomappsinc.foodjournal.fileprovider",
+                imageFile);
 
         Intent shareIntent = ShareCompat.IntentBuilder.from(this)
                 .setStream(cleanImageUri)
@@ -77,6 +81,12 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
         if (shareIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(shareIntent);
         }
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
     }
 
     @Override

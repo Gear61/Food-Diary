@@ -22,6 +22,7 @@ import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.DishesDBManager;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DishOptionsPresenter;
@@ -63,12 +64,17 @@ public class DishesAdapter extends BaseAdapter {
         }
     };
 
-    public DishesAdapter(@NonNull Listener listener, Activity activity, View noResults, @Nullable String restaurantId) {
+    public DishesAdapter(@NonNull Listener listener,
+                         Activity activity,
+                         View noResults,
+                         @Nullable String restaurantId) {
         mListener = listener;
         mActivity = activity;
         mNoResults = noResults;
         mRestaurantId = restaurantId;
-        mDefaultThumbnail = new IconDrawable(mActivity, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
+        mDefaultThumbnail = new IconDrawable(
+                mActivity,
+                IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         mDishOptionsPresenter = new DishOptionsPresenter(mDishOptionsListener, mActivity);
         fetchFirstPage();
     }
@@ -227,6 +233,7 @@ public class DishesAdapter extends BaseAdapter {
             Intent intent = new Intent(mActivity, DishesFullViewGalleryActivity.class);
             intent.putParcelableArrayListExtra(DishesFullViewGalleryActivity.DISHES_KEY, mDishes);
             intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, mPosition);
+            intent.putExtra(Constants.FROM_RESTAURANT_KEY, mRestaurantId != null);
             mActivity.startActivity(intent);
             mActivity.overridePendingTransition(0, 0);
         }
