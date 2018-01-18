@@ -9,7 +9,7 @@
     android:layout_marginTop="0dp"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:contentPadding="0dp"
-    tools:ignore="ContentDescription, SpUsage"
+    tools:ignore="ContentDescription, SpUsage, RtlHardcoded"
     style="@style/form_card">
 
     <RelativeLayout
@@ -22,6 +22,22 @@
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="100dp"/>
+
+        <com.joanzapata.iconify.widget.IconTextView
+            android:id="@+id/dish_rating_text"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:shadowColor="@color/shadow_black"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="1"
+            android:textColor="@color/dark_gray"
+            android:textSize="13dp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/search_result_text"

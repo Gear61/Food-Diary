@@ -69,6 +69,7 @@ public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapte
 
         @BindView(R.id.result_container) View resultContainer;
         @BindView(R.id.search_result_picture) ImageView dishPicture;
+        @BindView(R.id.dish_rating_text) TextView ratingText;
         @BindView(R.id.search_result_text) TextView dishTitle;
         @BindView(R.id.no_results_text) TextView noResults;
 
@@ -83,14 +84,24 @@ public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapte
                 resultContainer.setVisibility(View.GONE);
                 noResults.setVisibility(View.VISIBLE);
             } else {
+                Dish dish = dishes.get(position);
+
                 noResults.setVisibility(View.GONE);
                 Picasso.with(context)
-                        .load(dishes.get(position).getUriString())
+                        .load(dish.getUriString())
                         .error(defaultThumbnail)
                         .fit()
                         .centerCrop()
                         .into(dishPicture);
-                dishTitle.setText(dishes.get(position).getTitle());
+
+                if (dish.getRating() > 0) {
+                    ratingText.setText(dish.getRatingText());
+                    ratingText.setVisibility(View.VISIBLE);
+                } else {
+                    ratingText.setVisibility(View.GONE);
+                }
+
+                dishTitle.setText(dish.getTitle());
                 resultContainer.setVisibility(View.VISIBLE);
             }
         }
