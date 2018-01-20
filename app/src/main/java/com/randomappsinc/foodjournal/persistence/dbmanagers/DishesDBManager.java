@@ -153,7 +153,7 @@ public class DishesDBManager {
 
     public void updateDish(final Dish dish) {
         // Get current version of dish to see if we need to remove it from its current restaurant
-        DishDO dishDO = getRealm()
+        final DishDO dishDO = getRealm()
                 .where(DishDO.class)
                 .equalTo("id", dish.getId())
                 .findFirst();
@@ -166,8 +166,6 @@ public class DishesDBManager {
         newDishDO.setTimeLastUpdated(System.currentTimeMillis());
 
         if (!dishDO.getRestaurantId().equals(dish.getRestaurantId())) {
-            deleteDish(dish);
-
             final RestaurantDO restaurantDO = getRealm()
                     .where(RestaurantDO.class)
                     .equalTo("id", dish.getRestaurantId())
@@ -180,6 +178,7 @@ public class DishesDBManager {
             getRealm().executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
+                    dishDO.deleteFromRealm();
                     restaurantDO.getDishes().add(newDishDO);
                 }
             });
