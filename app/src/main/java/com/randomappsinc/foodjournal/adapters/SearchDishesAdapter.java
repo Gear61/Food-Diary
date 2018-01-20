@@ -26,12 +26,12 @@ import butterknife.OnClick;
 public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapter.DishThumbnailViewHolder> {
 
     public interface Listener {
-        void onDishClicked(Dish dish);
+        void onDishClicked(ArrayList<Dish> dishes, int position);
     }
 
     private @NonNull Listener listener;
     private Context context;
-    private List<Dish> dishes;
+    private ArrayList<Dish> dishes;
     private Drawable defaultThumbnail;
 
     public SearchDishesAdapter(@NonNull Listener listener, Context context) {
@@ -109,7 +109,7 @@ public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapte
         @OnClick(R.id.parent)
         void onDishClicked() {
             if (!dishes.isEmpty()) {
-                listener.onDishClicked(dishes.get(getAdapterPosition()));
+                listener.onDishClicked(dishes, getAdapterPosition());
             }
         }
     }

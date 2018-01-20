@@ -25,6 +25,8 @@ import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.SearchResultsDBManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -107,9 +109,10 @@ public class SearchFragment extends Fragment implements
     }
 
     @Override
-    public void onDishClicked(Dish dish) {
+    public void onDishClicked(ArrayList<Dish> dishes, int position) {
         Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);
-        intent.putExtra(DishesFullViewGalleryActivity.DISH_KEY, dish);
+        intent.putExtra(DishesFullViewGalleryActivity.DISHES_KEY, dishes);
+        intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, position);
         getActivity().startActivity(intent);
         getActivity().overridePendingTransition(0, 0);
     }
