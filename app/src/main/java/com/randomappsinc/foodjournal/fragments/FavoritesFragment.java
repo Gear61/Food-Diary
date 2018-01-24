@@ -1,6 +1,7 @@
 package com.randomappsinc.foodjournal.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -9,10 +10,15 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.adapters.FavoritesAdapter;
+import com.randomappsinc.foodjournal.models.Dish;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 import butterknife.Unbinder;
 
 public class FavoritesFragment extends Fragment {
@@ -38,6 +44,16 @@ public class FavoritesFragment extends Fragment {
         favoritesAdapter = new FavoritesAdapter(getActivity());
         favoritesGrid.setAdapter(favoritesAdapter);
         return rootView;
+    }
+
+    @OnItemClick(R.id.favorites_grid)
+    public void onFavoriteClicked(int position) {
+        Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);
+        ArrayList<Dish> favorites = favoritesAdapter.getFavorites();
+        intent.putExtra(DishesFullViewGalleryActivity.DISHES_KEY, favorites);
+        intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, position);
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     @Override

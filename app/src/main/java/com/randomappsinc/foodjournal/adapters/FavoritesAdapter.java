@@ -15,7 +15,7 @@ import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class FavoritesAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Dish> favorites;
+    private ArrayList<Dish> favorites;
     private Drawable defaultThumbnail;
 
     public FavoritesAdapter(Context context) {
@@ -47,6 +47,10 @@ public class FavoritesAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public ArrayList<Dish> getFavorites() {
+        return favorites;
     }
 
     class FavoriteViewHolder {

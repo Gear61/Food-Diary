@@ -266,7 +266,7 @@ public class DishesDBManager {
         return DBConverter.getDishFromDO(dishDO);
     }
 
-    public List<Dish> getFavoritedDishes() {
+    public ArrayList<Dish> getFavoritedDishes() {
         String[] dishFieldsToSort = {"timeAdded", "id"};
         Sort[] dishSorts = {Sort.DESCENDING, Sort.DESCENDING};
 
@@ -275,7 +275,7 @@ public class DishesDBManager {
                 .equalTo("isFavorited", true)
                 .findAllSortedAsync(dishFieldsToSort, dishSorts);
 
-        List<Dish> dishes = new ArrayList<>();
+        ArrayList<Dish> dishes = new ArrayList<>();
         for (DishDO dishDO : dishDOs) {
             dishes.add(DBConverter.getDishFromDO(dishDO));
         }
