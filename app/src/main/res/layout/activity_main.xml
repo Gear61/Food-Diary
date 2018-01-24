@@ -47,8 +47,8 @@
         </FrameLayout>
 
         <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/check_ins"
-            android:text="@string/check_in_icon"
+            android:id="@+id/favorites"
+            android:text="@string/heart_filled_icon"
             style="@style/bottom_navigation_item"/>
 
         <com.joanzapata.iconify.widget.IconTextView
