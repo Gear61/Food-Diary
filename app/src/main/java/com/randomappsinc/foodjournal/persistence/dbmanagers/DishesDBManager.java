@@ -265,4 +265,20 @@ public class DishesDBManager {
                 .first();
         return DBConverter.getDishFromDO(dishDO);
     }
+
+    public List<Dish> getFavoritedDishes() {
+        String[] dishFieldsToSort = {"timeAdded", "id"};
+        Sort[] dishSorts = {Sort.DESCENDING, Sort.DESCENDING};
+
+        List<DishDO> dishDOs = getRealm()
+                .where(DishDO.class)
+                .equalTo("isFavorited", true)
+                .findAllSortedAsync(dishFieldsToSort, dishSorts);
+
+        List<Dish> dishes = new ArrayList<>();
+        for (DishDO dishDO : dishDOs) {
+            dishes.add(DBConverter.getDishFromDO(dishDO));
+        }
+        return dishes;
+    }
 }

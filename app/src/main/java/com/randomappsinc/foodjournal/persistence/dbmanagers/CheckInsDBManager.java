@@ -1,5 +1,7 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
+import android.support.annotation.NonNull;
+
 import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
@@ -57,7 +59,7 @@ public class CheckInsDBManager {
 
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
                 CheckInDO checkInDO = checkIn.toCheckInDO();
                 checkInDO.setCheckInId(checkInId);
                 checkInDO.setRestaurantName(restaurantDO.getName());
@@ -74,7 +76,7 @@ public class CheckInsDBManager {
 
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
                 realm.insertOrUpdate(checkIn.toCheckInDO());
             }
         });
@@ -83,7 +85,7 @@ public class CheckInsDBManager {
     public void deleteCheckIn(final CheckIn checkIn) {
         getRealm().executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
                 realm.where(CheckInDO.class)
                         .equalTo("checkInId", checkIn.getCheckInId())
                         .findFirst()
