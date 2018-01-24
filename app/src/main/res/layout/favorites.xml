@@ -14,13 +14,16 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <GridView
-        android:id="@+id/favorites"
+        android:id="@+id/favorites_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:horizontalSpacing="2dp"
-        android:verticalSpacing="2dp"
+        android:layout_below="@id/toolbar"
+        android:horizontalSpacing="4dp"
+        android:verticalSpacing="4dp"
         android:numColumns="3"
-        android:stretchMode="columnWidth" />
+        android:stretchMode="columnWidth"
+        android:padding="4dp"
+        android:clipToPadding="false"/>
 
     <View
         android:layout_width="match_parent"
