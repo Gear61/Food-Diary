@@ -38,9 +38,7 @@ public class CheckInsAdapter extends BaseAdapter {
     }
 
     public void resyncWithDB() {
-        mCheckIns = mRestaurantId == null
-                ? DatabaseManager.get().getCheckInsDBManager().getAllCheckIns()
-                : DatabaseManager.get().getCheckInsDBManager().getCheckInsForRestaurant(mRestaurantId);
+        mCheckIns = DatabaseManager.get().getCheckInsDBManager().getCheckInsForRestaurant(mRestaurantId);
         if (mCheckIns.isEmpty()) {
             mNoResults.setVisibility(View.VISIBLE);
         } else {
