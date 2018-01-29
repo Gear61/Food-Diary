@@ -25,13 +25,24 @@ public class FavoritesAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Dish> favorites;
     private Drawable defaultThumbnail;
+    private View noResults;
 
-    public FavoritesAdapter(Context context) {
+    public FavoritesAdapter(Context context, View noResults) {
         this.context = context;
-        this.favorites = DatabaseManager.get().getDishesDBManager().getFavoritedDishes();
-        defaultThumbnail = new IconDrawable(
+        this.defaultThumbnail = new IconDrawable(
                 context,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
+        this.noResults = noResults;
+        resyncWithDb();
+    }
+
+    private void resyncWithDb() {
+        favorites = DatabaseManager.get().getDishesDBManager().getFavoritedDishes();
+        if (getCount() == 0) {
+            noResults.setVisibility(View.VISIBLE);
+        } else {
+            noResults.setVisibility(View.GONE);
+        }
     }
 
     @Override

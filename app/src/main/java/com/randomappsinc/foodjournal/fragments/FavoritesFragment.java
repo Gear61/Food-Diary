@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
@@ -31,6 +32,7 @@ public class FavoritesFragment extends Fragment {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.favorites_grid) GridView favoritesGrid;
+    @BindView(R.id.no_results) TextView noResults;
 
     private Unbinder unbinder;
     private FavoritesAdapter favoritesAdapter;
@@ -41,7 +43,7 @@ public class FavoritesFragment extends Fragment {
         unbinder = ButterKnife.bind(this, rootView);
         toolbar.setTitle(R.string.favorites);
 
-        favoritesAdapter = new FavoritesAdapter(getActivity());
+        favoritesAdapter = new FavoritesAdapter(getActivity(), noResults);
         favoritesGrid.setAdapter(favoritesAdapter);
         return rootView;
     }

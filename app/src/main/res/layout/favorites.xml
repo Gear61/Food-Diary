@@ -25,6 +25,12 @@
         android:padding="4dp"
         android:clipToPadding="false"/>
 
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/no_results"
+        android:layout_below="@id/toolbar"
+        android:text="@string/no_favorites"
+        style="@style/no_content"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
