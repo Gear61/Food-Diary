@@ -22,8 +22,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         app:cbd_animDuration="@integer/shorter_anim_length"
-        app:cbd_strokeColor="@color/app_red"
-        style="@style/Material.Drawable.CheckBox"/>
+        app:cbd_strokeColor="@color/checkbox_box_color"/>
 
     <LinearLayout
         android:orientation="vertical"
