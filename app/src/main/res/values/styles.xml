@@ -123,4 +123,16 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">19sp</item>
     </style>
+
+    <style name="full_view_toolbar_button">
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:shadowColor">@color/shadow_black</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">3</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
 </resources>

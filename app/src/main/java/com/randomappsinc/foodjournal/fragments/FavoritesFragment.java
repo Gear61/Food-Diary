@@ -48,6 +48,12 @@ public class FavoritesFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        favoritesAdapter.resyncWithDb();
+    }
+
     @OnItemClick(R.id.favorites_grid)
     public void onFavoriteClicked(int position) {
         Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);

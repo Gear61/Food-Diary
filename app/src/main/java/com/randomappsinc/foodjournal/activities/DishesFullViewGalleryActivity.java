@@ -8,10 +8,12 @@ import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.DishesFullViewGalleryAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 
 import java.io.File;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnPageChange;
 
 public class DishesFullViewGalleryActivity extends AppCompatActivity {
 
@@ -28,6 +31,7 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
     public static final String POSITION_KEY = "position";
 
     @BindView(R.id.pictures_pager) ViewPager picturesPager;
+    @BindView(R.id.favorite_toggle) TextView favoriteToggle;
 
     private DishesFullViewGalleryAdapter galleryAdapter;
 
@@ -47,7 +51,31 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
             galleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dish, fromRestaurant);
         }
         picturesPager.setAdapter(galleryAdapter);
-        picturesPager.setCurrentItem(getIntent().getIntExtra(POSITION_KEY, 0));
+
+        int initialPosition = getIntent().getIntExtra(POSITION_KEY, 0);
+        picturesPager.setCurrentItem(initialPosition);
+        if (initialPosition == 0) {
+            refreshFavoritesToggle(picturesPager.getCurrentItem());
+        }
+    }
+
+    private void refreshFavoritesToggle(int position) {
+        Dish dish = galleryAdapter.getDish(position);
+        favoriteToggle.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);
+    }
+
+    @OnPageChange(R.id.pictures_pager)
+    public void onImageChanged(int position) {
+        refreshFavoritesToggle(position);
+    }
+
+    @OnClick(R.id.favorite_toggle)
+    public void toggleFavorite() {
+        Dish dish = galleryAdapter.getDish(picturesPager.getCurrentItem());
+        boolean isFavoritedNow = !dish.isFavorited();
+        dish.setIsFavorited(isFavoritedNow);
+        DatabaseManager.get().getDishesDBManager().updateDish(dish);
+        favoriteToggle.setText(isFavoritedNow ? R.string.heart_filled_icon : R.string.heart_icon);
     }
 
     @OnClick(R.id.close)

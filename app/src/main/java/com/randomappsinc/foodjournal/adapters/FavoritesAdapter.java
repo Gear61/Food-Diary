@@ -29,20 +29,17 @@ public class FavoritesAdapter extends BaseAdapter {
 
     public FavoritesAdapter(Context context, View noResults) {
         this.context = context;
+        this.favorites = new ArrayList<>();
         this.defaultThumbnail = new IconDrawable(
                 context,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         this.noResults = noResults;
-        resyncWithDb();
     }
 
-    private void resyncWithDb() {
-        favorites = DatabaseManager.get().getDishesDBManager().getFavoritedDishes();
-        if (getCount() == 0) {
-            noResults.setVisibility(View.VISIBLE);
-        } else {
-            noResults.setVisibility(View.GONE);
-        }
+    public void resyncWithDb() {
+        favorites.clear();
+        favorites.addAll(DatabaseManager.get().getDishesDBManager().getFavoritedDishes());
+        noResults.setVisibility(getCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override

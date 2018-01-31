@@ -28,6 +28,10 @@ public class DishesFullViewGalleryAdapter extends FragmentStatePagerAdapter {
         this.fromRestaurant = fromRestaurant;
     }
 
+    public Dish getDish(int position) {
+        return dishes.get(position);
+    }
+
     public String getImagePath(int position) {
         return dishes.get(position).getUriString();
     }
