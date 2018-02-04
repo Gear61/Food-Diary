@@ -20,8 +20,6 @@ import io.realm.Sort;
 
 public class DishesDBManager {
 
-    public static final int DISHES_PER_PAGE = 10;
-
     private static DishesDBManager instance;
 
     public static DishesDBManager get() {
@@ -65,72 +63,24 @@ public class DishesDBManager {
         });
     }
 
-    public ArrayList<Dish> getDishesPage(String restaurantId, @Nullable Dish lastDish) {
-        RestaurantDO restaurantDO = getRealm()
-                .where(RestaurantDO.class)
-                .equalTo("id", restaurantId)
-                .findFirst();
-
-        if (restaurantDO != null) {
-            RealmResults<DishDO> dishDOs;
-            String[] fieldNames = {"timeAdded", "id"};
-            Sort[] sort = {Sort.DESCENDING, Sort.DESCENDING};
-
-            if (lastDish == null) {
-                dishDOs = getRealm()
-                        .where(DishDO.class)
-                        .equalTo("restaurantId", restaurantId)
-                        .findAllSorted(fieldNames, sort);
-            } else {
-                dishDOs = getRealm()
-                        .where(DishDO.class)
-                        .equalTo("restaurantId", restaurantId)
-                        .beginGroup()
-                            .beginGroup()
-                                .equalTo("timeAdded", lastDish.getTimeAdded())
-                                .lessThan("id", lastDish.getId())
-                            .endGroup()
-                            .or()
-                            .lessThan("timeAdded", lastDish.getTimeAdded())
-                        .endGroup()
-                        .findAllSorted(fieldNames, sort);
-            }
-
-            ArrayList<Dish> dishes = new ArrayList<>();
-            for (int i = 0; i < DISHES_PER_PAGE && i < dishDOs.size(); i++) {
-                dishes.add(DBConverter.getDishFromDO(dishDOs.get(i)));
-            }
-            return dishes;
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
-    public ArrayList<Dish> getDishesPage(@Nullable Dish lastDish) {
+    public ArrayList<Dish> getDishes(@Nullable String restaurantId) {
         RealmResults<DishDO> dishDOs;
         String[] fieldNames = {"timeAdded", "id"};
         Sort[] sort = {Sort.DESCENDING, Sort.DESCENDING};
 
-        if (lastDish == null) {
+        if (restaurantId == null) {
             dishDOs = getRealm()
                     .where(DishDO.class)
                     .findAllSorted(fieldNames, sort);
         } else {
             dishDOs = getRealm()
                     .where(DishDO.class)
-                    .beginGroup()
-                        .beginGroup()
-                            .equalTo("timeAdded", lastDish.getTimeAdded())
-                            .lessThan("id", lastDish.getId())
-                        .endGroup()
-                        .or()
-                        .lessThan("timeAdded", lastDish.getTimeAdded())
-                    .endGroup()
+                    .equalTo("restaurantId", restaurantId)
                     .findAllSorted(fieldNames, sort);
         }
 
         ArrayList<Dish> dishes = new ArrayList<>();
-        for (int i = 0; i < DISHES_PER_PAGE && i < dishDOs.size(); i++) {
+        for (int i = 0; i < dishDOs.size(); i++) {
             dishes.add(DBConverter.getDishFromDO(dishDOs.get(i)));
         }
         return dishes;
@@ -256,14 +206,6 @@ public class DishesDBManager {
     public int getNextDishId() {
         Number number = getRealm().where(DishDO.class).findAll().max("id");
         return number == null ? 1 : number.intValue() + 1;
-    }
-
-    public Dish getLastUpdatedDish() {
-        DishDO dishDO = getRealm()
-                .where(DishDO.class)
-                .findAllSorted("timeLastUpdated", Sort.DESCENDING)
-                .first();
-        return DBConverter.getDishFromDO(dishDO);
     }
 
     public ArrayList<Dish> getFavoritedDishes() {

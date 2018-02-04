@@ -17,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,7 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class HomepageDishesFragment extends Fragment
-        implements ListView.OnScrollListener, DishesAdapter.Listener, RestaurantsDBManager.Listener {
+        implements DishesAdapter.Listener, RestaurantsDBManager.Listener {
 
     public static HomepageDishesFragment newInstance() {
         HomepageDishesFragment fragment = new HomepageDishesFragment();
@@ -56,7 +55,6 @@ public class HomepageDishesFragment extends Fragment
 
     private Unbinder mUnbinder;
     private DishesAdapter mDishesAdapter;
-    private int lastIndexToTrigger = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,11 +67,16 @@ public class HomepageDishesFragment extends Fragment
 
         mDishesAdapter = new DishesAdapter(this, getActivity(), noDishes, null);
         mDishesList.setAdapter(mDishesAdapter);
-        mDishesList.setOnScrollListener(this);
 
         DatabaseManager.get().getRestaurantsDBManager().registerListener(this);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mDishesAdapter.resyncWithDb();
     }
 
     /** Starts the flow to add a dish via uploading from gallery */
@@ -113,8 +116,6 @@ public class HomepageDishesFragment extends Fragment
             startActivityForResult(filesIntent, 1);
         } else if (resultCode == Constants.DISH_ADDED) {
             refreshWithAddedDish();
-        } else if (resultCode == Constants.DISH_EDITED) {
-            mDishesAdapter.updateWithEditedDish();
         }
     }
 
@@ -128,7 +129,6 @@ public class HomepageDishesFragment extends Fragment
             return;
         }
 
-        mDishesAdapter.updateWithAddedDish();
         mDishesList.clearFocus();
         mDishesList.post(new Runnable() {
             @Override
@@ -154,22 +154,6 @@ public class HomepageDishesFragment extends Fragment
 
         // External storage permission granted
         openFilePicker();
-    }
-
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {}
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        int bottomIndexSeen = firstVisibleItem + visibleItemCount;
-
-        // If visible last item's position is the size of the list, then we've hit the bottom
-        if (mDishesAdapter.canFetchMore() && bottomIndexSeen == totalItemCount) {
-            if (lastIndexToTrigger != bottomIndexSeen) {
-                lastIndexToTrigger = bottomIndexSeen;
-                mDishesAdapter.fetchNextPage();
-            }
-        }
     }
 
     @Override

@@ -21,7 +21,6 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
-import com.randomappsinc.foodjournal.persistence.dbmanagers.DishesDBManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
@@ -30,7 +29,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -50,7 +48,6 @@ public class DishesAdapter extends BaseAdapter {
     @Nullable private String mRestaurantId;
     private Drawable mDefaultThumbnail;
     private DishOptionsPresenter mDishOptionsPresenter;
-    private boolean mStopFetching;
 
     private final DishOptionsPresenter.Listener mDishOptionsListener = new DishOptionsPresenter.Listener() {
         @Override
@@ -76,60 +73,18 @@ public class DishesAdapter extends BaseAdapter {
                 mActivity,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         mDishOptionsPresenter = new DishOptionsPresenter(mDishOptionsListener, mActivity);
-        fetchFirstPage();
+        resyncWithDb();
     }
 
-    public boolean canFetchMore() {
-        return !mStopFetching;
-    }
-
-    private void fetchFirstPage() {
-        mDishes = mRestaurantId == null
-                ? DatabaseManager.get().getDishesDBManager().getDishesPage(null)
-                : DatabaseManager.get().getDishesDBManager().getDishesPage(mRestaurantId, null);
-
-        if (mDishes.size() < DishesDBManager.DISHES_PER_PAGE) {
-            mStopFetching = true;
-        }
+    public void resyncWithDb() {
+        mDishes = DatabaseManager.get().getDishesDBManager().getDishes(mRestaurantId);
 
         if (mDishes.isEmpty()) {
             mNoResults.setVisibility(View.VISIBLE);
         } else {
             mNoResults.setVisibility(View.GONE);
         }
-    }
 
-    public void fetchNextPage() {
-        Dish lastDish = mDishes.get(getCount() - 1);
-        List<Dish> nextDishes = mRestaurantId == null
-                ? DatabaseManager.get().getDishesDBManager().getDishesPage(lastDish)
-                : DatabaseManager.get().getDishesDBManager().getDishesPage(mRestaurantId, lastDish);
-        mDishes.addAll(nextDishes);
-
-        if (mDishes.size() < DishesDBManager.DISHES_PER_PAGE) {
-            mStopFetching = true;
-        }
-
-        notifyDataSetChanged();
-    }
-
-    public void updateWithAddedDish() {
-        Dish dish = DatabaseManager.get().getDishesDBManager().getLastUpdatedDish();
-        mDishes.add(0, dish);
-        if (mNoResults.getVisibility() == View.VISIBLE) {
-            mNoResults.setVisibility(View.GONE);
-        }
-        notifyDataSetChanged();
-    }
-
-    public void updateWithEditedDish() {
-        Dish dish = DatabaseManager.get().getDishesDBManager().getLastUpdatedDish();
-        for (int i = 0; i < mDishes.size(); i++) {
-            if (mDishes.get(i).getId() == dish.getId()) {
-                mDishes.set(i, dish);
-                break;
-            }
-        }
         notifyDataSetChanged();
     }
 

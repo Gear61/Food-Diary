@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.randomappsinc.foodjournal.R;
@@ -20,8 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class RestaurantDishesFragment extends Fragment
-        implements ListView.OnScrollListener, DishesAdapter.Listener {
+public class RestaurantDishesFragment extends Fragment implements DishesAdapter.Listener {
 
     public static RestaurantDishesFragment newInstance(String restaurantId) {
         RestaurantDishesFragment fragment = new RestaurantDishesFragment();
@@ -32,29 +30,28 @@ public class RestaurantDishesFragment extends Fragment
         return fragment;
     }
 
-    // Result codes
-    public static final int DISH_EDITED = 2;
-
     @BindView(R.id.dishes) ListView mDishesList;
     @BindView(R.id.no_dishes) View noDishes;
 
     private Unbinder mUnbinder;
     private DishesAdapter mDishesAdapter;
-    private int lastIndexToTrigger = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.restaurant_dishes, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
-        String restaurantId = getArguments() != null
-                ? getArguments().getString(Constants.RESTAURANT_ID_KEY)
-                : null;
+        String restaurantId = getArguments().getString(Constants.RESTAURANT_ID_KEY);
         mDishesAdapter = new DishesAdapter(this, getActivity(), noDishes, restaurantId);
         mDishesList.setAdapter(mDishesAdapter);
-        mDishesList.setOnScrollListener(this);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mDishesAdapter.resyncWithDb();
     }
 
     @Override
@@ -63,31 +60,6 @@ public class RestaurantDishesFragment extends Fragment
         intent.putExtra(DishFormActivity.NEW_DISH_KEY, false);
         intent.putExtra(DishFormActivity.DISH_KEY, dish);
         startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == DISH_EDITED) {
-            mDishesAdapter.updateWithEditedDish();
-        }
-    }
-
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {}
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        int bottomIndexSeen = firstVisibleItem + visibleItemCount;
-
-        // If visible last item's position is the size of the list, then we've hit the bottom
-        if (mDishesAdapter.canFetchMore() && bottomIndexSeen == totalItemCount) {
-            if (lastIndexToTrigger != bottomIndexSeen) {
-                lastIndexToTrigger = bottomIndexSeen;
-                mDishesAdapter.fetchNextPage();
-            }
-        }
     }
 
     @Override
