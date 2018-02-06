@@ -12,8 +12,9 @@ import android.widget.TextView;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
-import com.randomappsinc.foodjournal.adapters.FavoritesAdapter;
+import com.randomappsinc.foodjournal.adapters.DishGridAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class FavoritesFragment extends Fragment {
     @BindView(R.id.no_results) TextView noResults;
 
     private Unbinder unbinder;
-    private FavoritesAdapter favoritesAdapter;
+    private DishGridAdapter favoritesAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class FavoritesFragment extends Fragment {
         unbinder = ButterKnife.bind(this, rootView);
         toolbar.setTitle(R.string.favorites);
 
-        favoritesAdapter = new FavoritesAdapter(getActivity(), noResults);
+        favoritesAdapter = new DishGridAdapter(getActivity(), noResults);
         favoritesGrid.setAdapter(favoritesAdapter);
         return rootView;
     }
@@ -51,13 +52,14 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        favoritesAdapter.resyncWithDb();
+        ArrayList<Dish> favorites = DatabaseManager.get().getDishesDBManager().getFavoritedDishes();
+        favoritesAdapter.setDishes(favorites);
     }
 
     @OnItemClick(R.id.favorites_grid)
     public void onFavoriteClicked(int position) {
         Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);
-        ArrayList<Dish> favorites = favoritesAdapter.getFavorites();
+        ArrayList<Dish> favorites = favoritesAdapter.getDishes();
         intent.putExtra(DishesFullViewGalleryActivity.DISHES_KEY, favorites);
         intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, position);
         getActivity().startActivity(intent);

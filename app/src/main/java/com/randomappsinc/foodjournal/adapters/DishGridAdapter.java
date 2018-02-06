@@ -12,7 +12,6 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.Dish;
-import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,36 +19,37 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoritesAdapter extends BaseAdapter {
+public class DishGridAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Dish> favorites;
+    private ArrayList<Dish> dishes;
     private Drawable defaultThumbnail;
     private View noResults;
 
-    public FavoritesAdapter(Context context, View noResults) {
+    public DishGridAdapter(Context context, View noResults) {
         this.context = context;
-        this.favorites = new ArrayList<>();
+        this.dishes = new ArrayList<>();
         this.defaultThumbnail = new IconDrawable(
                 context,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         this.noResults = noResults;
     }
 
-    public void resyncWithDb() {
-        favorites.clear();
-        favorites.addAll(DatabaseManager.get().getDishesDBManager().getFavoritedDishes());
+    public void setDishes(ArrayList<Dish> dishes) {
+        this.dishes.clear();
+        this.dishes.addAll(dishes);
         noResults.setVisibility(getCount() == 0 ? View.VISIBLE : View.GONE);
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return favorites.size();
+        return dishes.size();
     }
 
     @Override
     public Dish getItem(int position) {
-        return favorites.get(position);
+        return dishes.get(position);
     }
 
     @Override
@@ -57,15 +57,15 @@ public class FavoritesAdapter extends BaseAdapter {
         return position;
     }
 
-    public ArrayList<Dish> getFavorites() {
-        return favorites;
+    public ArrayList<Dish> getDishes() {
+        return dishes;
     }
 
-    class FavoriteViewHolder {
+    class DishViewHolder {
 
         @BindView(R.id.dish_image) ImageView dishImage;
 
-        public FavoriteViewHolder(View view) {
+        public DishViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
 
@@ -81,14 +81,14 @@ public class FavoritesAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View view, ViewGroup parent) {
-        FavoriteViewHolder holder;
+        DishViewHolder holder;
         if (view == null) {
             LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = vi.inflate(R.layout.favorites_cell, parent, false);
-            holder = new FavoriteViewHolder(view);
+            view = vi.inflate(R.layout.dish_grid_cell, parent, false);
+            holder = new DishViewHolder(view);
             view.setTag(holder);
         } else {
-            holder = (FavoriteViewHolder) view.getTag();
+            holder = (DishViewHolder) view.getTag();
         }
         holder.loadItem(position);
         return view;
