@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -35,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DishesAdapter extends BaseAdapter {
+public class DishFeedAdapter extends BaseAdapter {
 
     public interface Listener {
         void editDish(Dish dish);
@@ -45,7 +44,6 @@ public class DishesAdapter extends BaseAdapter {
     @NonNull private Listener mListener;
     private Activity mActivity;
     private View mNoResults;
-    @Nullable private String mRestaurantId;
     private Drawable mDefaultThumbnail;
     private DishOptionsPresenter mDishOptionsPresenter;
 
@@ -61,14 +59,10 @@ public class DishesAdapter extends BaseAdapter {
         }
     };
 
-    public DishesAdapter(@NonNull Listener listener,
-                         Activity activity,
-                         View noResults,
-                         @Nullable String restaurantId) {
+    public DishFeedAdapter(@NonNull Listener listener, Activity activity, View noResults) {
         mListener = listener;
         mActivity = activity;
         mNoResults = noResults;
-        mRestaurantId = restaurantId;
         mDefaultThumbnail = new IconDrawable(
                 mActivity,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
@@ -77,14 +71,12 @@ public class DishesAdapter extends BaseAdapter {
     }
 
     public void resyncWithDb() {
-        mDishes = DatabaseManager.get().getDishesDBManager().getDishes(mRestaurantId);
-
+        mDishes = DatabaseManager.get().getDishesDBManager().getDishes(null);
         if (mDishes.isEmpty()) {
             mNoResults.setVisibility(View.VISIBLE);
         } else {
             mNoResults.setVisibility(View.GONE);
         }
-
         notifyDataSetChanged();
     }
 
@@ -154,7 +146,7 @@ public class DishesAdapter extends BaseAdapter {
 
             Dish dish = getItem(position);
 
-            mDishInfoText.setText(Html.fromHtml(dish.getDishInfoText(mRestaurantId == null)));
+            mDishInfoText.setText(Html.fromHtml(dish.getDishInfoText(true)));
             mDishDate.setText(TimeUtils.getDefaultTimeText(dish.getTimeAdded()));
 
             mFavoriteToggle.clearAnimation();
@@ -188,7 +180,7 @@ public class DishesAdapter extends BaseAdapter {
             Intent intent = new Intent(mActivity, DishesFullViewGalleryActivity.class);
             intent.putParcelableArrayListExtra(DishesFullViewGalleryActivity.DISHES_KEY, mDishes);
             intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, mPosition);
-            intent.putExtra(Constants.FROM_RESTAURANT_KEY, mRestaurantId != null);
+            intent.putExtra(Constants.FROM_RESTAURANT_KEY, false);
             mActivity.startActivity(intent);
             mActivity.overridePendingTransition(0, 0);
         }

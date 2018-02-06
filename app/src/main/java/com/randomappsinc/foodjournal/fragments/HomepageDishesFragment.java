@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishFormActivity;
-import com.randomappsinc.foodjournal.adapters.DishesAdapter;
+import com.randomappsinc.foodjournal.adapters.DishFeedAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.RestaurantsDBManager;
@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class HomepageDishesFragment extends Fragment
-        implements DishesAdapter.Listener, RestaurantsDBManager.Listener {
+        implements DishFeedAdapter.Listener, RestaurantsDBManager.Listener {
 
     public static HomepageDishesFragment newInstance() {
         HomepageDishesFragment fragment = new HomepageDishesFragment();
@@ -54,7 +54,7 @@ public class HomepageDishesFragment extends Fragment
     @BindString(R.string.choose_image_from) String mChooseImageFrom;
 
     private Unbinder mUnbinder;
-    private DishesAdapter mDishesAdapter;
+    private DishFeedAdapter mDishesAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class HomepageDishesFragment extends Fragment
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         setHasOptionsMenu(true);
 
-        mDishesAdapter = new DishesAdapter(this, getActivity(), noDishes, null);
+        mDishesAdapter = new DishFeedAdapter(this, getActivity(), noDishes);
         mDishesList.setAdapter(mDishesAdapter);
 
         DatabaseManager.get().getRestaurantsDBManager().registerListener(this);

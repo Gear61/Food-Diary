@@ -6,20 +6,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import com.randomappsinc.foodjournal.R;
-import com.randomappsinc.foodjournal.activities.DishFormActivity;
-import com.randomappsinc.foodjournal.adapters.DishesAdapter;
+import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
+import com.randomappsinc.foodjournal.adapters.DishGridAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.Constants;
-import com.randomappsinc.foodjournal.utils.UIUtils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 import butterknife.Unbinder;
 
-public class RestaurantDishesFragment extends Fragment implements DishesAdapter.Listener {
+public class RestaurantDishesFragment extends Fragment {
 
     public static RestaurantDishesFragment newInstance(String restaurantId) {
         RestaurantDishesFragment fragment = new RestaurantDishesFragment();
@@ -30,20 +33,21 @@ public class RestaurantDishesFragment extends Fragment implements DishesAdapter.
         return fragment;
     }
 
-    @BindView(R.id.dishes) ListView mDishesList;
+    @BindView(R.id.dishes_grid) GridView dishesGrid;
     @BindView(R.id.no_dishes) View noDishes;
 
-    private Unbinder mUnbinder;
-    private DishesAdapter mDishesAdapter;
+    private Unbinder unbinder;
+    private DishGridAdapter dishesAdapter;
+    private String restaurantId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.restaurant_dishes, container, false);
-        mUnbinder = ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
-        String restaurantId = getArguments().getString(Constants.RESTAURANT_ID_KEY);
-        mDishesAdapter = new DishesAdapter(this, getActivity(), noDishes, restaurantId);
-        mDishesList.setAdapter(mDishesAdapter);
+        restaurantId = getArguments().getString(Constants.RESTAURANT_ID_KEY);
+        dishesAdapter = new DishGridAdapter(getActivity(), noDishes);
+        dishesGrid.setAdapter(dishesAdapter);
 
         return rootView;
     }
@@ -51,27 +55,24 @@ public class RestaurantDishesFragment extends Fragment implements DishesAdapter.
     @Override
     public void onResume() {
         super.onResume();
-        mDishesAdapter.resyncWithDb();
+        ArrayList<Dish> dishes = DatabaseManager.get().getDishesDBManager().getDishes(restaurantId);
+        dishesAdapter.setDishes(dishes);
     }
 
-    @Override
-    public void editDish(Dish dish) {
-        Intent intent = new Intent(getActivity(), DishFormActivity.class);
-        intent.putExtra(DishFormActivity.NEW_DISH_KEY, false);
-        intent.putExtra(DishFormActivity.DISH_KEY, dish);
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        UIUtils.hideKeyboard(getActivity());
-        super.startActivityForResult(intent, requestCode);
-        getActivity().overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
+    @OnItemClick(R.id.dishes_grid)
+    public void onDishClicked(int position) {
+        Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);
+        ArrayList<Dish> favorites = dishesAdapter.getDishes();
+        intent.putExtra(DishesFullViewGalleryActivity.DISHES_KEY, favorites);
+        intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, position);
+        intent.putExtra(Constants.FROM_RESTAURANT_KEY, true);
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        unbinder.unbind();
     }
 }
