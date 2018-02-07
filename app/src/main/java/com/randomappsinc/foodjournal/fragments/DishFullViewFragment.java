@@ -3,6 +3,7 @@ package com.randomappsinc.foodjournal.fragments;
 import android.app.Fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -38,10 +39,12 @@ public class DishFullViewFragment extends Fragment {
         return fragment;
     }
 
-    private final Callback mImageLoadingCallback = new Callback() {
+    private final Callback imageLoadingCallback = new Callback() {
         @Override
         public void onSuccess() {
-            mParent.animate().alpha(1.0f).setDuration(getResources().getInteger(R.integer.default_anim_length));
+            if (parent != null) {
+                parent.animate().alpha(1.0f).setDuration(getResources().getInteger(R.integer.default_anim_length));
+            }
         }
 
         @Override
@@ -50,16 +53,16 @@ public class DishFullViewFragment extends Fragment {
         }
     };
 
-    @BindView(R.id.parent) View mParent;
-    @BindView(R.id.picture) ImageView mPicture;
-    @BindView(R.id.picture_label) TextView mPictureLabel;
+    @BindView(R.id.parent) @Nullable View parent;
+    @BindView(R.id.picture) ImageView picture;
+    @BindView(R.id.picture_label) TextView pictureLabel;
 
-    private Unbinder mUnbinder;
+    private Unbinder unbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dish_full_view, container, false);
-        mUnbinder = ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
         Drawable defaultThumbnail = new IconDrawable(
                 getActivity(),
@@ -70,11 +73,11 @@ public class DishFullViewFragment extends Fragment {
                 .error(defaultThumbnail)
                 .fit()
                 .centerInside()
-                .into(mPicture, mImageLoadingCallback);
+                .into(picture, imageLoadingCallback);
 
         boolean fromRestaurant = getArguments().getBoolean(Constants.FROM_RESTAURANT_KEY);
-        mPictureLabel.setMovementMethod(LinkMovementMethod.getInstance());
-        mPictureLabel.setText(Html.fromHtml(dish.getDishInfoText(!fromRestaurant)));
+        pictureLabel.setMovementMethod(LinkMovementMethod.getInstance());
+        pictureLabel.setText(Html.fromHtml(dish.getDishInfoText(!fromRestaurant)));
 
         return rootView;
     }
@@ -82,6 +85,7 @@ public class DishFullViewFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        Picasso.with(getActivity()).cancelRequest(picture);
+        unbinder.unbind();
     }
 }
