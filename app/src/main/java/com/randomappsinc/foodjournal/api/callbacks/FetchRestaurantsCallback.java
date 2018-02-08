@@ -18,8 +18,6 @@ public class FetchRestaurantsCallback implements Callback<RestaurantSearchResult
             @NonNull Response<RestaurantSearchResults> response) {
         if (response.code() == ApiConstants.HTTP_STATUS_OK) {
             RestClient.getInstance().processResults(response.body().getRestaurants());
-        } else if (response.code() == ApiConstants.HTTP_STATUS_UNAUTHORIZED) {
-            RestClient.getInstance().refreshToken();
         }
     }
 

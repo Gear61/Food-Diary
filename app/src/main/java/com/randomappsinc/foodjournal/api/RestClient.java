@@ -5,7 +5,6 @@ import android.os.HandlerThread;
 
 import com.randomappsinc.foodjournal.api.callbacks.FetchRestaurantInfoCallback;
 import com.randomappsinc.foodjournal.api.callbacks.FetchRestaurantsCallback;
-import com.randomappsinc.foodjournal.api.callbacks.FetchTokenCallback;
 import com.randomappsinc.foodjournal.api.models.RestaurantSearchResults;
 import com.randomappsinc.foodjournal.models.Restaurant;
 
@@ -53,11 +52,6 @@ public class RestClient {
         HandlerThread backgroundThread = new HandlerThread("");
         backgroundThread.start();
         mHandler = new Handler(backgroundThread.getLooper());
-    }
-
-    public void refreshToken() {
-        mYelpService.fetchToken(YelpToken.CLIENT_ID, YelpToken.CLIENT_SECRET, ApiConstants.GRANT_TYPE)
-                .enqueue(new FetchTokenCallback());
     }
 
     public void registerRestaurantResultsHandler(RestaurantResultsHandler handler) {

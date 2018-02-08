@@ -2,8 +2,6 @@ package com.randomappsinc.foodjournal.api;
 
 public class ApiConstants {
 
-    static final String GRANT_TYPE = "client_credentials";
-
     static final String BASE_URL = "https://api.yelp.com";
 
     static final String AUTHORIZATION = "Authorization";
@@ -16,5 +14,4 @@ public class ApiConstants {
     static final String DISTANCE = "distance";
 
     public static final int HTTP_STATUS_OK = 200;
-    public static final int HTTP_STATUS_UNAUTHORIZED = 401;
 }
