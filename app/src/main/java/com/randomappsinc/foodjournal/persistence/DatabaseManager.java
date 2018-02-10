@@ -6,6 +6,7 @@ import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.DishesDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.RestaurantsDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.SearchResultsDBManager;
+import com.randomappsinc.foodjournal.persistence.dbmanagers.StatsDBManager;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 
 import io.realm.DynamicRealm;
@@ -35,10 +36,11 @@ public class DatabaseManager {
         return instance;
     }
 
-    private CheckInsDBManager mCheckInsDBManager;
-    private RestaurantsDBManager mRestaurantsDBManager;
-    private DishesDBManager mDishesDBManager;
-    private SearchResultsDBManager mSearchResultsDBManager;
+    private CheckInsDBManager checkInsDBManager;
+    private RestaurantsDBManager restaurantsDBManager;
+    private DishesDBManager dishesDBManager;
+    private SearchResultsDBManager searchResultsDBManager;
+    private StatsDBManager statsDBManager;
 
     private DatabaseManager() {
         Realm.init(MyApplication.getAppContext());
@@ -48,10 +50,11 @@ public class DatabaseManager {
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
 
-        mCheckInsDBManager = CheckInsDBManager.get();
-        mRestaurantsDBManager = RestaurantsDBManager.get();
-        mDishesDBManager = DishesDBManager.get();
-        mSearchResultsDBManager = SearchResultsDBManager.get();
+        checkInsDBManager = CheckInsDBManager.get();
+        restaurantsDBManager = RestaurantsDBManager.get();
+        dishesDBManager = DishesDBManager.get();
+        searchResultsDBManager = SearchResultsDBManager.get();
+        statsDBManager = StatsDBManager.get();
     }
 
     private RealmMigration migration = new RealmMigration() {
@@ -102,18 +105,22 @@ public class DatabaseManager {
     };
 
     public CheckInsDBManager getCheckInsDBManager() {
-        return mCheckInsDBManager;
+        return checkInsDBManager;
     }
 
     public RestaurantsDBManager getRestaurantsDBManager() {
-        return mRestaurantsDBManager;
+        return restaurantsDBManager;
     }
 
     public DishesDBManager getDishesDBManager() {
-        return mDishesDBManager;
+        return dishesDBManager;
     }
 
     public SearchResultsDBManager getSearchResultsDBManager() {
-        return mSearchResultsDBManager;
+        return searchResultsDBManager;
+    }
+
+    public StatsDBManager getStatsDBManager() {
+        return statsDBManager;
     }
 }
