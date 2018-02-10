@@ -23,7 +23,7 @@ public class BottomNavigationView {
     @BindView(R.id.home) TextView homeButton;
     @BindView(R.id.search) TextView searchButton;
     @BindView(R.id.favorites) TextView favoritesButton;
-    @BindView(R.id.settings) TextView settingsButton;
+    @BindView(R.id.profile) TextView profileButton;
     @BindColor(R.color.dark_gray) int darkGray;
     @BindColor(R.color.app_red) int red;
 
@@ -79,15 +79,15 @@ public class BottomNavigationView {
         mListener.onNavItemSelected(R.id.favorites);
     }
 
-    @OnClick(R.id.settings)
-    public void onSettingsClicked() {
-        if (mCurrentlySelected == settingsButton) {
+    @OnClick(R.id.profile)
+    public void onProfileClicked() {
+        if (mCurrentlySelected == profileButton) {
             return;
         }
 
         mCurrentlySelected.setTextColor(darkGray);
-        settingsButton.setTextColor(red);
-        mCurrentlySelected = settingsButton;
-        mListener.onNavItemSelected(R.id.settings);
+        profileButton.setTextColor(red);
+        mCurrentlySelected = profileButton;
+        mListener.onNavItemSelected(R.id.profile);
     }
 }

@@ -52,8 +52,8 @@
             style="@style/bottom_navigation_item"/>
 
         <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/settings"
-            android:text="@string/settings_icon"
+            android:id="@+id/profile"
+            android:text="@string/user_icon"
             style="@style/bottom_navigation_item"/>
     </LinearLayout>
 

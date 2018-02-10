@@ -13,7 +13,7 @@ public class HomepageFragmentController {
     private HomepageDishesFragment dishesFragment;
     private SearchFragment searchFragment;
     private FavoritesFragment favoritesFragment;
-    private SettingsFragment settingsFragment;
+    private ProfileFragment profileFragment;
     @IdRes private int currentViewId;
 
     public HomepageFragmentController(FragmentManager fragmentManager, int containerId) {
@@ -22,7 +22,7 @@ public class HomepageFragmentController {
         dishesFragment = HomepageDishesFragment.newInstance();
         searchFragment = SearchFragment.newInstance();
         favoritesFragment = FavoritesFragment.newInstance();
-        settingsFragment = SettingsFragment.newInstance();
+        profileFragment = ProfileFragment.newInstance();
     }
 
     public void onNavItemSelected(@IdRes int viewId) {
@@ -41,8 +41,8 @@ public class HomepageFragmentController {
             case R.id.favorites:
                 swapInFragment(favoritesFragment);
                 break;
-            case R.id.settings:
-                swapInFragment(settingsFragment);
+            case R.id.profile:
+                swapInFragment(profileFragment);
                 break;
         }
     }

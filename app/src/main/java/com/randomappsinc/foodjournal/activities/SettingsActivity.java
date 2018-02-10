@@ -3,8 +3,8 @@ package com.randomappsinc.foodjournal.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.IconItemsAdapter;
@@ -21,7 +21,6 @@ public class SettingsActivity extends StandardActivity {
     public static final String OTHER_APPS_URL = "https://play.google.com/store/apps/dev?id=9093438553713389916";
     public static final String REPO_URL = "https://github.com/Gear61/Food-Journal";
 
-    @BindView(R.id.parent) View parent;
     @BindView(R.id.settings_options) ListView settingsOptions;
     @BindString(R.string.feedback_subject) String feedbackSubject;
     @BindString(R.string.send_email) String sendEmail;
@@ -33,7 +32,10 @@ public class SettingsActivity extends StandardActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        settingsOptions.setAdapter(new IconItemsAdapter(this, R.array.settings_options, R.array.settings_icons));
+        settingsOptions.setAdapter(new IconItemsAdapter(
+                this,
+                R.array.settings_options,
+                R.array.settings_icons));
     }
 
     @OnItemClick(R.id.settings_options)
@@ -53,7 +55,7 @@ public class SettingsActivity extends StandardActivity {
                 Uri uri =  Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 if (!(getPackageManager().queryIntentActivities(intent, 0).size() > 0)) {
-                    UIUtils.showSnackbar(parent, getString(R.string.play_store_error));
+                    UIUtils.showToast(R.string.play_store_error, Toast.LENGTH_LONG);
                     return;
                 }
                 break;

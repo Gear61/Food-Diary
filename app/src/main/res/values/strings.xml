@@ -42,7 +42,7 @@
     <string name="search_icon">{ion-android-search}</string>
     <string name="camera_icon">{ion-android-camera}</string>
     <string name="check_in_icon">{ion-android-checkmark-circle}</string>
-    <string name="settings_icon">{ion-android-settings}</string>
+    <string name="user_icon">{ion-person}</string>
 
     <string name="confirm_form_exit">
         Are you sure you want to leave? Any unsaved changes will be lost.

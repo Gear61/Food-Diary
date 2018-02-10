@@ -103,7 +103,8 @@ public class CheckInsDBManager {
                 .findFirst();
 
         if (restaurantDO != null) {
-            RealmResults<CheckInDO> checkInDOs = restaurantDO.getCheckIns().sort("timeAdded", Sort.DESCENDING);
+            RealmResults<CheckInDO> checkInDOs = restaurantDO.getCheckIns()
+                    .sort("timeAdded", Sort.DESCENDING);
 
             List<CheckIn> checkIns = new ArrayList<>();
             for (CheckInDO checkInDO : checkInDOs) {
