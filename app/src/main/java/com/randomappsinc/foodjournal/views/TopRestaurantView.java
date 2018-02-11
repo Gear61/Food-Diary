@@ -13,6 +13,7 @@ import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -26,6 +27,9 @@ public class TopRestaurantView {
     @BindView(R.id.restaurant_thumbnail) ImageView restaurantThumbnail;
     @BindView(R.id.restaurant_name) TextView restaurantName;
     @BindView(R.id.restaurant_address) TextView restaurantAddress;
+    @BindView(R.id.num_check_ins) TextView checkInsText;
+
+    @BindString(R.string.x_check_ins) String checkInsTemplate;
 
     private Restaurant restaurant;
     private @NonNull Listener listener;
@@ -55,6 +59,13 @@ public class TopRestaurantView {
         }
         restaurantName.setText(restaurant.getName());
         restaurantAddress.setText(restaurant.getAddress());
+
+        int numCheckIns = restaurant.getCheckIns().size();
+        if (numCheckIns == 1) {
+            checkInsText.setText(R.string.one_check_in);
+        } else {
+            checkInsText.setText(String.format(checkInsTemplate, numCheckIns));
+        }
     }
 
     @OnClick(R.id.parent)

@@ -47,7 +47,7 @@ public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.L
 
     @BindString(R.string.x_dishes) String xDishesTemplate;
     @BindString(R.string.x_restaurants) String xRestaurantsTemplate;
-    @BindString(R.string.x_check_ins) String xCheckInsTemplate;
+    @BindString(R.string.x_check_ins_recorded) String xCheckInsTemplate;
     @BindString(R.string.x_favorites) String xFavoritesTemplate;
 
     private Unbinder unbinder;
@@ -93,7 +93,7 @@ public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.L
 
         int totalCheckIns = totalStats.getNumCheckIns();
         if (totalCheckIns == 1) {
-            totalCheckInsText.setText(R.string.one_check_in);
+            totalCheckInsText.setText(R.string.one_check_in_recorded);
         } else {
             totalCheckInsText.setText(String.format(xCheckInsTemplate, totalCheckIns));
         }
