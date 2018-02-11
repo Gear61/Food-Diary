@@ -82,7 +82,7 @@ public class StatsDBManager {
         Collections.sort(restaurants, MOST_VISITED_COMPARATOR);
 
         List<Restaurant> topRestaurants = new ArrayList<>();
-        for (int i = 0; i < NUM_TOP_RESTAURANTS; i++) {
+        for (int i = 0; i < NUM_TOP_RESTAURANTS && i < topRestaurants.size(); i++) {
             topRestaurants.add(restaurants.get(i));
         }
         return topRestaurants;

@@ -17,7 +17,7 @@
     <string name="confirm_dish_exit">Confirm Dish Form Exit</string>
 
     <string name="no_homepage_dishes">
-        Use the {ion-android-camera} or the {ion-android-folder} buttons to add your first dish!
+        Use the {ion-android-camera} or the {ion-android-folder} button to add your first dish!
     </string>
     <string name="no_restaurant_dishes">You have no dishes tagged to this restaurant.</string>
     

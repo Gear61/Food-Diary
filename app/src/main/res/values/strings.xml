@@ -51,7 +51,7 @@
     <string name="back_icon">{ion-android-arrow-back}</string>
 
     <string name="no_favorites">
-        Hit the {ion-ios-heart-outline} for any dish to favorite it!
+        Hit {ion-ios-heart-outline} for any dish to favorite it!
     </string>
 
     <string name="restaurant_icon">{ion-android-restaurant}</string>

@@ -30,12 +30,19 @@ public class TopRestaurantsAdapter implements TopRestaurantView.Listener {
     public void loadTopRestaurants(Context context) {
         rootView.removeAllViews();
         List<Restaurant> topRestaurants = DatabaseManager.get().getStatsDBManager().getTopRestaurants();
-        for (Restaurant restaurant : topRestaurants) {
+
+        if (topRestaurants.isEmpty()) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            View restaurantCell = inflater.inflate(R.layout.top_restaurant_cell, rootView, false);
-            TopRestaurantView restaurantView = new TopRestaurantView(restaurantCell, this);
-            restaurantView.loadRestaurant(restaurant);
-            rootView.addView(restaurantCell);
+            View noRestaurants = inflater.inflate(R.layout.no_top_restaurants, rootView, false);
+            rootView.addView(noRestaurants);
+        } else {
+            for (Restaurant restaurant : topRestaurants) {
+                LayoutInflater inflater = LayoutInflater.from(context);
+                View restaurantCell = inflater.inflate(R.layout.top_restaurant_cell, rootView, false);
+                TopRestaurantView restaurantView = new TopRestaurantView(restaurantCell, this);
+                restaurantView.loadRestaurant(restaurant);
+                rootView.addView(restaurantCell);
+            }
         }
     }
 
