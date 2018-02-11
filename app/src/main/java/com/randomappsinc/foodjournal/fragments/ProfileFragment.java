@@ -11,13 +11,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.activities.RestaurantViewActivity;
 import com.randomappsinc.foodjournal.activities.SettingsActivity;
+import com.randomappsinc.foodjournal.adapters.TopRestaurantsAdapter;
+import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.models.TotalStats;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import butterknife.BindString;
@@ -25,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.Listener {
 
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
@@ -38,6 +43,7 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.total_restaurants_text) TextView totalRestaurantsText;
     @BindView(R.id.total_check_ins_text) TextView totalCheckInsText;
     @BindView(R.id.total_favorites_text) TextView totalFavoritesText;
+    @BindView(R.id.top_restaurants_list) LinearLayout topRestaurantsContainer;
 
     @BindString(R.string.x_dishes) String xDishesTemplate;
     @BindString(R.string.x_restaurants) String xRestaurantsTemplate;
@@ -45,6 +51,7 @@ public class ProfileFragment extends Fragment {
     @BindString(R.string.x_favorites) String xFavoritesTemplate;
 
     private Unbinder unbinder;
+    private TopRestaurantsAdapter topRestaurantsAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,9 +62,16 @@ public class ProfileFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
 
-        loadTotalStats();
+        topRestaurantsAdapter = new TopRestaurantsAdapter(topRestaurantsContainer, this);
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTotalStats();
+        topRestaurantsAdapter.loadTopRestaurants(getActivity());
     }
 
     private void loadTotalStats() {
@@ -90,6 +104,13 @@ public class ProfileFragment extends Fragment {
         } else {
             totalFavoritesText.setText(String.format(xFavoritesTemplate, totalFavorites));
         }
+    }
+
+    @Override
+    public void onRestaurantClicked(Restaurant restaurant) {
+        Intent intent = new Intent(getActivity(), RestaurantViewActivity.class);
+        intent.putExtra(Constants.RESTAURANT_KEY, restaurant);
+        getActivity().startActivity(intent);
     }
 
     @Override

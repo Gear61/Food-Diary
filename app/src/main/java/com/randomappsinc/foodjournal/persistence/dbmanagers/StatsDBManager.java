@@ -16,7 +16,7 @@ import io.realm.Realm;
 
 public class StatsDBManager {
 
-    private static final int NUM_TOP_RESTAURANTS = 3;
+    public static final int NUM_TOP_RESTAURANTS = 3;
 
     private final Comparator<Restaurant> MOST_VISITED_COMPARATOR = new Comparator<Restaurant>() {
         @Override
@@ -73,7 +73,7 @@ public class StatsDBManager {
         return totalStats;
     }
 
-    public List<Restaurant> getMostVisitedRestaurants() {
+    public List<Restaurant> getTopRestaurants() {
         List<RestaurantDO> restaurantDOs = getRealm().where(RestaurantDO.class).findAll();
         List<Restaurant> restaurants = new ArrayList<>();
         for (RestaurantDO restaurantDO : restaurantDOs) {

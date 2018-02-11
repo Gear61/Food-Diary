@@ -11,4 +11,6 @@
     <string name="x_restaurants">%d restaurants visited</string>
     <string name="x_check_ins">%d check-ins recorded</string>
     <string name="x_favorites">%d dishes favorited</string>
+
+    <string name="top_restaurants">Top 3 Restaurants</string>
 </resources>
