@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="profile">Profile</string>
+
+    <string name="one_dish">1 dish enjoyed</string>
+    <string name="one_restaurant">1 restaurant visited</string>
+    <string name="one_check_in">1 check-in recorded</string>
+    <string name="one_favorite">1 dish favorited</string>
+
+    <string name="x_dishes">%d dishes enjoyed</string>
+    <string name="x_restaurants">%d restaurants visited</string>
+    <string name="x_check_ins">%d check-ins recorded</string>
+    <string name="x_favorites">%d dishes favorited</string>
 </resources>

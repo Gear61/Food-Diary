@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="stat_card">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="contentPadding">8dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardCornerRadius">3dp</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+
+    <style name="profile_stat_icon">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">29dp</item>
+    </style>
+
+    <style name="profile_stat_text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textSize">19dp</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+</resources>

@@ -32,7 +32,6 @@
 
     <string name="close_icon">{ion-android-close}</string>
     <string name="overflow_icon">{ion-android-more-vertical}</string>
-    <string name="heart_filled_icon">{ion-ios-heart}</string>
     <string name="heart_icon">{ion-ios-heart-outline}</string>
     <string name="share_icon">{ion-android-share-alt}</string>
     <string name="tagging_icon">{ion-ios-pricetags}</string>
@@ -41,7 +40,7 @@
     <string name="home_icon">{ion-android-home}</string>
     <string name="search_icon">{ion-android-search}</string>
     <string name="camera_icon">{ion-android-camera}</string>
-    <string name="check_in_icon">{ion-android-checkmark-circle}</string>
+    <string name="heart_filled_icon">{ion-ios-heart}</string>
     <string name="user_icon">{ion-person}</string>
 
     <string name="confirm_form_exit">
@@ -54,4 +53,7 @@
     <string name="no_favorites">
         Hit the {ion-ios-heart-outline} for any dish to favorite it!
     </string>
+
+    <string name="restaurant_icon">{ion-android-restaurant}</string>
+    <string name="check_in_icon">{ion-android-checkmark-circle}</string>
 </resources>

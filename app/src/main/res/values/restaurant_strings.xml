@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="one_dish">1 dish attached</string>
-    <string name="num_dishes">%d dishes attached</string>
+    <string name="one_dish_attached">1 dish attached</string>
+    <string name="num_dishes_attached">%d dishes attached</string>
     <string name="restaurant_deleted">Restaurant deleted.</string>
 
     <!-- Find restaurant -->
