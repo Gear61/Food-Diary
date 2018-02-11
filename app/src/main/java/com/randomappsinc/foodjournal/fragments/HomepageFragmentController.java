@@ -19,10 +19,10 @@ public class HomepageFragmentController {
     public HomepageFragmentController(FragmentManager fragmentManager, int containerId) {
         this.fragmentManager = fragmentManager;
         this.containerId = containerId;
-        dishesFragment = HomepageDishesFragment.newInstance();
-        searchFragment = SearchFragment.newInstance();
-        favoritesFragment = FavoritesFragment.newInstance();
-        profileFragment = ProfileFragment.newInstance();
+        this.dishesFragment = HomepageDishesFragment.newInstance();
+        this.searchFragment = SearchFragment.newInstance();
+        this.favoritesFragment = FavoritesFragment.newInstance();
+        this.profileFragment = ProfileFragment.newInstance();
     }
 
     public void onNavItemSelected(@IdRes int viewId) {

@@ -137,6 +137,10 @@ public class Restaurant implements Parcelable {
         this.dishes = dishes;
     }
 
+    public List<CheckIn> getCheckIns() {
+        return checkIns;
+    }
+
     public void setCheckIns(List<CheckIn> checkIns) {
         this.checkIns = checkIns;
     }
