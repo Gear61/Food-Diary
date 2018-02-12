@@ -15,19 +15,24 @@ import android.widget.LinearLayout;
 
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
+import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.activities.RestaurantViewActivity;
 import com.randomappsinc.foodjournal.activities.SettingsActivity;
+import com.randomappsinc.foodjournal.adapters.TopDishesAdapter;
 import com.randomappsinc.foodjournal.adapters.TopRestaurantsAdapter;
+import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.TotalStatsView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.Listener {
+public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.Listener, TopDishesAdapter.Listener {
 
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
@@ -38,10 +43,12 @@ public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.L
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.total_stats) View totalStatsRoot;
     @BindView(R.id.top_restaurants_list) LinearLayout topRestaurantsContainer;
+    @BindView(R.id.top_dishes_list) LinearLayout topDishesContainer;
 
     private Unbinder unbinder;
     private TotalStatsView totalStatsView;
     private TopRestaurantsAdapter topRestaurantsAdapter;
+    private TopDishesAdapter topDishesAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +61,7 @@ public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.L
 
         totalStatsView = new TotalStatsView(totalStatsRoot);
         topRestaurantsAdapter = new TopRestaurantsAdapter(topRestaurantsContainer, this);
+        topDishesAdapter = new TopDishesAdapter(topDishesContainer, this);
 
         return rootView;
     }
@@ -63,6 +71,7 @@ public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.L
         super.onResume();
         totalStatsView.reloadData();
         topRestaurantsAdapter.loadTopRestaurants(getActivity());
+        topDishesAdapter.loadTopDishes(getActivity());
     }
 
     @Override
@@ -70,6 +79,14 @@ public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.L
         Intent intent = new Intent(getActivity(), RestaurantViewActivity.class);
         intent.putExtra(Constants.RESTAURANT_KEY, restaurant);
         getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void onTopDishClicked(ArrayList<Dish> dishes) {
+        Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);
+        intent.putExtra(DishesFullViewGalleryActivity.DISHES_KEY, dishes);
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     @Override

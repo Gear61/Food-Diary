@@ -14,7 +14,11 @@
 
     <string name="top_restaurants">My Top Restaurants</string>
     <string name="no_top_restaurants">You haven\'t visited any restaurants yet.</string>
-
     <string name="one_check_in">1 check-in</string>
     <string name="x_check_ins">%d check-ins</string>
+
+    <string name="top_dishes">My Top Dishes</string>
+    <string name="no_top_dishes">You haven\'t eaten any dishes yet.</string>
+    <string name="one_photo">1 photo</string>
+    <string name="x_photos">%d photos</string>
 </resources>

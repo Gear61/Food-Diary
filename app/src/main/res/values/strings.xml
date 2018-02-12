@@ -35,6 +35,7 @@
     <string name="heart_icon">{ion-ios-heart-outline}</string>
     <string name="share_icon">{ion-android-share-alt}</string>
     <string name="tagging_icon">{ion-ios-pricetags}</string>
+    <string name="photos_icon">{ion-images}</string>
 
     <!-- Bottom navigation icons -->
     <string name="home_icon">{ion-android-home}</string>

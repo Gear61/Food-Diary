@@ -6,6 +6,10 @@ public class TopDish {
 
     private ArrayList<Dish> instances;
 
+    public ArrayList<Dish> getInstances() {
+        return instances;
+    }
+
     public void setInstances(ArrayList<Dish> instances) {
         this.instances = instances;
     }

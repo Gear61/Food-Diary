@@ -11,7 +11,7 @@
     tools:ignore="ContentDescription, RtlHardcoded, SpUsage">
 
     <ImageView
-        android:id="@+id/restaurant_thumbnail"
+        android:id="@+id/dish_thumbnail"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginRight="@dimen/default_cell_padding"/>
@@ -22,14 +22,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/restaurant_name"
+            android:id="@+id/dish_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="19dp"/>
 
         <TextView
-            android:id="@+id/restaurant_address"
+            android:id="@+id/restaurant_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/dark_gray"
@@ -46,12 +46,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/check_in_icon"
+                android:text="@string/photos_icon"
                 android:textSize="24dp"
                 android:textColor="@color/blue"/>
 
             <TextView
-                android:id="@+id/num_check_ins"
+                android:id="@+id/num_photos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
