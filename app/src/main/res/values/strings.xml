@@ -36,6 +36,7 @@
     <string name="share_icon">{ion-android-share-alt}</string>
     <string name="tagging_icon">{ion-ios-pricetags}</string>
     <string name="photos_icon">{ion-images}</string>
+    <string name="edit_icon">{ion-edit}</string>
 
     <!-- Bottom navigation icons -->
     <string name="home_icon">{ion-android-home}</string>

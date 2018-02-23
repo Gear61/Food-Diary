@@ -27,8 +27,15 @@
         style="@style/full_view_toolbar_button"/>
 
     <com.joanzapata.iconify.widget.IconTextView
-        android:id="@+id/favorite_toggle"
+        android:id="@+id/edit"
         android:layout_toLeftOf="@id/share"
+        android:text="@string/edit_icon"
+        android:textSize="28dp"
+        style="@style/full_view_toolbar_button"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/favorite_toggle"
+        android:layout_toLeftOf="@id/edit"
         android:textSize="28dp"
         style="@style/full_view_toolbar_button"/>
 </RelativeLayout>

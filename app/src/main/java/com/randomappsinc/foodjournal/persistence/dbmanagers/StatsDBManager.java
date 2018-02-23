@@ -20,8 +20,8 @@ import io.realm.Realm;
 
 public class StatsDBManager {
 
-    private static final int NUM_TOP_RESTAURANTS = 3;
-    private static final int NUM_TOP_DISHES = 3;
+    private static final int NUM_TOP_RESTAURANTS = 5;
+    private static final int NUM_TOP_DISHES = 5;
 
     private final Comparator<Restaurant> MOST_VISITED_COMPARATOR = new Comparator<Restaurant>() {
         @Override

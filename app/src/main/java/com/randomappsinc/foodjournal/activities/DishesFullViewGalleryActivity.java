@@ -72,9 +72,14 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
         favoriteToggle.setText(isFavoritedNow ? R.string.heart_filled_icon : R.string.heart_icon);
     }
 
-    @OnClick(R.id.close)
-    public void closePage() {
-        finish();
+    @OnClick(R.id.edit)
+    public void editDish() {
+        Intent intent = new Intent(this, DishFormActivity.class);
+        intent.putExtra(DishFormActivity.NEW_DISH_KEY, false);
+        int dishId = galleryAdapter.getDishId(picturesPager.getCurrentItem());
+        Dish dish = DatabaseManager.get().getDishesDBManager().getDish(dishId);
+        intent.putExtra(DishFormActivity.DISH_KEY, dish);
+        startActivityForResult(intent, 1);
     }
 
     @OnClick(R.id.share)
@@ -103,6 +108,11 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
         if (shareIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(shareIntent);
         }
+    }
+
+    @OnClick(R.id.close)
+    public void closePage() {
+        finish();
     }
 
     @Override
