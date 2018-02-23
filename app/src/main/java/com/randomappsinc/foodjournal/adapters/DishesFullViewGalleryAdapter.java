@@ -5,44 +5,34 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 
 import com.randomappsinc.foodjournal.fragments.DishFullViewFragment;
-import com.randomappsinc.foodjournal.models.Dish;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 
 public class DishesFullViewGalleryAdapter extends FragmentStatePagerAdapter {
 
-    private List<Dish> dishes;
+    private int[] dishIds;
     private boolean fromRestaurant;
 
-    public DishesFullViewGalleryAdapter(FragmentManager fragmentManager, List<Dish> dishes, boolean fromRestaurant) {
+    public DishesFullViewGalleryAdapter(FragmentManager fragmentManager, int[] dishIds, boolean fromRestaurant) {
         super(fragmentManager);
-        this.dishes = dishes;
+        this.dishIds = dishIds;
         this.fromRestaurant = fromRestaurant;
     }
 
-    public DishesFullViewGalleryAdapter(FragmentManager fragmentManager, Dish dish, boolean fromRestaurant) {
-        super(fragmentManager);
-        this.dishes = new ArrayList<>();
-        this.dishes.add(dish);
-        this.fromRestaurant = fromRestaurant;
-    }
-
-    public Dish getDish(int position) {
-        return dishes.get(position);
+    public int getDishId(int position) {
+        return dishIds[position];
     }
 
     public String getImagePath(int position) {
-        return dishes.get(position).getUriString();
+        return DatabaseManager.get().getDishesDBManager().getDishImagePath(dishIds[position]);
     }
 
     @Override
     public Fragment getItem(int position) {
-        return DishFullViewFragment.newInstance(dishes.get(position), fromRestaurant);
+        return DishFullViewFragment.newInstance(dishIds[position], fromRestaurant);
     }
 
     @Override
     public int getCount() {
-        return dishes.size();
+        return dishIds.length;
     }
 }

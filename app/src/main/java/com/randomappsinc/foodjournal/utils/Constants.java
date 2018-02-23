@@ -10,4 +10,7 @@ public class Constants {
     public static final String RESTAURANT_ID_KEY = "restaurantId";
     public static final String RESTAURANT_KEY = "restaurant";
     public static final String FROM_RESTAURANT_KEY = "fromRestaurant";
+
+    public static final String DISH_ID_KEY = "dishId";
+    public static final String DISH_IDS_KEY = "dishIds";
 }

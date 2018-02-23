@@ -14,7 +14,7 @@ import com.randomappsinc.foodjournal.models.TopDish;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -24,7 +24,7 @@ import butterknife.OnClick;
 public class TopDishView {
 
     public interface Listener {
-        void onTopDishClicked(ArrayList<Dish> dishes);
+        void onTopDishClicked(List<Dish> dishes);
     }
 
     @BindView(R.id.dish_thumbnail) ImageView dishThumbnail;

@@ -15,8 +15,10 @@ import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.adapters.DishGridAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.utils.Constants;
+import com.randomappsinc.foodjournal.utils.DishUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,15 +54,15 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ArrayList<Dish> favorites = DatabaseManager.get().getDishesDBManager().getFavoritedDishes();
+        List<Dish> favorites = DatabaseManager.get().getDishesDBManager().getFavoritedDishes();
         favoritesAdapter.setDishes(favorites);
     }
 
     @OnItemClick(R.id.favorites_grid)
     public void onFavoriteClicked(int position) {
         Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);
-        ArrayList<Dish> favorites = favoritesAdapter.getDishes();
-        intent.putExtra(DishesFullViewGalleryActivity.DISHES_KEY, favorites);
+        List<Dish> favorites = favoritesAdapter.getDishes();
+        intent.putExtra(Constants.DISH_IDS_KEY, DishUtils.getDishIdList(favorites));
         intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, position);
         getActivity().startActivity(intent);
         getActivity().overridePendingTransition(0, 0);

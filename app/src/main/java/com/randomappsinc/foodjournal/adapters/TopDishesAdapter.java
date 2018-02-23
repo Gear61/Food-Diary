@@ -12,13 +12,12 @@ import com.randomappsinc.foodjournal.models.TopDish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.views.TopDishView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TopDishesAdapter implements TopDishView.Listener {
 
     public interface Listener {
-        void onTopDishClicked(ArrayList<Dish> dishes);
+        void onTopDishClicked(List<Dish> dishes);
     }
 
     private ViewGroup rootView;
@@ -49,7 +48,7 @@ public class TopDishesAdapter implements TopDishView.Listener {
     }
 
     @Override
-    public void onTopDishClicked(ArrayList<Dish> dishes) {
+    public void onTopDishClicked(List<Dish> dishes) {
         listener.onTopDishClicked(dishes);
     }
 }

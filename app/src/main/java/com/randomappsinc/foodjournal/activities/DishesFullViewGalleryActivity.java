@@ -17,7 +17,6 @@ import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,8 +25,6 @@ import butterknife.OnPageChange;
 
 public class DishesFullViewGalleryActivity extends AppCompatActivity {
 
-    public static final String DISH_KEY = "dish";
-    public static final String DISHES_KEY = "dishes";
     public static final String POSITION_KEY = "position";
 
     @BindView(R.id.pictures_pager) ViewPager picturesPager;
@@ -43,13 +40,8 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
 
         boolean fromRestaurant = getIntent().getBooleanExtra(Constants.FROM_RESTAURANT_KEY, false);
 
-        Dish dish = getIntent().getParcelableExtra(DISH_KEY);
-        if (dish == null) {
-            ArrayList<Dish> dishes = getIntent().getParcelableArrayListExtra(DISHES_KEY);
-            galleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dishes, fromRestaurant);
-        } else {
-            galleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dish, fromRestaurant);
-        }
+        int[] dishIds = getIntent().getIntArrayExtra(Constants.DISH_IDS_KEY);
+        galleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dishIds, fromRestaurant);
         picturesPager.setAdapter(galleryAdapter);
 
         int initialPosition = getIntent().getIntExtra(POSITION_KEY, 0);
@@ -60,7 +52,8 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
     }
 
     private void refreshFavoritesToggle(int position) {
-        Dish dish = galleryAdapter.getDish(position);
+        int dishId = galleryAdapter.getDishId(position);
+        Dish dish = DatabaseManager.get().getDishesDBManager().getDish(dishId);
         favoriteToggle.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);
     }
 
@@ -71,7 +64,8 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
 
     @OnClick(R.id.favorite_toggle)
     public void toggleFavorite() {
-        Dish dish = galleryAdapter.getDish(picturesPager.getCurrentItem());
+        int dishId = galleryAdapter.getDishId(picturesPager.getCurrentItem());
+        Dish dish = DatabaseManager.get().getDishesDBManager().getDish(dishId);
         boolean isFavoritedNow = !dish.isFavorited();
         dish.setIsFavorited(isFavoritedNow);
         DatabaseManager.get().getDishesDBManager().updateDish(dish);

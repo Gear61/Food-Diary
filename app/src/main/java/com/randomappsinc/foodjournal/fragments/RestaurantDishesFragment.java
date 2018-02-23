@@ -14,8 +14,9 @@ import com.randomappsinc.foodjournal.adapters.DishGridAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.Constants;
+import com.randomappsinc.foodjournal.utils.DishUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,15 +56,15 @@ public class RestaurantDishesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ArrayList<Dish> dishes = DatabaseManager.get().getDishesDBManager().getDishes(restaurantId);
+        List<Dish> dishes = DatabaseManager.get().getDishesDBManager().getDishes(restaurantId);
         dishesAdapter.setDishes(dishes);
     }
 
     @OnItemClick(R.id.dishes_grid)
     public void onDishClicked(int position) {
         Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);
-        ArrayList<Dish> favorites = dishesAdapter.getDishes();
-        intent.putExtra(DishesFullViewGalleryActivity.DISHES_KEY, favorites);
+        List<Dish> dishes = dishesAdapter.getDishes();
+        intent.putExtra(Constants.DISH_IDS_KEY, DishUtils.getDishIdList(dishes));
         intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, position);
         intent.putExtra(Constants.FROM_RESTAURANT_KEY, true);
         getActivity().startActivity(intent);

@@ -26,12 +26,12 @@ import butterknife.OnClick;
 public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapter.DishThumbnailViewHolder> {
 
     public interface Listener {
-        void onDishClicked(ArrayList<Dish> dishes, int position);
+        void onDishClicked(List<Dish> dishes, int position);
     }
 
     private @NonNull Listener listener;
     private Context context;
-    private ArrayList<Dish> dishes;
+    private List<Dish> dishes;
     private Drawable defaultThumbnail;
 
     public SearchDishesAdapter(@NonNull Listener listener, Context context) {

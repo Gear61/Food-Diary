@@ -23,10 +23,11 @@ import com.randomappsinc.foodjournal.adapters.TopRestaurantsAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.utils.Constants;
+import com.randomappsinc.foodjournal.utils.DishUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.TotalStatsView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -82,9 +83,9 @@ public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.L
     }
 
     @Override
-    public void onTopDishClicked(ArrayList<Dish> dishes) {
+    public void onTopDishClicked(List<Dish> dishes) {
         Intent intent = new Intent(getActivity(), DishesFullViewGalleryActivity.class);
-        intent.putExtra(DishesFullViewGalleryActivity.DISHES_KEY, dishes);
+        intent.putExtra(Constants.DISH_IDS_KEY, DishUtils.getDishIdList(dishes));
         getActivity().startActivity(intent);
         getActivity().overridePendingTransition(0, 0);
     }

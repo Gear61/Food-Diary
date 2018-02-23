@@ -63,7 +63,7 @@ public class DishesDBManager {
         });
     }
 
-    public ArrayList<Dish> getDishes(@Nullable String restaurantId) {
+    public List<Dish> getDishes(@Nullable String restaurantId) {
         RealmResults<DishDO> dishDOs;
         String[] fieldNames = {"timeAdded", "id"};
         Sort[] sort = {Sort.DESCENDING, Sort.DESCENDING};
@@ -79,7 +79,7 @@ public class DishesDBManager {
                     .findAllSorted(fieldNames, sort);
         }
 
-        ArrayList<Dish> dishes = new ArrayList<>();
+        List<Dish> dishes = new ArrayList<>();
         for (int i = 0; i < dishDOs.size(); i++) {
             dishes.add(DBConverter.getDishFromDO(dishDOs.get(i)));
         }
@@ -208,7 +208,7 @@ public class DishesDBManager {
         return number == null ? 1 : number.intValue() + 1;
     }
 
-    public ArrayList<Dish> getFavoritedDishes() {
+    public List<Dish> getFavoritedDishes() {
         String[] dishFieldsToSort = {"timeAdded", "id"};
         Sort[] dishSorts = {Sort.DESCENDING, Sort.DESCENDING};
 
@@ -217,10 +217,26 @@ public class DishesDBManager {
                 .equalTo("isFavorited", true)
                 .findAllSortedAsync(dishFieldsToSort, dishSorts);
 
-        ArrayList<Dish> dishes = new ArrayList<>();
+        List<Dish> dishes = new ArrayList<>();
         for (DishDO dishDO : dishDOs) {
             dishes.add(DBConverter.getDishFromDO(dishDO));
         }
         return dishes;
+    }
+
+    public Dish getDish(int dishId) {
+        DishDO dishDO = getRealm()
+                .where(DishDO.class)
+                .equalTo("id", dishId)
+                .findFirst();
+        return DBConverter.getDishFromDO(dishDO);
+    }
+
+    public String getDishImagePath(int dishId) {
+        return getRealm()
+                .where(DishDO.class)
+                .equalTo("id", dishId)
+                .findFirst()
+                .getUriString();
     }
 }

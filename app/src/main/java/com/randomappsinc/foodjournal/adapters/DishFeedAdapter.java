@@ -21,13 +21,14 @@ import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.Constants;
+import com.randomappsinc.foodjournal.utils.DishUtils;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DishOptionsPresenter;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -40,14 +41,14 @@ public class DishFeedAdapter extends BaseAdapter {
         void editDish(Dish dish);
     }
 
-    private ArrayList<Dish> mDishes;
-    @NonNull private Listener mListener;
-    private Activity mActivity;
-    private View mNoResults;
-    private Drawable mDefaultThumbnail;
-    private DishOptionsPresenter mDishOptionsPresenter;
+    private List<Dish> dishes;
+    @NonNull private Listener listener;
+    private Activity activity;
+    private View noResults;
+    private Drawable defaultThumbnail;
+    private DishOptionsPresenter dishOptionsPresenter;
 
-    private final DishOptionsPresenter.Listener mDishOptionsListener = new DishOptionsPresenter.Listener() {
+    private final DishOptionsPresenter.Listener dishOptionsListener = new DishOptionsPresenter.Listener() {
         @Override
         public void onDishDeleted(Dish dish) {
             updateWithDeletedDish(dish);
@@ -55,46 +56,46 @@ public class DishFeedAdapter extends BaseAdapter {
 
         @Override
         public void editDish(Dish dish) {
-            mListener.editDish(dish);
+            listener.editDish(dish);
         }
     };
 
     public DishFeedAdapter(@NonNull Listener listener, Activity activity, View noResults) {
-        mListener = listener;
-        mActivity = activity;
-        mNoResults = noResults;
-        mDefaultThumbnail = new IconDrawable(
-                mActivity,
+        this.listener = listener;
+        this.activity = activity;
+        this.noResults = noResults;
+        this.defaultThumbnail = new IconDrawable(
+                activity,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
-        mDishOptionsPresenter = new DishOptionsPresenter(mDishOptionsListener, mActivity);
+        this.dishOptionsPresenter = new DishOptionsPresenter(dishOptionsListener, this.activity);
         resyncWithDb();
     }
 
     public void resyncWithDb() {
-        mDishes = DatabaseManager.get().getDishesDBManager().getDishes(null);
-        if (mDishes.isEmpty()) {
-            mNoResults.setVisibility(View.VISIBLE);
+        dishes = DatabaseManager.get().getDishesDBManager().getDishes(null);
+        if (dishes.isEmpty()) {
+            noResults.setVisibility(View.VISIBLE);
         } else {
-            mNoResults.setVisibility(View.GONE);
+            noResults.setVisibility(View.GONE);
         }
         notifyDataSetChanged();
     }
 
     private void updateWithDeletedDish(Dish dish) {
-        for (int i = 0; i < mDishes.size(); i++) {
-            if (mDishes.get(i).getId() == dish.getId()) {
-                mDishes.remove(i);
+        for (int i = 0; i < dishes.size(); i++) {
+            if (dishes.get(i).getId() == dish.getId()) {
+                dishes.remove(i);
                 break;
             }
         }
         if (getCount() == 0) {
-            mNoResults.setVisibility(View.VISIBLE);
+            noResults.setVisibility(View.VISIBLE);
         }
         notifyDataSetChanged();
     }
 
     public void updateWithDeletedRestaurant(String restaurantId) {
-        Iterator<Dish> iterator = mDishes.iterator();
+        Iterator<Dish> iterator = dishes.iterator();
         while (iterator.hasNext()) {
             Dish dish = iterator.next();
             if (dish.getRestaurantId().equals(restaurantId)) {
@@ -102,19 +103,19 @@ public class DishFeedAdapter extends BaseAdapter {
             }
         }
         if (getCount() == 0) {
-            mNoResults.setVisibility(View.VISIBLE);
+            noResults.setVisibility(View.VISIBLE);
         }
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return mDishes.size();
+        return dishes.size();
     }
 
     @Override
     public Dish getItem(int position) {
-        return mDishes.get(position);
+        return dishes.get(position);
     }
 
     @Override
@@ -124,87 +125,87 @@ public class DishFeedAdapter extends BaseAdapter {
 
     class DishViewHolder {
 
-        @BindView(R.id.dish_info_text) TextView mDishInfoText;
-        @BindView(R.id.dish_date) TextView mDishDate;
-        @BindView(R.id.favorite_toggle) TextView mFavoriteToggle;
-        @BindView(R.id.dish_rating_text) TextView mDishRatingText;
-        @BindView(R.id.dish_picture) ImageView mDishPicture;
-        @BindView(R.id.dish_description) TextView mDishDescription;
+        @BindView(R.id.dish_info_text) TextView dishInfoText;
+        @BindView(R.id.dish_date) TextView dishDate;
+        @BindView(R.id.favorite_toggle) TextView favoriteToggle;
+        @BindView(R.id.dish_rating_text) TextView dishRatingText;
+        @BindView(R.id.dish_picture) ImageView dishPicture;
+        @BindView(R.id.dish_description) TextView dishDescription;
 
         @BindColor(R.color.dark_gray) int darkGray;
         @BindColor(R.color.light_red) int lightRed;
 
-        private int mPosition;
+        private int position;
 
         DishViewHolder(View view) {
             ButterKnife.bind(this, view);
-            mDishInfoText.setMovementMethod(LinkMovementMethod.getInstance());
+            dishInfoText.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         void loadItem(int position) {
-            mPosition = position;
+            this.position = position;
 
             Dish dish = getItem(position);
 
-            mDishInfoText.setText(Html.fromHtml(dish.getDishInfoText(true)));
-            mDishDate.setText(TimeUtils.getDefaultTimeText(dish.getTimeAdded()));
+            dishInfoText.setText(Html.fromHtml(dish.getDishInfoText(true)));
+            dishDate.setText(TimeUtils.getDefaultTimeText(dish.getTimeAdded()));
 
-            mFavoriteToggle.clearAnimation();
-            mFavoriteToggle.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);
-            mFavoriteToggle.setTextColor(dish.isFavorited() ? lightRed : darkGray);
+            favoriteToggle.clearAnimation();
+            favoriteToggle.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);
+            favoriteToggle.setTextColor(dish.isFavorited() ? lightRed : darkGray);
 
             if (dish.getRating() > 0) {
-                mDishRatingText.setText(dish.getRatingText());
-                mDishRatingText.setVisibility(View.VISIBLE);
+                dishRatingText.setText(dish.getRatingText());
+                dishRatingText.setVisibility(View.VISIBLE);
             } else {
-                mDishRatingText.setVisibility(View.GONE);
+                dishRatingText.setVisibility(View.GONE);
             }
 
-            Picasso.with(mActivity)
+            Picasso.with(activity)
                     .load(dish.getUriString())
-                    .error(mDefaultThumbnail)
+                    .error(defaultThumbnail)
                     .fit()
                     .centerCrop()
-                    .into(mDishPicture);
+                    .into(dishPicture);
 
             if (dish.getDescription().isEmpty()) {
-                mDishDescription.setVisibility(View.GONE);
+                dishDescription.setVisibility(View.GONE);
             } else {
-                mDishDescription.setText(dish.getFeedDescription());
-                mDishDescription.setVisibility(View.VISIBLE);
+                dishDescription.setText(dish.getFeedDescription());
+                dishDescription.setVisibility(View.VISIBLE);
             }
         }
 
         @OnClick(R.id.dish_picture)
         void dishPictureClicked() {
-            Intent intent = new Intent(mActivity, DishesFullViewGalleryActivity.class);
-            intent.putParcelableArrayListExtra(DishesFullViewGalleryActivity.DISHES_KEY, mDishes);
-            intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, mPosition);
+            Intent intent = new Intent(activity, DishesFullViewGalleryActivity.class);
+            intent.putExtra(Constants.DISH_IDS_KEY, DishUtils.getDishIdList(dishes));
+            intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, position);
             intent.putExtra(Constants.FROM_RESTAURANT_KEY, false);
-            mActivity.startActivity(intent);
-            mActivity.overridePendingTransition(0, 0);
+            activity.startActivity(intent);
+            activity.overridePendingTransition(0, 0);
         }
 
         @OnClick(R.id.overflow_menu)
         void overflowClicked() {
-            Dish dish = getItem(mPosition);
-            mDishOptionsPresenter.showOptions(dish);
+            Dish dish = getItem(position);
+            dishOptionsPresenter.showOptions(dish);
         }
 
         @OnClick(R.id.favorite_toggle)
         void toggleFavorite() {
-            Dish dish = getItem(mPosition);
+            Dish dish = getItem(position);
             boolean isFavorited = dish.isFavorited();
             dish.setIsFavorited(!isFavorited);
             DatabaseManager.get().getDishesDBManager().updateDish(dish);
-            UIUtils.animateFavoriteToggle(mFavoriteToggle, !isFavorited);
+            UIUtils.animateFavoriteToggle(favoriteToggle, !isFavorited);
         }
     }
 
     public View getView(int position, View view, ViewGroup parent) {
         DishViewHolder holder;
         if (view == null) {
-            LayoutInflater vi = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater vi = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = vi.inflate(R.layout.dish_cell, parent, false);
             holder = new DishViewHolder(view);
             view.setTag(holder);

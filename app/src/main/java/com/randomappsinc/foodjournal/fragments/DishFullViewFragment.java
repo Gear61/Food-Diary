@@ -17,6 +17,7 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.squareup.picasso.Callback;
@@ -28,12 +29,10 @@ import butterknife.Unbinder;
 
 public class DishFullViewFragment extends Fragment {
 
-    public static final String DISH_KEY = "dish";
-
-    public static DishFullViewFragment newInstance(Dish dish, boolean fromRestaurant) {
+    public static DishFullViewFragment newInstance(int dishId, boolean fromRestaurant) {
         DishFullViewFragment fragment = new DishFullViewFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(DISH_KEY, dish);
+        bundle.putInt(Constants.DISH_ID_KEY, dishId);
         bundle.putBoolean(Constants.FROM_RESTAURANT_KEY, fromRestaurant);
         fragment.setArguments(bundle);
         return fragment;
@@ -58,16 +57,25 @@ public class DishFullViewFragment extends Fragment {
     @BindView(R.id.picture_label) TextView pictureLabel;
 
     private Unbinder unbinder;
+    private int dishId;
+    private Drawable defaultThumbnail;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dish_full_view, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-
-        Drawable defaultThumbnail = new IconDrawable(
+        defaultThumbnail = new IconDrawable(
                 getActivity(),
                 IoniconsIcons.ion_image).colorRes(R.color.dark_gray);
-        Dish dish = getArguments().getParcelable(DISH_KEY);
+        dishId = getArguments().getInt(Constants.DISH_ID_KEY);
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Dish dish = DatabaseManager.get().getDishesDBManager().getDish(dishId);
         Picasso.with(getActivity())
                 .load(dish.getUriString())
                 .error(defaultThumbnail)
@@ -78,8 +86,6 @@ public class DishFullViewFragment extends Fragment {
         boolean fromRestaurant = getArguments().getBoolean(Constants.FROM_RESTAURANT_KEY);
         pictureLabel.setMovementMethod(LinkMovementMethod.getInstance());
         pictureLabel.setText(Html.fromHtml(dish.getDishInfoText(!fromRestaurant)));
-
-        return rootView;
     }
 
     @Override

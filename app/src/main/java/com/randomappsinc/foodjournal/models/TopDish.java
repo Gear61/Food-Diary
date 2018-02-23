@@ -1,16 +1,16 @@
 package com.randomappsinc.foodjournal.models;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class TopDish {
 
-    private ArrayList<Dish> instances;
+    private List<Dish> instances;
 
-    public ArrayList<Dish> getInstances() {
+    public List<Dish> getInstances() {
         return instances;
     }
 
-    public void setInstances(ArrayList<Dish> instances) {
+    public void setInstances(List<Dish> instances) {
         this.instances = instances;
     }
 

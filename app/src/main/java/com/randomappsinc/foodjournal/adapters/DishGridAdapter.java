@@ -15,6 +15,7 @@ import com.randomappsinc.foodjournal.models.Dish;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 public class DishGridAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Dish> dishes;
+    private List<Dish> dishes;
     private Drawable defaultThumbnail;
     private View noResults;
 
@@ -35,7 +36,7 @@ public class DishGridAdapter extends BaseAdapter {
         this.noResults = noResults;
     }
 
-    public void setDishes(ArrayList<Dish> dishes) {
+    public void setDishes(List<Dish> dishes) {
         this.dishes.clear();
         this.dishes.addAll(dishes);
         noResults.setVisibility(getCount() == 0 ? View.VISIBLE : View.GONE);
@@ -57,7 +58,7 @@ public class DishGridAdapter extends BaseAdapter {
         return position;
     }
 
-    public ArrayList<Dish> getDishes() {
+    public List<Dish> getDishes() {
         return dishes;
     }
 

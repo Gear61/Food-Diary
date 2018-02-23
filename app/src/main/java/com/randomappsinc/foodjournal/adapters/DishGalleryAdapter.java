@@ -14,6 +14,8 @@ import com.joanzapata.iconify.fonts.IoniconsIcons;
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;
 import com.randomappsinc.foodjournal.models.Dish;
+import com.randomappsinc.foodjournal.utils.Constants;
+import com.randomappsinc.foodjournal.utils.DishUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -78,7 +80,7 @@ public class DishGalleryAdapter extends RecyclerView.Adapter<DishGalleryAdapter.
         @OnClick(R.id.dish_picture)
         void onPictureClicked() {
             Intent intent = new Intent(mActivity, DishesFullViewGalleryActivity.class);
-            intent.putParcelableArrayListExtra(DishesFullViewGalleryActivity.DISHES_KEY, mDishes);
+            intent.putExtra(Constants.DISH_IDS_KEY, DishUtils.getDishIdList(mDishes));
             intent.putExtra(DishesFullViewGalleryActivity.POSITION_KEY, getAdapterPosition());
             mActivity.startActivity(intent);
             mActivity.overridePendingTransition(0, 0);
