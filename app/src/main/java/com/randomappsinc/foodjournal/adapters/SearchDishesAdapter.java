@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -51,7 +52,7 @@ public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapte
 
     @Override
     public DishThumbnailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(R.layout.local_search_cell, parent, false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.local_search_dishes_cell, parent, false);
         return new DishThumbnailViewHolder(itemView);
     }
 
@@ -69,9 +70,13 @@ public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapte
 
         @BindView(R.id.result_container) View resultContainer;
         @BindView(R.id.search_result_picture) ImageView dishPicture;
+        @BindView(R.id.favorite_status) TextView favoriteStatus;
         @BindView(R.id.dish_rating_text) TextView ratingText;
         @BindView(R.id.search_result_text) TextView dishTitle;
         @BindView(R.id.no_results_text) TextView noResults;
+
+        @BindColor(R.color.dark_gray) int darkGray;
+        @BindColor(R.color.light_red) int lightRed;
 
         DishThumbnailViewHolder(View view) {
             super(view);
@@ -93,6 +98,9 @@ public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapte
                         .fit()
                         .centerCrop()
                         .into(dishPicture);
+
+                favoriteStatus.setText(dish.isFavorited() ? R.string.heart_filled_icon : R.string.heart_icon);
+                favoriteStatus.setTextColor(dish.isFavorited() ? lightRed : darkGray);
 
                 if (dish.getRating() > 0) {
                     ratingText.setText(dish.getRatingText());

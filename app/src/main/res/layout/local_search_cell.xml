@@ -2,15 +2,9 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
-    android:layout_width="152dp"
-    android:layout_height="140dp"
-    android:layout_marginTop="0dp"
-    android:foreground="?android:attr/selectableItemBackground"
-    card_view:contentPadding="0dp"
     tools:ignore="ContentDescription, SpUsage, RtlHardcoded"
-    style="@style/form_card">
+    style="@style/search_card">
 
     <RelativeLayout
         android:id="@+id/result_container"
@@ -19,46 +13,14 @@
 
         <ImageView
             android:id="@+id/search_result_picture"
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"/>
-
-        <com.joanzapata.iconify.widget.IconTextView
-            android:id="@+id/dish_rating_text"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:shadowColor="@color/shadow_black"
-            android:shadowDx="3"
-            android:shadowDy="3"
-            android:shadowRadius="1"
-            android:textColor="@color/dark_gray"
-            android:textSize="13dp"
-            android:visibility="gone"/>
+            style="@style/search_result_image"/>
 
         <TextView
             android:id="@+id/search_result_text"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:padding="4dp"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:textColor="@color/dark_gray"
-            android:textSize="13dp"
-            android:maxLines="2"
-            android:ellipsize="end"/>
+            style="@style/search_result_text"/>
     </RelativeLayout>
 
     <TextView
         android:id="@+id/no_results_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="4dp"
-        android:gravity="center"
-        android:textColor="@color/dark_gray"
-        android:textSize="17dp"/>
+        style="@style/search_no_results_text"/>
 </android.support.v7.widget.CardView>
