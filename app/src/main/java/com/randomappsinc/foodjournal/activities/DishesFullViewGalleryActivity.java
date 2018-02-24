@@ -1,11 +1,7 @@
 package com.randomappsinc.foodjournal.activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -15,8 +11,7 @@ import com.randomappsinc.foodjournal.adapters.DishesFullViewGalleryAdapter;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.Constants;
-
-import java.io.File;
+import com.randomappsinc.foodjournal.utils.DishUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,28 +81,7 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
     public void sharePicture() {
         int currentPosition = picturesPager.getCurrentItem();
         String imagePath = galleryAdapter.getImagePath(currentPosition);
-        String filePath = imagePath.substring(imagePath.lastIndexOf('/'));
-        String completePath = Environment.getExternalStorageDirectory().getPath()
-                + "/Android/data/com.randomappsinc.foodjournal/files/Pictures"
-                + filePath;
-        File imageFile = new File(completePath);
-        if (!imageFile.exists()) {
-            return;
-        }
-        Uri cleanImageUri = FileProvider.getUriForFile(
-                this,
-                "com.randomappsinc.foodjournal.fileprovider",
-                imageFile);
-
-        Intent shareIntent = ShareCompat.IntentBuilder.from(this)
-                .setStream(cleanImageUri)
-                .getIntent();
-        shareIntent.setData(cleanImageUri);
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        if (shareIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(shareIntent);
-        }
+        DishUtils.sharePhotoWithUri(imagePath, this);
     }
 
     @OnClick(R.id.close)

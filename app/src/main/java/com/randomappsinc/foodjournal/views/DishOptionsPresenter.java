@@ -15,40 +15,26 @@ import com.randomappsinc.foodjournal.utils.UIUtils;
 public class DishOptionsPresenter {
 
     public interface Listener {
-        void onDishDeleted(Dish dish);
+        void shareDish(Dish dish);
 
         void editDish(Dish dish);
+
+        void onDishDeleted(Dish dish);
     }
 
-    private Listener mListener;
-    private MaterialDialog mOptionsDialog;
-    private MaterialDialog mConfirmDeleteDialog;
-    private Dish mDish;
+    private @NonNull Listener listener;
+    private MaterialDialog optionsDialog;
+    private MaterialDialog confirmDeletionDialog;
+    private Dish dish;
 
-    public DishOptionsPresenter(Listener listener, Context context) {
-        mListener = listener;
-        mOptionsDialog = new MaterialDialog.Builder(context)
+    public DishOptionsPresenter(@NonNull Listener listener, Context context) {
+        this.listener = listener;
+        this.optionsDialog = new MaterialDialog.Builder(context)
                 .items(R.array.dish_options)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        switch (which) {
-                            case 0:
-                                mListener.editDish(mDish);
-                                break;
-                            case 1:
-                                if (!mDish.isFavorited()) {
-                                    mConfirmDeleteDialog.show();
-                                } else {
-                                    UIUtils.showToast(R.string.favorited_dishes_protected, Toast.LENGTH_LONG);
-                                }
-                                break;
-                        }
-                    }
-                })
+                .itemsCallback(dishOptionSelectedCallback)
                 .build();
 
-        mConfirmDeleteDialog = new MaterialDialog.Builder(context)
+        this.confirmDeletionDialog = new MaterialDialog.Builder(context)
                 .title(R.string.confirm_dish_delete_title)
                 .content(R.string.confirm_dish_delete)
                 .negativeText(android.R.string.no)
@@ -56,15 +42,36 @@ public class DishOptionsPresenter {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        DatabaseManager.get().getDishesDBManager().deleteDish(mDish);
-                        mListener.onDishDeleted(mDish);
+                        DatabaseManager.get().getDishesDBManager().deleteDish(dish);
+                        DishOptionsPresenter.this.listener.onDishDeleted(dish);
                     }
                 })
                 .build();
     }
 
+    private final MaterialDialog.ListCallback dishOptionSelectedCallback = new MaterialDialog.ListCallback() {
+        @Override
+        public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+            switch (position) {
+                case 0:
+                    listener.shareDish(dish);
+                    break;
+                case 1:
+                    listener.editDish(dish);
+                    break;
+                case 2:
+                    if (!dish.isFavorited()) {
+                        confirmDeletionDialog.show();
+                    } else {
+                        UIUtils.showToast(R.string.favorited_dishes_protected, Toast.LENGTH_LONG);
+                    }
+                    break;
+            }
+        }
+    };
+
     public void showOptions(Dish dish) {
-        mDish = dish;
-        mOptionsDialog.show();
+        this.dish = dish;
+        this.optionsDialog.show();
     }
 }

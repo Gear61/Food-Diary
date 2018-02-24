@@ -28,6 +28,7 @@ import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.RestaurantsDBManager;
 import com.randomappsinc.foodjournal.utils.Constants;
+import com.randomappsinc.foodjournal.utils.DishUtils;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
@@ -136,6 +137,11 @@ public class HomepageDishesFragment extends Fragment
                 mDishesList.setSelection(0);
             }
         });
+    }
+
+    @Override
+    public void shareDish(Dish dish) {
+        DishUtils.sharePhotoWithUri(dish.getUriString(), getActivity());
     }
 
     @Override

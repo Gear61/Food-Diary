@@ -24,24 +24,26 @@ public class DishPhotoOptionsDialog {
         this.listener = listener;
         this.dialog = new MaterialDialog.Builder(context)
                 .items(R.array.dish_photo_options)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        switch(which) {
-                            case 0:
-                                listener.onShowFullPhoto();
-                                break;
-                            case 1:
-                                listener.onRetakePhoto();
-                                break;
-                            case 2:
-                                listener.onReuploadPhoto();
-                                break;
-                        }
-                    }
-                })
+                .itemsCallback(dishPhotoOptionListener)
                 .build();
     }
+
+    private final MaterialDialog.ListCallback dishPhotoOptionListener = new MaterialDialog.ListCallback() {
+        @Override
+        public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+            switch(position) {
+                case 0:
+                    listener.onShowFullPhoto();
+                    break;
+                case 1:
+                    listener.onRetakePhoto();
+                    break;
+                case 2:
+                    listener.onReuploadPhoto();
+                    break;
+            }
+        }
+    };
 
     public void show() {
         dialog.show();

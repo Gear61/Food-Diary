@@ -34,9 +34,11 @@
 
     <string name="dish_title">%1$s @ %2$s</string>
 
+    <string name="share_dish">Share dish</string>
     <string name="edit_dish">Edit dish</string>
     <string name="delete_dish">Delete dish</string>
     <string-array name="dish_options">
+        <item>@string/share_dish</item>
         <item>@string/edit_dish</item>
         <item>@string/delete_dish</item>
     </string-array>

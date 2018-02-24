@@ -38,6 +38,8 @@ import butterknife.OnClick;
 public class DishFeedAdapter extends BaseAdapter {
 
     public interface Listener {
+        void shareDish(Dish dish);
+
         void editDish(Dish dish);
     }
 
@@ -50,13 +52,18 @@ public class DishFeedAdapter extends BaseAdapter {
 
     private final DishOptionsPresenter.Listener dishOptionsListener = new DishOptionsPresenter.Listener() {
         @Override
-        public void onDishDeleted(Dish dish) {
-            updateWithDeletedDish(dish);
+        public void shareDish(Dish dish) {
+            listener.shareDish(dish);
         }
 
         @Override
         public void editDish(Dish dish) {
             listener.editDish(dish);
+        }
+
+        @Override
+        public void onDishDeleted(Dish dish) {
+            updateWithDeletedDish(dish);
         }
     };
 
