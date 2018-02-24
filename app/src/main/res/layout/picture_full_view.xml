@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:background="@color/theater_black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0"
+    tools:ignore="SpUsage, RtlHardcoded">
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/picture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/close"
+        android:layout_alignParentLeft="true"
+        android:text="@string/close_icon"
+        android:textSize="32dp"
+        style="@style/full_view_toolbar_button"/>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/share"
+        android:layout_alignParentRight="true"
+        android:text="@string/share_icon"
+        android:textSize="28dp"
+        style="@style/full_view_toolbar_button"/>
+</RelativeLayout>

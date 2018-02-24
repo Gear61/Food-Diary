@@ -103,5 +103,11 @@
             android:label="@string/settings"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".activities.PictureFullViewActivity"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>

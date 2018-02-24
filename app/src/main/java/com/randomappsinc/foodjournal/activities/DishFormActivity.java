@@ -160,9 +160,8 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
 
     @Override
     public void onShowFullPhoto() {
-        Intent intent = new Intent(this, DishesFullViewGalleryActivity.class);
-        loadFormIntoDish();
-        intent.putExtra(Constants.DISH_IDS_KEY, new int[] {mDish.getId()});
+        Intent intent = new Intent(this, PictureFullViewActivity.class);
+        intent.putExtra(PictureFullViewActivity.IMAGE_PATH_KEY, mDish.getUriString());
         startActivity(intent);
         overridePendingTransition(0, 0);
     }
