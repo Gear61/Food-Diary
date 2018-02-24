@@ -3,6 +3,7 @@ package com.randomappsinc.foodjournal.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ShareCompat;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,7 +20,7 @@ public class SettingsActivity extends StandardActivity {
 
     public static final String SUPPORT_EMAIL = "chessnone@gmail.com";
     public static final String OTHER_APPS_URL = "https://play.google.com/store/apps/dev?id=9093438553713389916";
-    public static final String REPO_URL = "https://github.com/Gear61/Food-Journal";
+    public static final String REPO_URL = "https://github.com/Gear61/Food-Diary";
 
     @BindView(R.id.settings_options) ListView settingsOptions;
     @BindString(R.string.feedback_subject) String feedbackSubject;
@@ -49,9 +50,18 @@ public class SettingsActivity extends StandardActivity {
                 startActivity(Intent.createChooser(sendIntent, sendEmail));
                 return;
             case 1:
+                Intent shareIntent = ShareCompat.IntentBuilder.from(this)
+                        .setType("text/plain")
+                        .setText(getString(R.string.share_app_message))
+                        .getIntent();
+                if (shareIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(shareIntent);
+                }
+                return;
+            case 2:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(OTHER_APPS_URL));
                 break;
-            case 2:
+            case 3:
                 Uri uri =  Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 if (!(getPackageManager().queryIntentActivities(intent, 0).size() > 0)) {
@@ -59,7 +69,7 @@ public class SettingsActivity extends StandardActivity {
                     return;
                 }
                 break;
-            case 3:
+            case 4:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(REPO_URL));
                 break;
         }
