@@ -17,7 +17,7 @@ public class RestaurantSearchResults {
     private List<Business> businesses;
 
     public class Business {
-        @SerializedName("id")
+        @SerializedName("alias")
         @Expose
         private String id;
 

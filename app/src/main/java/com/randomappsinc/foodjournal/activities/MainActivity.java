@@ -40,6 +40,7 @@ public class MainActivity extends StandardActivity {
     private final BottomNavigationView.Listener mListener = new BottomNavigationView.Listener() {
         @Override
         public void onNavItemSelected(@IdRes int viewId) {
+            UIUtils.hideKeyboard(MainActivity.this);
             mNavigationController.onNavItemSelected(viewId);
         }
 
