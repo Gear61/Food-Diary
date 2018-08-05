@@ -72,7 +72,7 @@ public class DishGridAdapter extends BaseAdapter {
 
         public void loadItem(int position) {
             Dish dish = getItem(position);
-            Picasso.with(context)
+            Picasso.get()
                     .load(dish.getUriString())
                     .error(defaultThumbnail)
                     .fit()

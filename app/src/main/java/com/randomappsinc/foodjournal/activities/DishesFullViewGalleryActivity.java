@@ -36,7 +36,7 @@ public class DishesFullViewGalleryActivity extends AppCompatActivity {
         boolean fromRestaurant = getIntent().getBooleanExtra(Constants.FROM_RESTAURANT_KEY, false);
 
         int[] dishIds = getIntent().getIntArrayExtra(Constants.DISH_IDS_KEY);
-        galleryAdapter = new DishesFullViewGalleryAdapter(getFragmentManager(), dishIds, fromRestaurant);
+        galleryAdapter = new DishesFullViewGalleryAdapter(getSupportFragmentManager(), dishIds, fromRestaurant);
         picturesPager.setAdapter(galleryAdapter);
 
         int initialPosition = getIntent().getIntExtra(POSITION_KEY, 0);

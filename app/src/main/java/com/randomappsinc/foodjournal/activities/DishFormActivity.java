@@ -146,7 +146,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     }
 
     private void loadDishPhoto() {
-        Picasso.with(this)
+        Picasso.get()
                 .load(mDish.getUriString())
                 .fit()
                 .centerCrop()
@@ -250,7 +250,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                 this,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         if (!mRestaurant.getImageUrl().isEmpty()) {
-            Picasso.with(this)
+            Picasso.get()
                     .load(mRestaurant.getImageUrl())
                     .error(defaultThumbnail)
                     .fit().centerCrop()

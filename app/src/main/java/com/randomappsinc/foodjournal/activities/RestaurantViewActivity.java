@@ -70,7 +70,7 @@ public class RestaurantViewActivity extends StandardActivity {
                 this,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         if (!mRestaurant.getImageUrl().isEmpty()) {
-            Picasso.with(this)
+            Picasso.get()
                     .load(mRestaurant.getImageUrl())
                     .error(defaultThumbnail)
                     .fit().centerCrop()
@@ -87,7 +87,7 @@ public class RestaurantViewActivity extends StandardActivity {
             mCategories.setVisibility(View.VISIBLE);
         }
 
-        mOptionsPager.setAdapter(new RestaurantTabsAdapter(getFragmentManager(), mRestaurant.getId()));
+        mOptionsPager.setAdapter(new RestaurantTabsAdapter(getSupportFragmentManager(), mRestaurant.getId()));
         mRestaurantOptions.setupWithViewPager(mOptionsPager);
 
         mDeleteConfirmationDialog = new MaterialDialog.Builder(this)

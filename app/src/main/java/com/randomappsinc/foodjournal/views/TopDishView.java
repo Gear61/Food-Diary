@@ -52,7 +52,7 @@ public class TopDishView {
                 MyApplication.getAppContext(),
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
         if (!topDish.getThumbnail().isEmpty()) {
-            Picasso.with(MyApplication.getAppContext())
+            Picasso.get()
                     .load(topDish.getThumbnail())
                     .error(defaultThumbnail)
                     .fit().centerCrop()

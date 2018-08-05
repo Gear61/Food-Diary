@@ -69,7 +69,7 @@ public class DishGalleryAdapter extends RecyclerView.Adapter<DishGalleryAdapter.
         }
 
         void loadDish(int position) {
-            Picasso.with(mActivity)
+            Picasso.get()
                     .load(mDishes.get(position).getUriString())
                     .error(mDefaultThumbnail)
                     .fit()

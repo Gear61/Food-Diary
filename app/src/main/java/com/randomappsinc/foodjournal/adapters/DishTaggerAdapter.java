@@ -87,7 +87,7 @@ public class DishTaggerAdapter extends BaseAdapter {
             mPosition = position;
             Dish dish = getItem(mPosition);
 
-            Picasso.with(mContext)
+            Picasso.get()
                     .load(dish.getUriString())
                     .error(mDefaultThumbnail)
                     .fit()

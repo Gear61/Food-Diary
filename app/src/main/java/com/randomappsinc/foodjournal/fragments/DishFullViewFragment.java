@@ -1,9 +1,9 @@
 package com.randomappsinc.foodjournal.fragments;
 
-import android.app.Fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -47,7 +47,7 @@ public class DishFullViewFragment extends Fragment {
         }
 
         @Override
-        public void onError() {
+        public void onError(Exception e) {
             UIUtils.showToast(R.string.image_load_fail, Toast.LENGTH_LONG);
         }
     };
@@ -76,7 +76,7 @@ public class DishFullViewFragment extends Fragment {
         super.onResume();
 
         Dish dish = DatabaseManager.get().getDishesDBManager().getDish(dishId);
-        Picasso.with(getActivity())
+        Picasso.get()
                 .load(dish.getUriString())
                 .error(defaultThumbnail)
                 .fit()
@@ -91,7 +91,7 @@ public class DishFullViewFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Picasso.with(getActivity()).cancelRequest(picture);
+        Picasso.get().cancelRequest(picture);
         unbinder.unbind();
     }
 }

@@ -83,7 +83,7 @@ public class CheckInsAdapter extends BaseAdapter {
                     mContext,
                     IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
             if (!restaurant.getImageUrl().isEmpty()) {
-                Picasso.with(mContext)
+                Picasso.get()
                         .load(restaurant.getImageUrl())
                         .error(defaultThumbnail)
                         .fit()

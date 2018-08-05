@@ -1,15 +1,15 @@
 package com.randomappsinc.foodjournal.adapters;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.fragments.CheckInsFragment;
 import com.randomappsinc.foodjournal.fragments.RestaurantDishesFragment;
 import com.randomappsinc.foodjournal.utils.MyApplication;
 
-public class RestaurantTabsAdapter extends FragmentStatePagerAdapter {
+public class RestaurantTabsAdapter extends FragmentPagerAdapter {
 
     private String[] mRestaurantTabs;
     private String mRestaurantId;

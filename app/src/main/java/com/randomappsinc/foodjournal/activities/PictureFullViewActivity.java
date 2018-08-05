@@ -33,7 +33,7 @@ public class PictureFullViewActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onError() {
+        public void onError(Exception e) {
             UIUtils.showToast(R.string.image_load_fail, Toast.LENGTH_LONG);
         }
     };
@@ -54,7 +54,7 @@ public class PictureFullViewActivity extends AppCompatActivity {
                 IoniconsIcons.ion_image).colorRes(R.color.dark_gray);
 
         imagePath = getIntent().getStringExtra(IMAGE_PATH_KEY);
-        Picasso.with(this)
+        Picasso.get()
                 .load(imagePath)
                 .error(defaultThumbnail)
                 .fit()
@@ -81,6 +81,6 @@ public class PictureFullViewActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Picasso.with(this).cancelRequest(picture);
+        Picasso.get().cancelRequest(picture);
     }
 }

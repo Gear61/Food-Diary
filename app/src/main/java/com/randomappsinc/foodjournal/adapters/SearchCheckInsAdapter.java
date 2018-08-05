@@ -90,7 +90,7 @@ public class SearchCheckInsAdapter extends RecyclerView.Adapter<SearchCheckInsAd
                 Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(checkIn.getRestaurantId());
                 String imageUrl = restaurant.getImageUrl();
                 if (!imageUrl.isEmpty()) {
-                    Picasso.with(context)
+                    Picasso.get()
                             .load(imageUrl)
                             .error(defaultThumbnail)
                             .fit().centerCrop()

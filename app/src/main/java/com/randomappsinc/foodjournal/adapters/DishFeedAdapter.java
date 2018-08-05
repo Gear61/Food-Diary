@@ -168,7 +168,7 @@ public class DishFeedAdapter extends BaseAdapter {
                 dishRatingText.setVisibility(View.GONE);
             }
 
-            Picasso.with(activity)
+            Picasso.get()
                     .load(dish.getUriString())
                     .error(defaultThumbnail)
                     .fit()

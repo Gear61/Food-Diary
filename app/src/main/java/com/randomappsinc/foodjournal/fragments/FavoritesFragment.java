@@ -1,8 +1,9 @@
 package com.randomappsinc.foodjournal.fragments;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class FavoritesFragment extends Fragment {
     private DishGridAdapter favoritesAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.favorites, container, false);
         unbinder = ButterKnife.bind(this, rootView);
         toolbar.setTitle(R.string.favorites);

@@ -1,8 +1,9 @@
 package com.randomappsinc.foodjournal.fragments;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -52,7 +53,7 @@ public class ProfileFragment extends Fragment implements TopRestaurantsAdapter.L
     private TopDishesAdapter topDishesAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.profile, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 

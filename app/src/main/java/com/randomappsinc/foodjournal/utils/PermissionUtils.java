@@ -1,10 +1,9 @@
 package com.randomappsinc.foodjournal.utils;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.pm.PackageManager;
-import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 
 public class PermissionUtils {
@@ -18,7 +17,7 @@ public class PermissionUtils {
     }
 
     public static void requestPermission(Fragment fragment, String permission) {
-        FragmentCompat.requestPermissions(fragment, new String[]{permission}, 1);
+        fragment.requestPermissions(new String[]{permission}, 1);
     }
 
     public static boolean isPermissionGranted(String permission) {

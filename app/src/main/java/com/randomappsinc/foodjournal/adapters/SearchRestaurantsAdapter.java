@@ -86,7 +86,7 @@ public class SearchRestaurantsAdapter extends RecyclerView.Adapter<SearchRestaur
                 noResults.setVisibility(View.GONE);
                 String imageUrl = restaurants.get(position).getImageUrl();
                 if (!imageUrl.isEmpty()) {
-                    Picasso.with(context)
+                    Picasso.get()
                             .load(imageUrl)
                             .error(defaultThumbnail)
                             .fit().centerCrop()

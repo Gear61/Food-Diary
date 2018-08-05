@@ -1,13 +1,13 @@
 package com.randomappsinc.foodjournal.adapters;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import com.randomappsinc.foodjournal.fragments.DishFullViewFragment;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 
-public class DishesFullViewGalleryAdapter extends FragmentStatePagerAdapter {
+public class DishesFullViewGalleryAdapter extends FragmentPagerAdapter {
 
     private int[] dishIds;
     private boolean fromRestaurant;

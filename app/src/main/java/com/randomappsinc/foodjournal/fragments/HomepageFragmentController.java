@@ -1,8 +1,8 @@
 package com.randomappsinc.foodjournal.fragments;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import com.randomappsinc.foodjournal.R;
 

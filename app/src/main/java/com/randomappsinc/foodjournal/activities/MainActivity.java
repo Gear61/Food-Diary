@@ -69,7 +69,7 @@ public class MainActivity extends StandardActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mNavigationController = new HomepageFragmentController(getFragmentManager(), R.id.container);
+        mNavigationController = new HomepageFragmentController(getSupportFragmentManager(), R.id.container);
         mBottomNavigationView = new BottomNavigationView(mBottomNavigation, mListener);
         mNavigationController.loadHome();
 

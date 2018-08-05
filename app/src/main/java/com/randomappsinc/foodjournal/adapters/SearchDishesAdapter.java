@@ -92,7 +92,7 @@ public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapte
                 Dish dish = dishes.get(position);
 
                 noResults.setVisibility(View.GONE);
-                Picasso.with(context)
+                Picasso.get()
                         .load(dish.getUriString())
                         .error(defaultThumbnail)
                         .fit()

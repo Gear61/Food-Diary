@@ -2,13 +2,13 @@ package com.randomappsinc.foodjournal.fragments;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -35,6 +35,8 @@ import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import java.io.File;
 
+import javax.annotation.Nonnull;
+
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,25 +51,25 @@ public class HomepageDishesFragment extends Fragment
         return fragment;
     }
 
-    @BindView(R.id.toolbar) Toolbar mToolbar;
-    @BindView(R.id.dishes) ListView mDishesList;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.dishes) ListView dishesList;
     @BindView(R.id.no_dishes) View noDishes;
     @BindString(R.string.choose_image_from) String mChooseImageFrom;
 
-    private Unbinder mUnbinder;
-    private DishFeedAdapter mDishesAdapter;
+    private Unbinder unbinder;
+    private DishFeedAdapter dishesAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@Nonnull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.homepage, container, false);
-        mUnbinder = ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
 
-        mToolbar.setTitle(R.string.app_name);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        toolbar.setTitle(R.string.app_name);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
 
-        mDishesAdapter = new DishFeedAdapter(this, getActivity(), noDishes);
-        mDishesList.setAdapter(mDishesAdapter);
+        dishesAdapter = new DishFeedAdapter(this, getActivity(), noDishes);
+        dishesList.setAdapter(dishesAdapter);
 
         DatabaseManager.get().getRestaurantsDBManager().registerListener(this);
 
@@ -77,7 +79,7 @@ public class HomepageDishesFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        mDishesAdapter.resyncWithDb();
+        dishesAdapter.resyncWithDb();
     }
 
     /** Starts the flow to add a dish via uploading from gallery */
@@ -122,19 +124,19 @@ public class HomepageDishesFragment extends Fragment
 
     @Override
     public void onRestaurantDeleted(String restaurantId) {
-        mDishesAdapter.updateWithDeletedRestaurant(restaurantId);
+        dishesAdapter.updateWithDeletedRestaurant(restaurantId);
     }
 
     public void refreshWithAddedDish() {
-        if (mDishesList == null) {
+        if (dishesList == null) {
             return;
         }
 
-        mDishesList.clearFocus();
-        mDishesList.post(new Runnable() {
+        dishesList.clearFocus();
+        dishesList.post(new Runnable() {
             @Override
             public void run() {
-                mDishesList.setSelection(0);
+                dishesList.setSelection(0);
             }
         });
     }
@@ -153,7 +155,10 @@ public class HomepageDishesFragment extends Fragment
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String permissions[],
+            @NonNull int[] grantResults) {
         if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -173,7 +178,7 @@ public class HomepageDishesFragment extends Fragment
     public void onDestroyView() {
         super.onDestroyView();
         DatabaseManager.get().getRestaurantsDBManager().unregisterListener(this);
-        mUnbinder.unbind();
+        unbinder.unbind();
     }
 
     @Override

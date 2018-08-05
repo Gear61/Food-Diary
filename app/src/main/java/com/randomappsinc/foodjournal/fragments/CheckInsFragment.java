@@ -1,9 +1,10 @@
 package com.randomappsinc.foodjournal.fragments;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,12 +53,14 @@ public class CheckInsFragment extends Fragment {
     private Unbinder mUnbinder;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.check_ins, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
 
         mRestaurantId = getArguments().getString(Constants.RESTAURANT_ID_KEY);
-        mAddCheckIn.setImageDrawable(new IconDrawable(getActivity(), IoniconsIcons.ion_android_add).colorRes(R.color.white));
+        mAddCheckIn.setImageDrawable(new IconDrawable(
+                getActivity(),
+                IoniconsIcons.ion_android_add).colorRes(R.color.white));
 
         mCheckInsAdapter = new CheckInsAdapter(getActivity(), mNoResults, mRestaurantId);
         mCheckInsList.setAdapter(mCheckInsAdapter);
