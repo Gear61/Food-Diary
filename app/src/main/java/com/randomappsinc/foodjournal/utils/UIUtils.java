@@ -28,7 +28,7 @@ public class UIUtils {
         Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
         View rootView = snackbar.getView();
         snackbar.getView().setBackgroundColor(context.getResources().getColor(R.color.app_red));
-        TextView tv = (TextView) rootView.findViewById(android.support.design.R.id.snackbar_text);
+        TextView tv = rootView.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextColor(Color.WHITE);
         snackbar.show();
     }

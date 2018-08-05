@@ -7,7 +7,6 @@ public class ApiConstants {
     static final String AUTHORIZATION = "Authorization";
     static final String BEARER_PREFIX = "Bearer ";
 
-    static final String DEFAULT_SEARCH_TERM = "Restaurant";
     static final int DEFAULT_NUM_RESTAURANTS = 10;
 
     static final String BEST_MATCH = "best_match";
