@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="location">Location</string>
+    <string name="location_form_title">Set Location</string>
+    <string name="location_form_after_fail">
+        We failed to fetch your current location.
+        Please tell Food Diary where you want it to search.
+    </string>
 
     <string name="auto_location_fail">
         We couldn\'t get your current location.

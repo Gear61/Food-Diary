@@ -15,15 +15,15 @@ import butterknife.OnClick;
 public class RatingView {
 
     @BindViews({R.id.star_1, R.id.star_2, R.id.star_3, R.id.star_4, R.id.star_5})
-    List<TextView> mStars;
-    @BindColor(R.color.dark_gray) int mDarkGray;
-    @BindColor(R.color.app_red) int mRed;
+    List<TextView> stars;
+    @BindColor(R.color.dark_gray) int darkGray;
+    @BindColor(R.color.app_red) int red;
 
-    private int mRating;
+    private int rating;
 
     public RatingView(View parent) {
         ButterKnife.bind(this, parent);
-        mRating = 0;
+        rating = 0;
     }
 
     @OnClick({R.id.star_1, R.id.star_2, R.id.star_3, R.id.star_4, R.id.star_5})
@@ -48,21 +48,21 @@ public class RatingView {
     }
 
     public void loadRating(int rating) {
-        mRating = rating;
+        this.rating = rating;
 
-        for (int i = 0; i < mStars.size(); i++) {
-            TextView currentStar = mStars.get(i);
+        for (int i = 0; i < stars.size(); i++) {
+            TextView currentStar = stars.get(i);
             if (i < rating) {
                 currentStar.setText(R.string.filled_star);
-                currentStar.setTextColor(mRed);
+                currentStar.setTextColor(red);
             } else {
                 currentStar.setText(R.string.blank_star);
-                currentStar.setTextColor(mDarkGray);
+                currentStar.setTextColor(darkGray);
             }
         }
     }
 
     public int getRating() {
-        return mRating;
+        return rating;
     }
 }

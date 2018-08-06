@@ -13,4 +13,7 @@ public class Constants {
 
     public static final String DISH_ID_KEY = "dishId";
     public static final String DISH_IDS_KEY = "dishIds";
+
+    public static final int CAMERA_CODE = 1;
+    public static final int GALLERY_CODE = 2;
 }

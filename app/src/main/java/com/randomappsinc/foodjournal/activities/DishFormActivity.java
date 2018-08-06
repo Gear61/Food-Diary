@@ -26,7 +26,6 @@ import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
-import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
@@ -125,7 +124,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
             String pictureUri = getIntent().getStringExtra(URI_KEY);
             mDish.setUriString(pictureUri);
 
-            Restaurant autoFill = CheckInsDBManager.get().getAutoFillRestaurant();
+            Restaurant autoFill = DatabaseManager.get().getCheckInsDBManager().getAutoFillRestaurant();
             if (autoFill == null) {
                 mRestaurantInfo.setVisibility(View.INVISIBLE);
                 mChooseRestaurantPrompt.setVisibility(View.VISIBLE);

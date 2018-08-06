@@ -133,7 +133,7 @@ public class MainActivity extends StandardActivity {
             }
 
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakenPhotoUri);
-            startActivityForResult(takePictureIntent, 1);
+            startActivityForResult(takePictureIntent, Constants.CAMERA_CODE);
         } else {
             UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
         }
@@ -142,6 +142,10 @@ public class MainActivity extends StandardActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != Constants.CAMERA_CODE) {
+            return;
+        }
+
         if (resultCode == Activity.RESULT_OK) {
             // Returning from picture taking
             revokeUriPermission(

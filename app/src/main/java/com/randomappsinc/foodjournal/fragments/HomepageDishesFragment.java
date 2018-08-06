@@ -97,12 +97,16 @@ public class HomepageDishesFragment extends Fragment
         Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         getIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
         Intent chooserIntent = Intent.createChooser(getIntent, mChooseImageFrom);
-        startActivityForResult(chooserIntent, 1);
+        startActivityForResult(chooserIntent, Constants.GALLERY_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != Constants.GALLERY_CODE) {
+            return;
+        }
+
         if (resultCode == Activity.RESULT_OK) {
             File photoFile = PictureUtils.copyGalleryImage(data);
             if (photoFile == null) {

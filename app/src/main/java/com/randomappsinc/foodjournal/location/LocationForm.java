@@ -1,7 +1,8 @@
-package com.randomappsinc.foodjournal.views;
+package com.randomappsinc.foodjournal.location;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -14,14 +15,16 @@ public class LocationForm {
         void onLocationEntered(String location);
     }
 
-    @NonNull private Listener mListener;
-    private MaterialDialog mLocationDialog;
+    @NonNull
+    protected Listener listener;
+    private MaterialDialog locationDialog;
 
-    public LocationForm(Context context, @NonNull Listener listener) {
-        mListener = listener;
+    LocationForm(Context context, @NonNull Listener listener) {
+        this.listener = listener;
 
         String location = context.getString(R.string.location);
-        mLocationDialog = new MaterialDialog.Builder(context)
+        locationDialog = new MaterialDialog.Builder(context)
+                .title(R.string.location_form_title)
                 .content(R.string.location_form_prompt)
                 .positiveText(android.R.string.yes)
                 .negativeText(android.R.string.cancel)
@@ -37,13 +40,14 @@ public class LocationForm {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         String locationInput = dialog.getInputEditText().getText().toString().trim();
-                        mListener.onLocationEntered(locationInput);
+                        LocationForm.this.listener.onLocationEntered(locationInput);
                     }
                 })
                 .build();
     }
 
-    public void show() {
-        mLocationDialog.show();
+    public void show(@StringRes int contentResId) {
+        locationDialog.setContent(contentResId);
+        locationDialog.show();
     }
 }
