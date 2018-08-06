@@ -13,12 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.rey.material.widget.Button
+        <TextView
             android:id="@+id/save"
             android:text="@string/save"
             android:layout_alignParentBottom="true"
-            app:rd_style="@style/button_ripple_attributes"
-            style="@style/ripple_button_style"/>
+            style="@style/button"/>
 
         <ScrollView
             android:layout_above="@id/save"

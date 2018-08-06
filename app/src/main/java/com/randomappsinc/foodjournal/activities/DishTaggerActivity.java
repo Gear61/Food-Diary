@@ -13,7 +13,6 @@ import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
-import com.rey.material.widget.Button;
 
 import java.util.ArrayList;
 
@@ -25,12 +24,12 @@ public class DishTaggerActivity extends StandardActivity {
 
     public static final String DISHES_KEY = "dishes";
 
-    @BindView(R.id.description) TextView mDescription;
-    @BindView(R.id.dishes) ListView mDishes;
-    @BindView(R.id.no_dishes) View mNoDishes;
-    @BindView(R.id.tag) Button mTagButton;
+    @BindView(R.id.description) TextView description;
+    @BindView(R.id.dishes) ListView dishes;
+    @BindView(R.id.no_dishes) View noDishes;
+    @BindView(R.id.tag) TextView tagButton;
 
-    private DishTaggerAdapter mDishTaggerAdapter;
+    private DishTaggerAdapter dishTaggerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,26 +44,26 @@ public class DishTaggerActivity extends StandardActivity {
                 getString(R.string.dish_tagger_header),
                 checkIn.getRestaurantName(),
                 TimeUtils.getDefaultTimeText(checkIn.getTimeAdded()));
-        mDescription.setText(header);
+        description.setText(header);
 
         if (checkIn.getTaggedDishes().isEmpty() &&
             DatabaseManager.get().getDishesDBManager().getTaggingSuggestions(checkIn).isEmpty()) {
-            mDishes.setVisibility(View.GONE);
+            dishes.setVisibility(View.GONE);
 
             String tagMessage = String.format(getString(R.string.tag_with_number), 0);
-            mTagButton.setText(tagMessage);
+            tagButton.setText(tagMessage);
         } else {
-            mNoDishes.setVisibility(View.GONE);
-            mDishTaggerAdapter = new DishTaggerAdapter(this, checkIn, mTagButton);
-            mDishes.setAdapter(mDishTaggerAdapter);
+            noDishes.setVisibility(View.GONE);
+            dishTaggerAdapter = new DishTaggerAdapter(this, checkIn, tagButton);
+            dishes.setAdapter(dishTaggerAdapter);
         }
     }
 
     @OnClick(R.id.tag)
     public void tagDishes() {
         Intent intent = new Intent();
-        if (mDishTaggerAdapter != null) {
-            ArrayList<Dish> taggedDishes = mDishTaggerAdapter.getChosenDishes();
+        if (dishTaggerAdapter != null) {
+            ArrayList<Dish> taggedDishes = dishTaggerAdapter.getChosenDishes();
             intent.putParcelableArrayListExtra(DISHES_KEY, taggedDishes);
         } else {
             intent.putParcelableArrayListExtra(DISHES_KEY, new ArrayList<Parcelable>());

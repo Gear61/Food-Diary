@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,8 +17,6 @@ import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
-import com.rey.material.widget.Button;
-import com.rey.material.widget.CheckBox;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -29,39 +28,39 @@ import butterknife.OnClick;
 
 public class DishTaggerAdapter extends BaseAdapter {
 
-    private ArrayList<Dish> mChosenDishes;
-    private Context mContext;
-    private List<Dish> mTaggingOptions;
-    private Drawable mDefaultThumbnail;
-    private Button mTagButton;
+    private ArrayList<Dish> chosenDishes;
+    private Context context;
+    private List<Dish> taggingOptions;
+    private Drawable defaultThumbnail;
+    private TextView tagButton;
 
-    public DishTaggerAdapter(Context context, CheckIn checkIn, Button tagButton) {
-        mChosenDishes = checkIn.getTaggedDishes();
-        mContext = context;
-        mTaggingOptions = DatabaseManager.get().getDishesDBManager().getTaggingSuggestions(checkIn);
-        mDefaultThumbnail = new IconDrawable(context, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
-        mTagButton = tagButton;
+    public DishTaggerAdapter(Context context, CheckIn checkIn, TextView tagButton) {
+        chosenDishes = checkIn.getTaggedDishes();
+        this.context = context;
+        taggingOptions = DatabaseManager.get().getDishesDBManager().getTaggingSuggestions(checkIn);
+        defaultThumbnail = new IconDrawable(context, IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
+        this.tagButton = tagButton;
 
         refreshTagButtonText();
     }
 
     private void refreshTagButtonText() {
-        String tagMessage = String.format(mContext.getString(R.string.tag_with_number), mChosenDishes.size());
-        mTagButton.setText(tagMessage);
+        String tagMessage = String.format(context.getString(R.string.tag_with_number), chosenDishes.size());
+        tagButton.setText(tagMessage);
     }
 
     public ArrayList<Dish> getChosenDishes() {
-        return mChosenDishes;
+        return chosenDishes;
     }
 
     @Override
     public int getCount() {
-        return mTaggingOptions.size();
+        return taggingOptions.size();
     }
 
     @Override
     public Dish getItem(int position) {
-        return mTaggingOptions.get(position);
+        return taggingOptions.get(position);
     }
 
     @Override
@@ -89,7 +88,7 @@ public class DishTaggerAdapter extends BaseAdapter {
 
             Picasso.get()
                     .load(dish.getUriString())
-                    .error(mDefaultThumbnail)
+                    .error(defaultThumbnail)
                     .fit()
                     .centerCrop()
                     .into(mDishPicture);
@@ -105,7 +104,8 @@ public class DishTaggerAdapter extends BaseAdapter {
                 mDishDescription.setVisibility(View.VISIBLE);
             }
 
-            mDishCheckbox.setCheckedImmediately(mChosenDishes.contains(dish));
+            mDishCheckbox.setChecked(chosenDishes.contains(dish));
+            mDishCheckbox.jumpDrawablesToCurrentState();
         }
 
         @OnClick(R.id.parent)
@@ -113,9 +113,9 @@ public class DishTaggerAdapter extends BaseAdapter {
             boolean newState = !mDishCheckbox.isChecked();
             mDishCheckbox.setChecked(newState);
             if (newState) {
-                mChosenDishes.add(getItem(mPosition));
+                chosenDishes.add(getItem(mPosition));
             } else {
-                mChosenDishes.remove(getItem(mPosition));
+                chosenDishes.remove(getItem(mPosition));
             }
             refreshTagButtonText();
         }
@@ -124,9 +124,9 @@ public class DishTaggerAdapter extends BaseAdapter {
         public void onCheckboxClicked() {
             boolean newState = mDishCheckbox.isChecked();
             if (newState) {
-                mChosenDishes.add(getItem(mPosition));
+                chosenDishes.add(getItem(mPosition));
             } else {
-                mChosenDishes.remove(getItem(mPosition));
+                chosenDishes.remove(getItem(mPosition));
             }
             refreshTagButtonText();
         }
@@ -135,7 +135,7 @@ public class DishTaggerAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         DishViewHolder holder;
         if (view == null) {
-            LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = vi.inflate(R.layout.dish_tagger_cell, parent, false);
             holder = new DishViewHolder(view);
             view.setTag(holder);
