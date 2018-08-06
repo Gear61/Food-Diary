@@ -61,33 +61,33 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     private final DateTimeAdder.Listener mDateTimeListener = new DateTimeAdder.Listener() {
         @Override
         public void onDateTimeChosen(long timeChosen) {
-            mDish.setTimeAdded(timeChosen);
-            mDateTimeText.setText(TimeUtils.getDefaultTimeText(timeChosen));
+            dish.setTimeAdded(timeChosen);
+            dateTimeText.setText(TimeUtils.getDefaultTimeText(timeChosen));
         }
     };
 
-    @BindView(R.id.parent) View mParent;
-    @BindView(R.id.dish_picture) ImageView mDishPicture;
-    @BindView(R.id.rating_widget) View mRatingLayout;
-    @BindView(R.id.dish_name_input) EditText mDishNameInput;
-    @BindView(R.id.base_restaurant_cell) View mRestaurantInfo;
-    @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
-    @BindView(R.id.restaurant_name) TextView mRestaurantName;
-    @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
-    @BindView(R.id.restaurant_categories) TextView mRestaurantCategories;
-    @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
-    @BindView(R.id.date_text) TextView mDateTimeText;
-    @BindView(R.id.dish_description_input) EditText mDishDescriptionInput;
+    @BindView(R.id.parent) View parent;
+    @BindView(R.id.dish_picture) ImageView dishPicture;
+    @BindView(R.id.rating_widget) View ratingLayout;
+    @BindView(R.id.dish_name_input) EditText dishNameInput;
+    @BindView(R.id.base_restaurant_cell) View restaurantInfo;
+    @BindView(R.id.restaurant_thumbnail) ImageView restaurantThumbnail;
+    @BindView(R.id.restaurant_name) TextView restaurantName;
+    @BindView(R.id.restaurant_address) TextView restaurantAddress;
+    @BindView(R.id.restaurant_categories) TextView restaurantCategories;
+    @BindView(R.id.choose_restaurant_prompt) View chooseRestaurantPrompt;
+    @BindView(R.id.date_text) TextView dateTimeText;
+    @BindView(R.id.dish_description_input) EditText dishDescriptionInput;
 
-    private Dish mDish;
-    private Dish mOriginalDish;
-    private Restaurant mRestaurant;
-    private RatingView mRatingView;
-    private MaterialDialog mLeaveDialog;
-    private DateTimeAdder mDateTimeAdder;
-    private boolean mNewDishMode;
-    private DishPhotoOptionsDialog mPhotoOptionsDialog;
-    private Uri mTakenPhotoUri;
+    private Dish dish;
+    private Dish originalDish;
+    private Restaurant restaurant;
+    private RatingView ratingView;
+    private MaterialDialog leaveDialog;
+    private DateTimeAdder dateTimeAdder;
+    private boolean newDishMode;
+    private DishPhotoOptionsDialog photoOptionsDialog;
+    private Uri takenPhotoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +96,9 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mRatingView = new RatingView(mRatingLayout);
-        mDateTimeAdder = new DateTimeAdder(getFragmentManager(), mDateTimeListener);
-        mLeaveDialog = new MaterialDialog.Builder(this)
+        ratingView = new RatingView(ratingLayout);
+        dateTimeAdder = new DateTimeAdder(getFragmentManager(), mDateTimeListener);
+        leaveDialog = new MaterialDialog.Builder(this)
                 .title(R.string.confirm_dish_exit)
                 .content(R.string.confirm_form_exit)
                 .negativeText(android.R.string.no)
@@ -112,55 +112,55 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                 })
                 .build();
 
-        mNewDishMode = getIntent().getBooleanExtra(NEW_DISH_KEY, false);
-        mPhotoOptionsDialog = new DishPhotoOptionsDialog(this, this);
+        newDishMode = getIntent().getBooleanExtra(NEW_DISH_KEY, false);
+        photoOptionsDialog = new DishPhotoOptionsDialog(this, this);
 
         // Adding a new dish
-        if (mNewDishMode) {
-            mDish = new Dish();
-            mDish.setTimeAdded(System.currentTimeMillis());
-            mDateTimeText.setText(TimeUtils.getDefaultTimeText(mDish.getTimeAdded()));
+        if (newDishMode) {
+            dish = new Dish();
+            dish.setTimeAdded(System.currentTimeMillis());
+            dateTimeText.setText(TimeUtils.getDefaultTimeText(dish.getTimeAdded()));
 
             String pictureUri = getIntent().getStringExtra(URI_KEY);
-            mDish.setUriString(pictureUri);
+            dish.setUriString(pictureUri);
 
             Restaurant autoFill = DatabaseManager.get().getCheckInsDBManager().getAutoFillRestaurant();
             if (autoFill == null) {
-                mRestaurantInfo.setVisibility(View.INVISIBLE);
-                mChooseRestaurantPrompt.setVisibility(View.VISIBLE);
+                restaurantInfo.setVisibility(View.INVISIBLE);
+                chooseRestaurantPrompt.setVisibility(View.VISIBLE);
             } else {
-                mRestaurant = autoFill;
+                restaurant = autoFill;
                 loadRestaurantInfo();
             }
         }
         // Editing an existing dish
         else {
-            mDish = getIntent().getParcelableExtra(DISH_KEY);
-            mRestaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(mDish.getRestaurantId());
+            dish = getIntent().getParcelableExtra(DISH_KEY);
+            restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(dish.getRestaurantId());
             loadDishInfo();
         }
 
-        mOriginalDish = new Dish(mDish);
+        originalDish = new Dish(dish);
         loadDishPhoto();
     }
 
     private void loadDishPhoto() {
         Picasso.get()
-                .load(mDish.getUriString())
+                .load(dish.getUriString())
                 .fit()
                 .centerCrop()
-                .into(mDishPicture);
+                .into(dishPicture);
     }
 
     @OnClick(R.id.dish_picture)
     public void onDishPhotoClicked() {
-        mPhotoOptionsDialog.show();
+        photoOptionsDialog.show();
     }
 
     @Override
     public void onShowFullPhoto() {
         Intent intent = new Intent(this, PictureFullViewActivity.class);
-        intent.putExtra(PictureFullViewActivity.IMAGE_PATH_KEY, mDish.getUriString());
+        intent.putExtra(PictureFullViewActivity.IMAGE_PATH_KEY, dish.getUriString());
         startActivity(intent);
         overridePendingTransition(0, 0);
     }
@@ -182,7 +182,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
 
         File photoFile = PictureUtils.createImageFile();
         if (photoFile != null) {
-            mTakenPhotoUri = FileProvider.getUriForFile(this,
+            takenPhotoUri = FileProvider.getUriForFile(this,
                     "com.randomappsinc.foodjournal.fileprovider",
                     photoFile);
 
@@ -194,11 +194,11 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                 String packageName = resolvedIntentInfo.activityInfo.packageName;
                 grantUriPermission(
                         packageName,
-                        mTakenPhotoUri,
+                        takenPhotoUri,
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
 
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakenPhotoUri);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, takenPhotoUri);
             startActivityForResult(takePictureIntent, CAMERA_SOURCE_CODE);
         } else {
             UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
@@ -234,42 +234,42 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     }
 
     private void loadDishInfo() {
-        mRatingView.loadRating(mDish.getRating());
-        mDishNameInput.setText(mDish.getTitle());
+        ratingView.loadRating(dish.getRating());
+        dishNameInput.setText(dish.getTitle());
         loadRestaurantInfo();
-        mDateTimeText.setText(TimeUtils.getDefaultTimeText(mDish.getTimeAdded()));
-        mDishDescriptionInput.setText(mDish.getDescription());
+        dateTimeText.setText(TimeUtils.getDefaultTimeText(dish.getTimeAdded()));
+        dishDescriptionInput.setText(dish.getDescription());
     }
 
     private void loadRestaurantInfo() {
-        mDish.setRestaurantId(mRestaurant.getId());
-        mDish.setRestaurantName(mRestaurant.getName());
+        dish.setRestaurantId(restaurant.getId());
+        dish.setRestaurantName(restaurant.getName());
 
         Drawable defaultThumbnail = new IconDrawable(
                 this,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
-        if (!mRestaurant.getImageUrl().isEmpty()) {
+        if (!restaurant.getImageUrl().isEmpty()) {
             Picasso.get()
-                    .load(mRestaurant.getImageUrl())
+                    .load(restaurant.getImageUrl())
                     .error(defaultThumbnail)
                     .fit().centerCrop()
-                    .into(mRestaurantThumbnail);
+                    .into(restaurantThumbnail);
         } else {
-            mRestaurantThumbnail.setImageDrawable(defaultThumbnail);
+            restaurantThumbnail.setImageDrawable(defaultThumbnail);
         }
-        mRestaurantName.setText(mRestaurant.getName());
-        mRestaurantAddress.setText(mRestaurant.getAddress());
-        if (mRestaurantInfo.getVisibility() != View.VISIBLE) {
-            mRestaurantInfo.setVisibility(View.VISIBLE);
+        restaurantName.setText(restaurant.getName());
+        restaurantAddress.setText(restaurant.getAddress());
+        if (restaurantInfo.getVisibility() != View.VISIBLE) {
+            restaurantInfo.setVisibility(View.VISIBLE);
         }
-        if (mRestaurant.getCategoriesListText().isEmpty()) {
-            mRestaurantCategories.setVisibility(View.GONE);
+        if (restaurant.getCategoriesListText().isEmpty()) {
+            restaurantCategories.setVisibility(View.GONE);
         } else {
-            mRestaurantCategories.setText(mRestaurant.getCategoriesListText());
-            mRestaurantCategories.setVisibility(View.VISIBLE);
+            restaurantCategories.setText(restaurant.getCategoriesListText());
+            restaurantCategories.setVisibility(View.VISIBLE);
         }
-        if (mChooseRestaurantPrompt.getVisibility() != View.GONE) {
-            mChooseRestaurantPrompt.setVisibility(View.INVISIBLE);
+        if (chooseRestaurantPrompt.getVisibility() != View.GONE) {
+            chooseRestaurantPrompt.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -281,7 +281,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
 
     @OnClick(R.id.date_text)
     public void selectDate() {
-        mDateTimeAdder.show(mDish.getTimeAdded());
+        dateTimeAdder.show(dish.getTimeAdded());
     }
 
     @Override
@@ -295,10 +295,10 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
             case CAMERA_SOURCE_CODE:
                 deleteOldPhoto();
                 revokeUriPermission(
-                        mTakenPhotoUri,
+                        takenPhotoUri,
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                String photoUriString = mTakenPhotoUri.toString();
-                mDish.setUriString(photoUriString);
+                String photoUriString = takenPhotoUri.toString();
+                dish.setUriString(photoUriString);
                 loadDishPhoto();
                 break;
             case GALLERY_SOURCE_CODE:
@@ -309,22 +309,22 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                     return;
                 }
                 String fileUri = Uri.fromFile(photoFile).toString();
-                mDish.setUriString(fileUri);
+                dish.setUriString(fileUri);
                 loadDishPhoto();
                 break;
             case RESTAURANT_SOURCE_CODE:
-                mRestaurant = data.getParcelableExtra(Constants.RESTAURANT_KEY);
+                restaurant = data.getParcelableExtra(Constants.RESTAURANT_KEY);
                 loadRestaurantInfo();
                 break;
         }
     }
 
     private void deleteOldPhoto() {
-        if (mNewDishMode) {
-            PictureUtils.deleteFileWithUri(mDish.getUriString());
+        if (newDishMode) {
+            PictureUtils.deleteFileWithUri(dish.getUriString());
         } else {
-            if (!mOriginalDish.getUriString().equals(mDish.getUriString())) {
-                PictureUtils.deleteFileWithUri(mDish.getUriString());
+            if (!originalDish.getUriString().equals(dish.getUriString())) {
+                PictureUtils.deleteFileWithUri(dish.getUriString());
             }
         }
     }
@@ -346,32 +346,32 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     }
 
     private void loadFormIntoDish() {
-        mDish.setTitle(mDishNameInput.getText().toString().trim());
-        mDish.setRating(mRatingView.getRating());
-        mDish.setDescription(mDishDescriptionInput.getText().toString().trim());
+        dish.setTitle(dishNameInput.getText().toString().trim());
+        dish.setRating(ratingView.getRating());
+        dish.setDescription(dishDescriptionInput.getText().toString().trim());
     }
 
     @OnClick(R.id.save)
     public void saveDish() {
-        String title = mDishNameInput.getText().toString().trim();
+        String title = dishNameInput.getText().toString().trim();
 
         if (title.isEmpty()) {
-            UIUtils.showSnackbar(mParent, getString(R.string.dish_title_needed));
+            UIUtils.showSnackbar(parent, getString(R.string.dish_title_needed));
             return;
         }
-        if (mRestaurant == null) {
-            UIUtils.showSnackbar(mParent, getString(R.string.dish_restaurant_needed));
+        if (restaurant == null) {
+            UIUtils.showSnackbar(parent, getString(R.string.dish_restaurant_needed));
             return;
         }
 
         loadFormIntoDish();
 
-        if (mNewDishMode) {
-            CheckIn checkIn = DatabaseManager.get().getCheckInsDBManager().getAutoTagCheckIn(mDish);
+        if (newDishMode) {
+            CheckIn checkIn = DatabaseManager.get().getCheckInsDBManager().getAutoTagCheckIn(dish);
             if (checkIn == null) {
                 String ask = String.format(
                         getString(R.string.auto_create_check_in),
-                        mDish.getRestaurantName());
+                        dish.getRestaurantName());
                 new MaterialDialog.Builder(this)
                         .cancelable(false)
                         .title(R.string.create_check_in)
@@ -381,11 +381,11 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                         .onAny(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                mDish.setTimeLastUpdated(System.currentTimeMillis());
+                                dish.setTimeLastUpdated(System.currentTimeMillis());
                                 if (which == DialogAction.POSITIVE) {
-                                    DatabaseManager.get().getCheckInsDBManager().autoCreateCheckIn(mDish);
+                                    DatabaseManager.get().getCheckInsDBManager().autoCreateCheckIn(dish);
                                 } else {
-                                    DatabaseManager.get().getDishesDBManager().addDish(mDish);
+                                    DatabaseManager.get().getDishesDBManager().addDish(dish);
                                 }
                                 setResult(Constants.DISH_ADDED);
                                 finish();
@@ -394,19 +394,19 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                         .show();
             } else {
                 // Auto-tag to recent check-in
-                mDish.setTimeLastUpdated(System.currentTimeMillis());
-                DatabaseManager.get().getDishesDBManager().addDish(mDish);
-                checkIn.addTaggedDish(mDish);
+                dish.setTimeLastUpdated(System.currentTimeMillis());
+                DatabaseManager.get().getDishesDBManager().addDish(dish);
+                checkIn.addTaggedDish(dish);
                 DatabaseManager.get().getCheckInsDBManager().updateCheckIn(checkIn);
                 setResult(Constants.DISH_ADDED);
                 finish();
             }
         } else {
-            if (!mDish.getUriString().equals(mOriginalDish.getUriString())) {
-                PictureUtils.deleteFileWithUri(mOriginalDish.getUriString());
+            if (!dish.getUriString().equals(originalDish.getUriString())) {
+                PictureUtils.deleteFileWithUri(originalDish.getUriString());
             }
 
-            DatabaseManager.get().getDishesDBManager().updateDish(mDish);
+            DatabaseManager.get().getDishesDBManager().updateDish(dish);
             setResult(Constants.DISH_EDITED);
             finish();
         }
@@ -415,8 +415,8 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     /** Return true if the confirm exit dialog is shown */
     public boolean confirmExit() {
         loadFormIntoDish();
-        if (mNewDishMode || mDish.hasChangedInForm(mOriginalDish)) {
-            mLeaveDialog.show();
+        if (newDishMode || dish.hasChangedInForm(originalDish)) {
+            leaveDialog.show();
             return true;
         } else {
             return false;

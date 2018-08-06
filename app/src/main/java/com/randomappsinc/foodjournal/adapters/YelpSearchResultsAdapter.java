@@ -23,26 +23,26 @@ import butterknife.ButterKnife;
 
 public class YelpSearchResultsAdapter extends BaseAdapter {
 
-    private List<Restaurant> mRestaurants = new ArrayList<>();
-    private Context mContext;
+    private List<Restaurant> restaurants = new ArrayList<>();
+    private Context context;
 
     public YelpSearchResultsAdapter(Context context) {
-        mContext = context;
+        this.context = context;
     }
 
     public void setRestaurants(List<Restaurant> restaurants) {
-        mRestaurants = restaurants;
+        this.restaurants = restaurants;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return mRestaurants.size();
+        return restaurants.size();
     }
 
     @Override
     public Restaurant getItem(int position) {
-        return mRestaurants.get(position);
+        return restaurants.get(position);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class YelpSearchResultsAdapter extends BaseAdapter {
             Restaurant restaurant = getItem(position);
 
             Drawable defaultThumbnail = new IconDrawable(
-                    mContext,
+                    context,
                     IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
             if (!restaurant.getImageUrl().isEmpty()) {
                 Picasso.get()
@@ -89,7 +89,7 @@ public class YelpSearchResultsAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         RestaurantViewHolder holder;
         if (view == null) {
-            LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = vi.inflate(R.layout.base_restaurant_cell, parent, false);
             holder = new RestaurantViewHolder(view);
             view.setTag(holder);

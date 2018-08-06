@@ -34,14 +34,14 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends StandardActivity {
 
-    @BindView(R.id.bottom_navigation) View mBottomNavigation;
-    @BindString(R.string.choose_image_from) String mChooseImageFrom;
+    @BindView(R.id.bottom_navigation) View bottomNavigation;
+    @BindString(R.string.choose_image_from) String chooseImageFrom;
 
-    private final BottomNavigationView.Listener mListener = new BottomNavigationView.Listener() {
+    private final BottomNavigationView.Listener bottomNavListener = new BottomNavigationView.Listener() {
         @Override
         public void onNavItemSelected(@IdRes int viewId) {
             UIUtils.hideKeyboard(MainActivity.this);
-            mNavigationController.onNavItemSelected(viewId);
+            navigationController.onNavItemSelected(viewId);
         }
 
         @Override
@@ -50,9 +50,9 @@ public class MainActivity extends StandardActivity {
         }
     };
 
-    private BottomNavigationView mBottomNavigationView;
-    private HomepageFragmentController mNavigationController;
-    private Uri mTakenPhotoUri;
+    private BottomNavigationView bottomNavigationView;
+    private HomepageFragmentController navigationController;
+    private Uri takenPhotoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +69,9 @@ public class MainActivity extends StandardActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mNavigationController = new HomepageFragmentController(getSupportFragmentManager(), R.id.container);
-        mBottomNavigationView = new BottomNavigationView(mBottomNavigation, mListener);
-        mNavigationController.loadHome();
+        navigationController = new HomepageFragmentController(getSupportFragmentManager(), R.id.container);
+        bottomNavigationView = new BottomNavigationView(bottomNavigation, bottomNavListener);
+        navigationController.loadHome();
 
         if (PreferencesManager.get().shouldAskForRating()) {
             showRatingPrompt();
@@ -116,7 +116,7 @@ public class MainActivity extends StandardActivity {
 
         File photoFile = PictureUtils.createImageFile();
         if (photoFile != null) {
-            mTakenPhotoUri = FileProvider.getUriForFile(this,
+            takenPhotoUri = FileProvider.getUriForFile(this,
                     "com.randomappsinc.foodjournal.fileprovider",
                     photoFile);
 
@@ -128,11 +128,11 @@ public class MainActivity extends StandardActivity {
                 String packageName = resolvedIntentInfo.activityInfo.packageName;
                 grantUriPermission(
                         packageName,
-                        mTakenPhotoUri,
+                        takenPhotoUri,
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
 
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTakenPhotoUri);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, takenPhotoUri);
             startActivityForResult(takePictureIntent, Constants.CAMERA_CODE);
         } else {
             UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
@@ -149,19 +149,19 @@ public class MainActivity extends StandardActivity {
         if (resultCode == Activity.RESULT_OK) {
             // Returning from picture taking
             revokeUriPermission(
-                    mTakenPhotoUri,
+                    takenPhotoUri,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             Intent cameraIntent = new Intent(this, DishFormActivity.class);
             cameraIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
-            cameraIntent.putExtra(DishFormActivity.URI_KEY, mTakenPhotoUri.toString());
+            cameraIntent.putExtra(DishFormActivity.URI_KEY, takenPhotoUri.toString());
             startActivityForResult(cameraIntent, 1);
         }
 
         if (resultCode == Constants.DISH_ADDED) {
             // Tab to dishes fragment and have the list pull in the new dish
-            mBottomNavigationView.onHomeClicked();
-            mNavigationController.refreshHomepageWithAddedDish();
+            bottomNavigationView.onHomeClicked();
+            navigationController.refreshHomepageWithAddedDish();
         }
     }
 

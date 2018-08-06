@@ -47,30 +47,30 @@ public class CheckInFormActivity extends StandardActivity {
     private final DateTimeAdder.Listener mDateTimeListener = new DateTimeAdder.Listener() {
         @Override
         public void onDateTimeChosen(long timeChosen) {
-            mCheckIn.setTimeAdded(timeChosen);
-            mDateTimeInput.setText(TimeUtils.getDefaultTimeText(timeChosen));
+            checkIn.setTimeAdded(timeChosen);
+            dateTimeInput.setText(TimeUtils.getDefaultTimeText(timeChosen));
         }
     };
 
-    @BindView(R.id.parent) View mParent;
-    @BindView(R.id.base_restaurant_cell) View mRestaurantInfo;
-    @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
-    @BindView(R.id.restaurant_name) TextView mRestaurantName;
-    @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
-    @BindView(R.id.restaurant_categories) TextView mRestaurantCategories;
-    @BindView(R.id.choose_restaurant_prompt) View mChooseRestaurantPrompt;
-    @BindView(R.id.experience_input) EditText mExperienceInput;
-    @BindView(R.id.date_input) TextView mDateTimeInput;
-    @BindView(R.id.tagged_dishes) RecyclerView mTaggedDishes;
+    @BindView(R.id.parent) View parent;
+    @BindView(R.id.base_restaurant_cell) View restaurantInfo;
+    @BindView(R.id.restaurant_thumbnail) ImageView restaurantThumbnail;
+    @BindView(R.id.restaurant_name) TextView restaurantName;
+    @BindView(R.id.restaurant_address) TextView restaurantAddress;
+    @BindView(R.id.restaurant_categories) TextView restaurantCategories;
+    @BindView(R.id.choose_restaurant_prompt) View chooseRestaurantPrompt;
+    @BindView(R.id.experience_input) EditText experienceInput;
+    @BindView(R.id.date_input) TextView dateTimeInput;
+    @BindView(R.id.tagged_dishes) RecyclerView taggedDishes;
 
-    private CheckIn mCheckIn;
-    private CheckIn mOriginalCheckIn;
-    private MaterialDialog mDeleteConfirmationDialog;
-    private MaterialDialog mLeaveDialog;
-    private boolean mAdderMode;
-    private DateTimeAdder mDateTimeAdder;
-    private DishGalleryAdapter mDishGalleryAdapter;
-    private List<Dish> mOriginallyTaggedDishes;
+    private CheckIn checkIn;
+    private CheckIn originalCheckIn;
+    private MaterialDialog deleteConfirmationDialog;
+    private MaterialDialog leaveDialog;
+    private boolean adderMode;
+    private DateTimeAdder dateTimeAdder;
+    private DishGalleryAdapter dishGalleryAdapter;
+    private List<Dish> originallyTaggedDishes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +79,13 @@ public class CheckInFormActivity extends StandardActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mDateTimeAdder = new DateTimeAdder(getFragmentManager(), mDateTimeListener);
+        dateTimeAdder = new DateTimeAdder(getFragmentManager(), mDateTimeListener);
 
-        mAdderMode = getIntent().getBooleanExtra(ADDER_MODE_KEY, false);
+        adderMode = getIntent().getBooleanExtra(ADDER_MODE_KEY, false);
 
-        if (mAdderMode) {
-            mCheckIn = new CheckIn();
-            mCheckIn.setTimeAdded(System.currentTimeMillis());
+        if (adderMode) {
+            checkIn = new CheckIn();
+            checkIn.setTimeAdded(System.currentTimeMillis());
 
             String restaurantId = getIntent().getStringExtra(Constants.RESTAURANT_ID_KEY);
             if (restaurantId != null) {
@@ -93,18 +93,18 @@ public class CheckInFormActivity extends StandardActivity {
                 loadRestaurantInfo(restaurant);
             }
         } else {
-            mCheckIn = getIntent().getParcelableExtra(CHECK_IN_KEY);
+            checkIn = getIntent().getParcelableExtra(CHECK_IN_KEY);
             Restaurant restaurant = DatabaseManager.get()
                     .getRestaurantsDBManager()
-                    .getRestaurant(mCheckIn.getRestaurantId());
+                    .getRestaurant(checkIn.getRestaurantId());
             loadRestaurantInfo(restaurant);
-            mExperienceInput.setText(mCheckIn.getMessage());
+            experienceInput.setText(checkIn.getMessage());
         }
-        mOriginalCheckIn = new CheckIn(mCheckIn);
+        originalCheckIn = new CheckIn(checkIn);
 
-        mDateTimeInput.setText(TimeUtils.getDefaultTimeText(mCheckIn.getTimeAdded()));
+        dateTimeInput.setText(TimeUtils.getDefaultTimeText(checkIn.getTimeAdded()));
 
-        mDeleteConfirmationDialog = new MaterialDialog.Builder(this)
+        deleteConfirmationDialog = new MaterialDialog.Builder(this)
                 .title(R.string.check_in_delete_title)
                 .content(R.string.check_in_delete_content)
                 .negativeText(android.R.string.no)
@@ -112,14 +112,14 @@ public class CheckInFormActivity extends StandardActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        DatabaseManager.get().getCheckInsDBManager().deleteCheckIn(mCheckIn);
+                        DatabaseManager.get().getCheckInsDBManager().deleteCheckIn(checkIn);
                         setResult(CheckInsFragment.DELETED_RESULT);
                         finish();
                     }
                 })
                 .build();
 
-        mLeaveDialog = new MaterialDialog.Builder(this)
+        leaveDialog = new MaterialDialog.Builder(this)
                 .title(R.string.confirm_check_in_exit)
                 .content(R.string.confirm_form_exit)
                 .negativeText(android.R.string.no)
@@ -132,15 +132,15 @@ public class CheckInFormActivity extends StandardActivity {
                 })
                 .build();
 
-        mDishGalleryAdapter = new DishGalleryAdapter(this);
-        mDishGalleryAdapter.setDishes(mCheckIn.getTaggedDishes());
-        mTaggedDishes.setAdapter(mDishGalleryAdapter);
-        mOriginallyTaggedDishes = mCheckIn.getTaggedDishes();
+        dishGalleryAdapter = new DishGalleryAdapter(this);
+        dishGalleryAdapter.setDishes(checkIn.getTaggedDishes());
+        taggedDishes.setAdapter(dishGalleryAdapter);
+        originallyTaggedDishes = checkIn.getTaggedDishes();
     }
 
     private void loadRestaurantInfo(Restaurant restaurant) {
-        mCheckIn.setRestaurantId(restaurant.getId());
-        mCheckIn.setRestaurantName(restaurant.getName());
+        checkIn.setRestaurantId(restaurant.getId());
+        checkIn.setRestaurantName(restaurant.getName());
 
         Drawable defaultThumbnail = new IconDrawable(
                 this,
@@ -150,23 +150,23 @@ public class CheckInFormActivity extends StandardActivity {
                     .load(restaurant.getImageUrl())
                     .error(defaultThumbnail)
                     .fit().centerCrop()
-                    .into(mRestaurantThumbnail);
+                    .into(restaurantThumbnail);
         } else {
-            mRestaurantThumbnail.setImageDrawable(defaultThumbnail);
+            restaurantThumbnail.setImageDrawable(defaultThumbnail);
         }
-        mRestaurantName.setText(restaurant.getName());
-        mRestaurantAddress.setText(restaurant.getAddress());
-        if (mRestaurantInfo.getVisibility() != View.VISIBLE) {
-            mRestaurantInfo.setVisibility(View.VISIBLE);
+        restaurantName.setText(restaurant.getName());
+        restaurantAddress.setText(restaurant.getAddress());
+        if (restaurantInfo.getVisibility() != View.VISIBLE) {
+            restaurantInfo.setVisibility(View.VISIBLE);
         }
         if (restaurant.getCategoriesListText().isEmpty()) {
-            mRestaurantCategories.setVisibility(View.GONE);
+            restaurantCategories.setVisibility(View.GONE);
         } else {
-            mRestaurantCategories.setText(restaurant.getCategoriesListText());
-            mRestaurantCategories.setVisibility(View.VISIBLE);
+            restaurantCategories.setText(restaurant.getCategoriesListText());
+            restaurantCategories.setVisibility(View.VISIBLE);
         }
-        if (mChooseRestaurantPrompt.getVisibility() != View.GONE) {
-            mChooseRestaurantPrompt.setVisibility(View.INVISIBLE);
+        if (chooseRestaurantPrompt.getVisibility() != View.GONE) {
+            chooseRestaurantPrompt.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -190,47 +190,47 @@ public class CheckInFormActivity extends StandardActivity {
                 break;
             case DISH_TAGGING_CODE:
                 ArrayList<Dish> dishes = data.getParcelableArrayListExtra(DishTaggerActivity.DISHES_KEY);
-                mCheckIn.setTaggedDishes(dishes);
-                mDishGalleryAdapter.setDishes(mCheckIn.getTaggedDishes());
+                checkIn.setTaggedDishes(dishes);
+                dishGalleryAdapter.setDishes(checkIn.getTaggedDishes());
                 break;
         }
     }
 
     @OnClick(R.id.date_input)
     public void setDate() {
-        mDateTimeAdder.show(mCheckIn.getTimeAdded());
+        dateTimeAdder.show(checkIn.getTimeAdded());
     }
 
     @OnClick(R.id.tag_dish)
     public void tagDish() {
-        if (mCheckIn.getRestaurantId() == null) {
-            UIUtils.showSnackbar(mParent, getString(R.string.check_in_location_needed));
+        if (checkIn.getRestaurantId() == null) {
+            UIUtils.showSnackbar(parent, getString(R.string.check_in_location_needed));
             return;
         }
 
         Intent intent = new Intent(this, DishTaggerActivity.class);
-        intent.putExtra(CHECK_IN_KEY, mCheckIn);
+        intent.putExtra(CHECK_IN_KEY, checkIn);
         startActivityForResult(intent, DISH_TAGGING_CODE);
     }
 
     @OnClick(R.id.save)
     public void onCheckInSaved() {
-        if (mCheckIn.getRestaurantId() == null) {
-            UIUtils.showSnackbar(mParent, getString(R.string.check_in_location_needed));
+        if (checkIn.getRestaurantId() == null) {
+            UIUtils.showSnackbar(parent, getString(R.string.check_in_location_needed));
             return;
         }
 
-        mCheckIn.setMessage(mExperienceInput.getText().toString().trim());
-        if (mAdderMode) {
-            DatabaseManager.get().getCheckInsDBManager().addCheckIn(mCheckIn, false);
+        checkIn.setMessage(experienceInput.getText().toString().trim());
+        if (adderMode) {
+            DatabaseManager.get().getCheckInsDBManager().addCheckIn(checkIn, false);
             setResult(CheckInsFragment.ADDED_RESULT);
         } else {
-            DatabaseManager.get().getCheckInsDBManager().updateCheckIn(mCheckIn);
+            DatabaseManager.get().getCheckInsDBManager().updateCheckIn(checkIn);
 
             List<Dish> dishesToUntag = new ArrayList<>();
             // Untag dishes that were originally in the check-in but now aren't
-            for (Dish originallyTaggedDish : mOriginallyTaggedDishes) {
-                if (!mCheckIn.getTaggedDishes().contains(originallyTaggedDish)) {
+            for (Dish originallyTaggedDish : originallyTaggedDishes) {
+                if (!checkIn.getTaggedDishes().contains(originallyTaggedDish)) {
                     dishesToUntag.add(originallyTaggedDish);
                 }
             }
@@ -244,9 +244,9 @@ public class CheckInFormActivity extends StandardActivity {
     }
 
     public boolean showConfirmExitDialog() {
-        mCheckIn.setMessage(mExperienceInput.getText().toString().trim());
-        if (mCheckIn.hasChangedFromForm(mOriginalCheckIn)) {
-            mLeaveDialog.show();
+        checkIn.setMessage(experienceInput.getText().toString().trim());
+        if (checkIn.hasChangedFromForm(originalCheckIn)) {
+            leaveDialog.show();
             return true;
         }
         return false;
@@ -261,7 +261,7 @@ public class CheckInFormActivity extends StandardActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mAdderMode) {
+        if (!adderMode) {
             getMenuInflater().inflate(R.menu.content_menu, menu);
             UIUtils.loadActionBarIcon(menu, R.id.delete, IoniconsIcons.ion_android_delete, this);
         }
@@ -274,7 +274,7 @@ public class CheckInFormActivity extends StandardActivity {
             case android.R.id.home:
                 return showConfirmExitDialog() || super.onOptionsItemSelected(item);
             case R.id.delete:
-                mDeleteConfirmationDialog.show();
+                deleteConfirmationDialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
