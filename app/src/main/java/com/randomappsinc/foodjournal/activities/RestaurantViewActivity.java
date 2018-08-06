@@ -34,15 +34,15 @@ public class RestaurantViewActivity extends StandardActivity {
 
     public static final String RESTAURANT_KEY = "restaurant";
 
-    @BindView(R.id.restaurant_thumbnail) ImageView mThumbnail;
-    @BindView(R.id.restaurant_name) TextView mName;
-    @BindView(R.id.restaurant_address) TextView mAddress;
-    @BindView(R.id.restaurant_categories) TextView mCategories;
-    @BindView(R.id.tab_layout) TabLayout mRestaurantOptions;
-    @BindView(R.id.view_pager) ViewPager mOptionsPager;
+    @BindView(R.id.restaurant_thumbnail) ImageView thumbnail;
+    @BindView(R.id.restaurant_name) TextView name;
+    @BindView(R.id.restaurant_address) TextView address;
+    @BindView(R.id.restaurant_categories) TextView categories;
+    @BindView(R.id.tab_layout) TabLayout restaurantOptions;
+    @BindView(R.id.view_pager) ViewPager optionsPager;
 
-    private Restaurant mRestaurant;
-    private MaterialDialog mDeleteConfirmationDialog;
+    private Restaurant restaurant;
+    private MaterialDialog deleteConfirmationDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,45 +52,45 @@ public class RestaurantViewActivity extends StandardActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState != null) {
-            mRestaurant = savedInstanceState.getParcelable(Constants.RESTAURANT_KEY);
+            restaurant = savedInstanceState.getParcelable(Constants.RESTAURANT_KEY);
         } else if (getIntent().getData() != null) {
             // Coming from here an implicit intent via clicking on a dish title
             String path = getIntent().getData().getPath();
 
             // Remove the / that starts the path
             String restaurantId = path.substring(1);
-            mRestaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(restaurantId);
+            restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(restaurantId);
         } else {
-            mRestaurant = getIntent().getParcelableExtra(RESTAURANT_KEY);
+            restaurant = getIntent().getParcelableExtra(RESTAURANT_KEY);
         }
 
-        RestClient.getInstance().updateRestaurantInfo(mRestaurant);
+        RestClient.getInstance().updateRestaurantInfo(restaurant);
 
         Drawable defaultThumbnail = new IconDrawable(
                 this,
                 IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
-        if (!mRestaurant.getImageUrl().isEmpty()) {
+        if (!restaurant.getImageUrl().isEmpty()) {
             Picasso.get()
-                    .load(mRestaurant.getImageUrl())
+                    .load(restaurant.getImageUrl())
                     .error(defaultThumbnail)
                     .fit().centerCrop()
-                    .into(mThumbnail);
+                    .into(thumbnail);
         } else {
-            mThumbnail.setImageDrawable(defaultThumbnail);
+            thumbnail.setImageDrawable(defaultThumbnail);
         }
-        mName.setText(mRestaurant.getName());
-        mAddress.setText(mRestaurant.getAddress());
-        if (mRestaurant.getCategoriesListText().isEmpty()) {
-            mCategories.setVisibility(View.GONE);
+        name.setText(restaurant.getName());
+        address.setText(restaurant.getAddress());
+        if (restaurant.getCategoriesListText().isEmpty()) {
+            categories.setVisibility(View.GONE);
         } else {
-            mCategories.setText(mRestaurant.getCategoriesListText());
-            mCategories.setVisibility(View.VISIBLE);
+            categories.setText(restaurant.getCategoriesListText());
+            categories.setVisibility(View.VISIBLE);
         }
 
-        mOptionsPager.setAdapter(new RestaurantTabsAdapter(getSupportFragmentManager(), mRestaurant.getId()));
-        mRestaurantOptions.setupWithViewPager(mOptionsPager);
+        optionsPager.setAdapter(new RestaurantTabsAdapter(getSupportFragmentManager(), restaurant.getId()));
+        restaurantOptions.setupWithViewPager(optionsPager);
 
-        mDeleteConfirmationDialog = new MaterialDialog.Builder(this)
+        deleteConfirmationDialog = new MaterialDialog.Builder(this)
                 .title(R.string.confirm_restaurant_deletion_title)
                 .content(R.string.confirm_restaurant_deletion)
                 .negativeText(android.R.string.no)
@@ -98,7 +98,7 @@ public class RestaurantViewActivity extends StandardActivity {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        DatabaseManager.get().getRestaurantsDBManager().deleteRestaurant(mRestaurant);
+                        DatabaseManager.get().getRestaurantsDBManager().deleteRestaurant(restaurant);
                         UIUtils.showToast(R.string.restaurant_deleted, Toast.LENGTH_LONG);
                         finish();
                     }
@@ -108,19 +108,19 @@ public class RestaurantViewActivity extends StandardActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(Constants.RESTAURANT_KEY, mRestaurant);
+        outState.putParcelable(Constants.RESTAURANT_KEY, restaurant);
         super.onSaveInstanceState(outState);
     }
 
     private void navigateToRestaurant() {
-        String mapUri = "google.navigation:q=" + mRestaurant.getAddress() + " " + mRestaurant.getName();
+        String mapUri = "google.navigation:q=" + restaurant.getAddress() + " " + restaurant.getName();
         startActivity(Intent.createChooser(
                 new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(mapUri)),
                 getString(R.string.navigate_with)));
     }
 
     private void callRestaurant() {
-        String phoneUri = "tel:" + mRestaurant.getPhoneNumber();
+        String phoneUri = "tel:" + restaurant.getPhoneNumber();
         startActivity(Intent.createChooser(
                 new Intent(Intent.ACTION_DIAL, Uri.parse(phoneUri)),
                 getString(R.string.call_with)));
@@ -145,7 +145,7 @@ public class RestaurantViewActivity extends StandardActivity {
                 callRestaurant();
                 return true;
             case R.id.delete:
-                mDeleteConfirmationDialog.show();
+                deleteConfirmationDialog.show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

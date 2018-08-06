@@ -25,36 +25,36 @@ import butterknife.ButterKnife;
 
 public class CheckInsAdapter extends BaseAdapter {
 
-    private List<CheckIn> mCheckIns;
-    private Context mContext;
-    private TextView mNoResults;
-    private String mRestaurantId;
+    private List<CheckIn> checkIns;
+    private Context context;
+    private TextView noResults;
+    private String restaurantId;
 
     public CheckInsAdapter(Context context, TextView noResults, String restaurantId) {
-        mContext = context;
-        mNoResults = noResults;
-        mRestaurantId = restaurantId;
+        this.context = context;
+        this.noResults = noResults;
+        this.restaurantId = restaurantId;
         resyncWithDB();
     }
 
     public void resyncWithDB() {
-        mCheckIns = DatabaseManager.get().getCheckInsDBManager().getCheckInsForRestaurant(mRestaurantId);
-        if (mCheckIns.isEmpty()) {
-            mNoResults.setVisibility(View.VISIBLE);
+        checkIns = DatabaseManager.get().getCheckInsDBManager().getCheckInsForRestaurant(restaurantId);
+        if (checkIns.isEmpty()) {
+            noResults.setVisibility(View.VISIBLE);
         } else {
-            mNoResults.setVisibility(View.GONE);
+            noResults.setVisibility(View.GONE);
         }
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return mCheckIns.size();
+        return checkIns.size();
     }
 
     @Override
     public CheckIn getItem(int position) {
-        return mCheckIns.get(position);
+        return checkIns.get(position);
     }
 
     @Override
@@ -64,12 +64,12 @@ public class CheckInsAdapter extends BaseAdapter {
 
     public class CheckInViewHolder {
 
-        @BindView(R.id.restaurant_thumbnail) ImageView mRestaurantThumbnail;
-        @BindView(R.id.restaurant_name) TextView mRestaurantName;
-        @BindView(R.id.restaurant_address) TextView mRestaurantAddress;
-        @BindView(R.id.check_in_date) TextView mCheckInDate;
+        @BindView(R.id.restaurant_thumbnail) ImageView restaurantThumbnail;
+        @BindView(R.id.restaurant_name) TextView restaurantName;
+        @BindView(R.id.restaurant_address) TextView restaurantAddress;
+        @BindView(R.id.check_in_date) TextView checkInDate;
         @BindView(R.id.num_dishes) TextView numDishes;
-        @BindView(R.id.check_in_message) TextView mCheckInMessage;
+        @BindView(R.id.check_in_message) TextView checkInMessage;
 
         public CheckInViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -80,7 +80,7 @@ public class CheckInsAdapter extends BaseAdapter {
 
             Restaurant restaurant = DatabaseManager.get().getRestaurantsDBManager().getRestaurant(checkIn.getRestaurantId());
             Drawable defaultThumbnail = new IconDrawable(
-                    mContext,
+                    context,
                     IoniconsIcons.ion_android_restaurant).colorRes(R.color.dark_gray);
             if (!restaurant.getImageUrl().isEmpty()) {
                 Picasso.get()
@@ -88,25 +88,25 @@ public class CheckInsAdapter extends BaseAdapter {
                         .error(defaultThumbnail)
                         .fit()
                         .centerCrop()
-                        .into(mRestaurantThumbnail);
+                        .into(restaurantThumbnail);
             } else {
-                mRestaurantThumbnail.setImageDrawable(defaultThumbnail);
+                restaurantThumbnail.setImageDrawable(defaultThumbnail);
             }
-            mRestaurantName.setText(restaurant.getName());
-            mRestaurantAddress.setText(restaurant.getAddress());
-            mCheckInDate.setText(TimeUtils.getDefaultTimeText(checkIn.getTimeAdded()));
+            restaurantName.setText(restaurant.getName());
+            restaurantAddress.setText(restaurant.getAddress());
+            checkInDate.setText(TimeUtils.getDefaultTimeText(checkIn.getTimeAdded()));
             numDishes.setText(checkIn.getTaggedDishes().size() == 1
-                    ? mContext.getString(R.string.one_dish_attached)
+                    ? context.getString(R.string.one_dish_attached)
                     : String.format(
-                        mContext.getString(R.string.num_dishes_attached),
+                        context.getString(R.string.num_dishes_attached),
                         checkIn.getTaggedDishes().size()));
 
             if (checkIn.getMessage().isEmpty()) {
-                mCheckInMessage.setVisibility(View.GONE);
+                checkInMessage.setVisibility(View.GONE);
             } else {
                 String quotedMessage = "\"" + checkIn.getMessage() + "\"";
-                mCheckInMessage.setText(quotedMessage);
-                mCheckInMessage.setVisibility(View.VISIBLE);
+                checkInMessage.setText(quotedMessage);
+                checkInMessage.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -114,7 +114,7 @@ public class CheckInsAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         CheckInViewHolder holder;
         if (view == null) {
-            LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = vi.inflate(R.layout.check_in_cell, parent, false);
             holder = new CheckInViewHolder(view);
             view.setTag(holder);

@@ -13,58 +13,58 @@ public class DateTimeAdder {
         void onDateTimeChosen(long timeChosen);
     }
 
-    private FragmentManager mFragmentManager;
-    private Calendar mCalendar;
-    private Listener mListener;
-    private DatePickerFragment mDatePickerFragment;
-    private TimePickerFragment mTimePickerFragment;
-    private long mCurrentTime;
+    private FragmentManager fragmentManager;
+    private Calendar calendar;
+    private Listener listener;
+    private DatePickerFragment datePickerFragment;
+    private TimePickerFragment timePickerFragment;
+    private long currentTime;
 
-    private final DatePickerFragment.Listener mDateListener = new DatePickerFragment.Listener() {
+    private final DatePickerFragment.Listener dateListener = new DatePickerFragment.Listener() {
         @Override
         public void onDateChosen(int year, int month, int day) {
-            mDatePickerFragment.setListener(null);
-            mCalendar.set(Calendar.YEAR, year);
-            mCalendar.set(Calendar.MONTH, month);
-            mCalendar.set(Calendar.DAY_OF_MONTH, day);
-            mTimePickerFragment.show(mFragmentManager, null);
+            datePickerFragment.setListener(null);
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            timePickerFragment.show(fragmentManager, null);
         }
 
         @Override
         public long getCurrentTime() {
-            return mCurrentTime;
+            return currentTime;
         }
     };
 
-    private final TimePickerFragment.Listener mTimeListener = new TimePickerFragment.Listener() {
+    private final TimePickerFragment.Listener timeListener = new TimePickerFragment.Listener() {
         @Override
         public void onTimeChosen(int hourOfDay, int minute) {
-            mTimePickerFragment.setListener(null);
-            mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            mCalendar.set(Calendar.MINUTE, minute);
-            mListener.onDateTimeChosen(mCalendar.getTimeInMillis());
+            timePickerFragment.setListener(null);
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
+            listener.onDateTimeChosen(calendar.getTimeInMillis());
         }
 
         @Override
         public long getCurrentTime() {
-            return mCurrentTime;
+            return currentTime;
         }
     };
 
     public DateTimeAdder(FragmentManager fragmentManager, Listener listener) {
-        mFragmentManager = fragmentManager;
-        mCalendar = Calendar.getInstance();
+        this.fragmentManager = fragmentManager;
+        calendar = Calendar.getInstance();
 
-        mListener = listener;
+        this.listener = listener;
 
-        mDatePickerFragment = new DatePickerFragment();
-        mTimePickerFragment = new TimePickerFragment();
+        datePickerFragment = new DatePickerFragment();
+        timePickerFragment = new TimePickerFragment();
     }
 
     public void show(long currentTime) {
-        mCurrentTime = currentTime;
-        mDatePickerFragment.setListener(mDateListener);
-        mTimePickerFragment.setListener(mTimeListener);
-        mDatePickerFragment.show(mFragmentManager, null);
+        this.currentTime = currentTime;
+        datePickerFragment.setListener(dateListener);
+        timePickerFragment.setListener(timeListener);
+        datePickerFragment.show(fragmentManager, null);
     }
 }

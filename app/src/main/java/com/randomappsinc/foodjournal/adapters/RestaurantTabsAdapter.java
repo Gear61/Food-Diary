@@ -11,22 +11,22 @@ import com.randomappsinc.foodjournal.utils.MyApplication;
 
 public class RestaurantTabsAdapter extends FragmentPagerAdapter {
 
-    private String[] mRestaurantTabs;
-    private String mRestaurantId;
+    private String[] restaurantTabs;
+    private String restaurantId;
 
     public RestaurantTabsAdapter (FragmentManager fragmentManager, String restaurantId) {
         super(fragmentManager);
-        mRestaurantTabs = MyApplication.getAppContext().getResources().getStringArray(R.array.restaurant_tabs);
-        mRestaurantId = restaurantId;
+        restaurantTabs = MyApplication.getAppContext().getResources().getStringArray(R.array.restaurant_tabs);
+        this.restaurantId = restaurantId;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return RestaurantDishesFragment.newInstance(mRestaurantId);
+                return RestaurantDishesFragment.newInstance(restaurantId);
             case 1:
-                return CheckInsFragment.newInstance(mRestaurantId);
+                return CheckInsFragment.newInstance(restaurantId);
             default:
                 return null;
         }
@@ -34,11 +34,11 @@ public class RestaurantTabsAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return mRestaurantTabs.length;
+        return restaurantTabs.length;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mRestaurantTabs[position];
+        return restaurantTabs[position];
     }
 }

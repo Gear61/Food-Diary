@@ -14,12 +14,12 @@ import butterknife.ButterKnife;
 
 public class IconItemsAdapter extends BaseAdapter {
 
-    private Context mContext;
+    private Context context;
     private String[] itemNames;
     private String[] itemIcons;
 
     public IconItemsAdapter(Context context, int optionIds, int iconIds) {
-        this.mContext = context;
+        this.context = context;
         this.itemNames = context.getResources().getStringArray(optionIds);
         this.itemIcons = context.getResources().getStringArray(iconIds);
     }
@@ -57,7 +57,7 @@ public class IconItemsAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         IconItemViewHolder holder;
         if (view == null) {
-            LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = vi.inflate(R.layout.icon_item_cell, parent, false);
             holder = new IconItemViewHolder(view);
             view.setTag(holder);

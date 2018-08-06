@@ -23,17 +23,17 @@ public class RestClient {
         void processResults(List<Restaurant> results);
     }
 
-    private static RestClient mInstance;
-    private YelpService mYelpService;
-    private Set<RestaurantResultsHandler> mRestaurantResultsHandlers;
-    private Handler mHandler;
-    private Call<RestaurantSearchResults> mCurrentRestaurantsCall;
+    private static RestClient instances;
+    private YelpService yelpService;
+    private Set<RestaurantResultsHandler> restaurantResultsHandlers;
+    private Handler handler;
+    private Call<RestaurantSearchResults> currentRestaurantsCall;
 
     public static RestClient getInstance() {
-        if (mInstance == null) {
-            mInstance = new RestClient();
+        if (instances == null) {
+            instances = new RestClient();
         }
-        return mInstance;
+        return instances;
     }
 
     private RestClient() {
@@ -47,56 +47,56 @@ public class RestClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        mYelpService = retrofit.create(YelpService.class);
-        mRestaurantResultsHandlers = new HashSet<>();
+        yelpService = retrofit.create(YelpService.class);
+        restaurantResultsHandlers = new HashSet<>();
         HandlerThread backgroundThread = new HandlerThread("");
         backgroundThread.start();
-        mHandler = new Handler(backgroundThread.getLooper());
+        handler = new Handler(backgroundThread.getLooper());
     }
 
     public void registerRestaurantResultsHandler(RestaurantResultsHandler handler) {
-        mRestaurantResultsHandlers.add(handler);
+        restaurantResultsHandlers.add(handler);
     }
 
     public void unregisterRestaurantResultsHandler(RestaurantResultsHandler handler) {
-        mRestaurantResultsHandlers.remove(handler);
+        restaurantResultsHandlers.remove(handler);
     }
 
     public void fetchRestaurants(final String searchTerm, final String location) {
-        mHandler.post(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
-                if (mCurrentRestaurantsCall != null) {
-                    mCurrentRestaurantsCall.cancel();
+                if (currentRestaurantsCall != null) {
+                    currentRestaurantsCall.cancel();
                 }
-                mCurrentRestaurantsCall = mYelpService.fetchRestaurants(
+                currentRestaurantsCall = yelpService.fetchRestaurants(
                         searchTerm,
                         location,
                         ApiConstants.DEFAULT_NUM_RESTAURANTS,
                         searchTerm.isEmpty() ? ApiConstants.DISTANCE : ApiConstants.BEST_MATCH);
-                mCurrentRestaurantsCall.enqueue(new FetchRestaurantsCallback());
+                currentRestaurantsCall.enqueue(new FetchRestaurantsCallback());
             }
         });
     }
 
     public void processResults(List<Restaurant> restaurants) {
-        for (RestaurantResultsHandler handler : mRestaurantResultsHandlers) {
+        for (RestaurantResultsHandler handler : restaurantResultsHandlers) {
             handler.processResults(restaurants);
         }
     }
 
     public void cancelRestaurantFetch() {
-        mHandler.post(new Runnable() {
+        handler.post(new Runnable() {
             @Override
             public void run() {
-                if (mCurrentRestaurantsCall != null) {
-                    mCurrentRestaurantsCall.cancel();
+                if (currentRestaurantsCall != null) {
+                    currentRestaurantsCall.cancel();
                 }
             }
         });
     }
 
     public void updateRestaurantInfo(Restaurant restaurant) {
-        mYelpService.fetchRestaurantInfo(restaurant.getId()).enqueue(new FetchRestaurantInfoCallback());
+        yelpService.fetchRestaurantInfo(restaurant.getId()).enqueue(new FetchRestaurantInfoCallback());
     }
 }
