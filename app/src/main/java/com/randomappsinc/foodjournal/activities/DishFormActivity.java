@@ -369,29 +369,10 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
         if (newDishMode) {
             CheckIn checkIn = DatabaseManager.get().getCheckInsDBManager().getAutoTagCheckIn(dish);
             if (checkIn == null) {
-                String ask = String.format(
-                        getString(R.string.auto_create_check_in),
-                        dish.getRestaurantName());
-                new MaterialDialog.Builder(this)
-                        .cancelable(false)
-                        .title(R.string.create_check_in)
-                        .content(ask)
-                        .positiveText(R.string.yes)
-                        .negativeText(R.string.no)
-                        .onAny(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dish.setTimeLastUpdated(System.currentTimeMillis());
-                                if (which == DialogAction.POSITIVE) {
-                                    DatabaseManager.get().getCheckInsDBManager().autoCreateCheckIn(dish);
-                                } else {
-                                    DatabaseManager.get().getDishesDBManager().addDish(dish);
-                                }
-                                setResult(Constants.DISH_ADDED);
-                                finish();
-                            }
-                        })
-                        .show();
+                dish.setTimeLastUpdated(System.currentTimeMillis());
+                DatabaseManager.get().getCheckInsDBManager().autoCreateCheckIn(dish);
+                setResult(Constants.DISH_ADDED);
+                finish();
             } else {
                 // Auto-tag to recent check-in
                 dish.setTimeLastUpdated(System.currentTimeMillis());
