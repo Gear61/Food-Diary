@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentRelativeLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="ContentDescription, RtlHardcoded, SpUsage">
+    tools:ignore="ContentDescription, RtlHardcoded, SpUsage, RtlSymmetry">
 
     <RelativeLayout
         android:id="@+id/header"
@@ -46,14 +45,12 @@
             android:textSize="15dp"/>
     </RelativeLayout>
 
-    <ImageView
+    <com.randomappsinc.foodjournal.views.SquareImageView
         android:id="@+id/dish_picture"
         android:layout_marginTop="4dp"
         android:layout_below="@id/header"
         android:layout_height="0dp"
-        android:layout_width="0dp"
-        app:layout_aspectRatio="100%"
-        app:layout_widthPercent="100%"/>
+        android:layout_width="match_parent"/>
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/dish_rating_text"
@@ -94,4 +91,4 @@
         android:paddingRight="@dimen/dish_cell_spacing"
         android:textColor="@color/gray"
         android:textSize="18dp"/>
-</android.support.percent.PercentRelativeLayout>
+</RelativeLayout>

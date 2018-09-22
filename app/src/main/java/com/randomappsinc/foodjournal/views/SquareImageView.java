@@ -20,7 +20,7 @@ public class SquareImageView extends AppCompatImageView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int side = getDefaultSize(getSuggestedMinimumWidth(),widthMeasureSpec);
+        int side = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         setMeasuredDimension(side, side);
     }
 

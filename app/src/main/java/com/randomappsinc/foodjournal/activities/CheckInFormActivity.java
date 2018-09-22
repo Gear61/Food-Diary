@@ -82,7 +82,6 @@ public class CheckInFormActivity extends StandardActivity {
         dateTimeAdder = new DateTimeAdder(getFragmentManager(), mDateTimeListener);
 
         adderMode = getIntent().getBooleanExtra(ADDER_MODE_KEY, false);
-
         if (adderMode) {
             checkIn = new CheckIn();
             checkIn.setTimeAdded(System.currentTimeMillis());

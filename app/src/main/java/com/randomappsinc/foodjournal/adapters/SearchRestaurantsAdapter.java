@@ -49,14 +49,15 @@ public class SearchRestaurantsAdapter extends RecyclerView.Adapter<SearchRestaur
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public RestaurantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RestaurantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.local_search_cell, parent, false);
         return new RestaurantViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(RestaurantViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RestaurantViewHolder holder, int position) {
         holder.loadRestaurant(position);
     }
 

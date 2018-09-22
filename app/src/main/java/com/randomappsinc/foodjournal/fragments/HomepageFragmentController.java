@@ -35,7 +35,7 @@ public class HomepageFragmentController {
             case R.id.home:
                 swapInFragment(dishesFragment);
                 break;
-            case R.id.restaurants:
+            case R.id.search:
                 swapInFragment(searchFragment);
                 break;
             case R.id.favorites:

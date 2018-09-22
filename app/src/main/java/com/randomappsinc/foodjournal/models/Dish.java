@@ -140,7 +140,6 @@ public class Dish implements Parcelable {
 
     public String getRatingText() {
         Context context = MyApplication.getAppContext();
-
         StringBuilder ratingText = new StringBuilder();
         for (int i = 0; i < 5; i++) {
             if (i < mRating) {
@@ -149,7 +148,6 @@ public class Dish implements Parcelable {
                 ratingText.append(context.getString(R.string.blank_star));
             }
         }
-
         return ratingText.toString();
     }
 

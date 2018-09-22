@@ -59,7 +59,7 @@ public class BottomNavigationView {
         mCurrentlySelected.setTextColor(darkGray);
         searchButton.setTextColor(red);
         mCurrentlySelected = searchButton;
-        mListener.onNavItemSelected(R.id.restaurants);
+        mListener.onNavItemSelected(R.id.search);
     }
 
     @OnClick(R.id.camera)

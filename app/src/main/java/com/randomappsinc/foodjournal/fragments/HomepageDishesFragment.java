@@ -35,8 +35,6 @@ import com.randomappsinc.foodjournal.utils.UIUtils;
 
 import java.io.File;
 
-import javax.annotation.Nonnull;
-
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,7 +58,7 @@ public class HomepageDishesFragment extends Fragment
     private DishFeedAdapter dishesAdapter;
 
     @Override
-    public View onCreateView(@Nonnull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.homepage, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
