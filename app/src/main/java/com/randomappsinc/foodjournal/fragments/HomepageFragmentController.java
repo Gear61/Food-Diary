@@ -10,7 +10,7 @@ public class HomepageFragmentController {
 
     private FragmentManager fragmentManager;
     private int containerId;
-    private HomepageDishesFragment dishesFragment;
+    private HomeFeedFragment dishesFragment;
     private SearchFragment searchFragment;
     private FavoritesFragment favoritesFragment;
     private ProfileFragment profileFragment;
@@ -19,7 +19,7 @@ public class HomepageFragmentController {
     public HomepageFragmentController(FragmentManager fragmentManager, int containerId) {
         this.fragmentManager = fragmentManager;
         this.containerId = containerId;
-        this.dishesFragment = HomepageDishesFragment.newInstance();
+        this.dishesFragment = HomeFeedFragment.newInstance();
         this.searchFragment = SearchFragment.newInstance();
         this.favoritesFragment = FavoritesFragment.newInstance();
         this.profileFragment = ProfileFragment.newInstance();

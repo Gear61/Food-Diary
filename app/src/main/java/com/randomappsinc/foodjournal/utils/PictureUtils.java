@@ -1,5 +1,6 @@
 package com.randomappsinc.foodjournal.utils;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,6 +11,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -96,5 +99,32 @@ public class PictureUtils {
         if (imageFile.exists()) {
             imageFile.delete();
         }
+    }
+
+    public static boolean copyFromUriIntoFile(ContentResolver contentResolver, Uri sourceUri, Uri targetUri) {
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            inputStream = contentResolver.openInputStream(sourceUri);
+            outputStream = contentResolver.openOutputStream(targetUri);
+            if (inputStream == null || outputStream == null) {
+                return false;
+            }
+            byte[] buf = new byte[1024];
+            if (inputStream.read(buf) <= 0) {
+                return false;
+            }
+            do {
+                outputStream.write(buf);
+            } while (inputStream.read(buf) != -1);
+        } catch (IOException ignored) {
+            return false;
+        } finally {
+            try {
+                if (inputStream != null) inputStream.close();
+                if (outputStream != null) outputStream.close();
+            } catch (IOException ignored) {}
+        }
+        return true;
     }
 }

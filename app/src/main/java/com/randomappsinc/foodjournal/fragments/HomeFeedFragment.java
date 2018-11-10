@@ -2,6 +2,7 @@ package com.randomappsinc.foodjournal.fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -40,11 +42,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class HomepageDishesFragment extends Fragment
+public class HomeFeedFragment extends Fragment
         implements DishFeedAdapter.Listener, RestaurantsDBManager.Listener {
 
-    public static HomepageDishesFragment newInstance() {
-        HomepageDishesFragment fragment = new HomepageDishesFragment();
+    public static HomeFeedFragment newInstance() {
+        HomeFeedFragment fragment = new HomeFeedFragment();
         fragment.setRetainInstance(true);
         return fragment;
     }
@@ -52,7 +54,7 @@ public class HomepageDishesFragment extends Fragment
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.dishes) ListView dishesList;
     @BindView(R.id.no_dishes) View noDishes;
-    @BindString(R.string.choose_image_from) String mChooseImageFrom;
+    @BindString(R.string.choose_image_from) String chooseImageFrom;
 
     private Unbinder unbinder;
     private DishFeedAdapter dishesAdapter;
@@ -94,7 +96,7 @@ public class HomepageDishesFragment extends Fragment
     private void openFilePicker() {
         Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         getIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        Intent chooserIntent = Intent.createChooser(getIntent, mChooseImageFrom);
+        Intent chooserIntent = Intent.createChooser(getIntent, chooseImageFrom);
         startActivityForResult(chooserIntent, Constants.GALLERY_CODE);
     }
 
@@ -106,18 +108,22 @@ public class HomepageDishesFragment extends Fragment
         }
 
         if (resultCode == Activity.RESULT_OK) {
-            File photoFile = PictureUtils.copyGalleryImage(data);
-            if (photoFile == null) {
+            File photoFile = PictureUtils.createImageFile();
+            Context context = getContext();
+            if (photoFile == null || context == null) {
                 UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
                 return;
             }
-
-            Uri fileUri = Uri.fromFile(photoFile);
-            String imageUri = fileUri.toString();
-
+            Uri copyUri = FileProvider.getUriForFile(context,
+                    "com.randomappsinc.foodjournal.fileprovider",
+                    photoFile);
+            if (!PictureUtils.copyFromUriIntoFile(context.getContentResolver(), data.getData(), copyUri)) {
+                UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
+                return;
+            }
             Intent filesIntent = new Intent(getActivity(), DishFormActivity.class);
             filesIntent.putExtra(DishFormActivity.NEW_DISH_KEY, true);
-            filesIntent.putExtra(DishFormActivity.URI_KEY, imageUri);
+            filesIntent.putExtra(DishFormActivity.URI_KEY, copyUri.toString());
             startActivityForResult(filesIntent, 1);
         } else if (resultCode == Constants.DISH_ADDED) {
             refreshWithAddedDish();
