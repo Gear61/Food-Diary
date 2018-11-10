@@ -303,13 +303,19 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                 break;
             case GALLERY_SOURCE_CODE:
                 deleteOldPhoto();
-                File photoFile = PictureUtils.copyGalleryImage(data);
+                File photoFile = PictureUtils.createImageFile();
                 if (photoFile == null) {
                     UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
                     return;
                 }
-                String fileUri = Uri.fromFile(photoFile).toString();
-                dish.setUriString(fileUri);
+                Uri copyUri = FileProvider.getUriForFile(this,
+                        "com.randomappsinc.foodjournal.fileprovider",
+                        photoFile);
+                if (!PictureUtils.copyFromUriIntoFile(getContentResolver(), data.getData(), copyUri)) {
+                    UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
+                    return;
+                }
+                dish.setUriString(copyUri.toString());
                 loadDishPhoto();
                 break;
             case RESTAURANT_SOURCE_CODE:
