@@ -63,14 +63,13 @@ public class DishGridAdapter extends BaseAdapter {
     }
 
     class DishViewHolder {
-
         @BindView(R.id.dish_image) ImageView dishImage;
 
-        public DishViewHolder(View view) {
+        DishViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
 
-        public void loadItem(int position) {
+        void loadItem(int position) {
             Dish dish = getItem(position);
             Picasso.get()
                     .load(dish.getUriString())

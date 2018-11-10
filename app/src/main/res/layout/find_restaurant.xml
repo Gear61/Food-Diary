@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
     android:background="@color/white"
     android:layout_width="match_parent"
@@ -26,6 +25,7 @@
                 android:gravity="center_vertical"
                 android:hint="@string/search"
                 android:background="@null"
+                android:inputType="text"
                 android:textColor="@color/white_80_percent"
                 android:textColorHint="@color/half_white"
                 android:textCursorDrawable="@null"
@@ -48,7 +48,7 @@
                 style="@style/clear_icon"/>
         </FrameLayout>
 
-        <android.support.percent.PercentRelativeLayout
+        <RelativeLayout
             android:layout_below="@id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -84,8 +84,8 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
-                app:layout_marginTopPercent="16%"/>
-        </android.support.percent.PercentRelativeLayout>
+                android:layout_marginTop="72dp"/>
+        </RelativeLayout>
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

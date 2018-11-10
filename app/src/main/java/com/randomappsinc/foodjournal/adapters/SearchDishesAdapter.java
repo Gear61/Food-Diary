@@ -50,14 +50,17 @@ public class SearchDishesAdapter extends RecyclerView.Adapter<SearchDishesAdapte
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public DishThumbnailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(R.layout.local_search_dishes_cell, parent, false);
+    public DishThumbnailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater
+                .from(context)
+                .inflate(R.layout.local_search_dishes_cell, parent, false);
         return new DishThumbnailViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(DishThumbnailViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DishThumbnailViewHolder holder, int position) {
         holder.loadDish(position);
     }
 

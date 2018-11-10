@@ -132,6 +132,7 @@ public class Dish implements Parcelable {
         if (showRestaurantLink) {
             String restaurantLink = "<a href=\"" + Constants.RESTAURANT_VIEW_INTENT + mRestaurantId + "\">"
                     + mRestaurantName + "</a>";
+            System.out.println("Link: " + restaurantLink);
             return String.format(template, mTitle, restaurantLink);
         } else {
             return String.format(template, mTitle, mRestaurantName);
