@@ -2,12 +2,13 @@ package com.randomappsinc.foodjournal.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.activities.DishesFullViewGalleryActivity;

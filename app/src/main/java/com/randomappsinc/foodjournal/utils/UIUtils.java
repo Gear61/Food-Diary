@@ -6,9 +6,9 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -17,6 +17,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Icon;
 import com.joanzapata.iconify.IconDrawable;
 import com.randomappsinc.foodjournal.R;
@@ -24,12 +28,16 @@ import com.randomappsinc.foodjournal.R;
 public class UIUtils {
 
     public static void showSnackbar(View parent, String message) {
-        Context context = MyApplication.getAppContext();
-        Snackbar snackbar = Snackbar.make(parent, message, Snackbar.LENGTH_LONG);
+        Context context = parent.getContext();
+        SpannableStringBuilder spannableString = new SpannableStringBuilder(message);
+        spannableString.setSpan(
+                new ForegroundColorSpan(Color.WHITE),
+                0,
+                message.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        Snackbar snackbar = Snackbar.make(parent, spannableString, Snackbar.LENGTH_LONG);
         View rootView = snackbar.getView();
-        snackbar.getView().setBackgroundColor(context.getResources().getColor(R.color.app_red));
-        TextView tv = rootView.findViewById(android.support.design.R.id.snackbar_text);
-        tv.setTextColor(Color.WHITE);
+        rootView.setBackgroundColor(context.getResources().getColor(R.color.app_red));
         snackbar.show();
     }
 

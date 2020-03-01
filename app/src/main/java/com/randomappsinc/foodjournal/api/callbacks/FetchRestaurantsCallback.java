@@ -1,6 +1,6 @@
 package com.randomappsinc.foodjournal.api.callbacks;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.randomappsinc.foodjournal.api.ApiConstants;
 import com.randomappsinc.foodjournal.api.RestClient;

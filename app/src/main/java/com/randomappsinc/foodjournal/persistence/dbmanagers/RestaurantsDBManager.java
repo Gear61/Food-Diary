@@ -1,6 +1,6 @@
 package com.randomappsinc.foodjournal.persistence.dbmanagers;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;

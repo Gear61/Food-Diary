@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.content.FileProvider;
+
+import androidx.core.app.ShareCompat;
+import androidx.core.content.FileProvider;
 
 import com.randomappsinc.foodjournal.models.Dish;
 

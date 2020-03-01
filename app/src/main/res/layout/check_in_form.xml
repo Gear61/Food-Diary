@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -32,7 +32,7 @@
                 android:focusableInTouchMode="true"
                 android:padding="@dimen/check_in_form_padding">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/restaurant_info_section"
                     card_view:contentPadding="0dp"
                     style="@style/form_card">
@@ -54,9 +54,9 @@
                             android:textColor="@color/gray"
                             android:text="@string/check_in_location_prompt"/>
                     </FrameLayout>
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.v7.widget.CardView style="@style/form_card">
+                <androidx.cardview.widget.CardView style="@style/form_card">
                     <EditText
                         android:id="@+id/experience_input"
                         android:hint="@string/check_in_prompt"
@@ -64,14 +64,14 @@
                         android:gravity="center_vertical"
                         android:inputType="textCapSentences|textMultiLine"
                         style="@style/form_input"/>
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
-                <android.support.v7.widget.CardView style="@style/form_card">
+                <androidx.cardview.widget.CardView style="@style/form_card">
                     <TextView
                         android:id="@+id/date_input"
                         android:textColor="@color/dark_gray"
                         style="@style/form_input"/>
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
                 <LinearLayout
                     android:layout_marginTop="@dimen/dish_form_card_spacing"
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/tag_dish"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
@@ -109,13 +109,13 @@
                                 android:textColor="@color/app_red"
                                 android:textSize="15dp"/>
                         </FrameLayout>
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/tagged_dishes"
                         style="@style/horizontal_gallery"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

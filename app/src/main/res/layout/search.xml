@@ -51,7 +51,7 @@
                 android:text="@string/dishes"
                 style="@style/search_results_title"/>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dishes"
                 style="@style/horizontal_gallery"/>
 
@@ -60,7 +60,7 @@
                 android:layout_marginTop="12dp"
                 style="@style/search_results_title"/>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/restaurants"
                 style="@style/horizontal_gallery"/>
 
@@ -69,7 +69,7 @@
                 android:layout_marginTop="12dp"
                 style="@style/search_results_title"/>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/check_ins"
                 android:layout_marginBottom="4dp"
                 style="@style/horizontal_gallery"/>

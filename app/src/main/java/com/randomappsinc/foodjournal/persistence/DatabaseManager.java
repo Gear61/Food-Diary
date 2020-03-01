@@ -1,6 +1,6 @@
 package com.randomappsinc.foodjournal.persistence;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.randomappsinc.foodjournal.persistence.dbmanagers.CheckInsDBManager;
 import com.randomappsinc.foodjournal.persistence.dbmanagers.DishesDBManager;

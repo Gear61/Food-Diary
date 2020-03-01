@@ -3,9 +3,10 @@ package com.randomappsinc.foodjournal.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ShareCompat;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.core.app.ShareCompat;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.adapters.IconItemsAdapter;

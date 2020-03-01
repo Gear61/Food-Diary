@@ -1,8 +1,9 @@
 package com.randomappsinc.foodjournal.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.utils.UIUtils;
