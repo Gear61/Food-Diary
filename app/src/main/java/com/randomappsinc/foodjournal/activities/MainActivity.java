@@ -118,7 +118,7 @@ public class MainActivity extends StandardActivity {
         File photoFile = PictureUtils.createImageFile();
         if (photoFile != null) {
             takenPhotoUri = FileProvider.getUriForFile(this,
-                    "com.randomappsinc.foodjournal.fileprovider",
+                    Constants.FILE_PROVIDER_AUTHORITY,
                     photoFile);
 
             // Grant access to content URI so camera app doesn't crash

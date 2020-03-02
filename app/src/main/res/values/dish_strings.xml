@@ -50,4 +50,8 @@
         <item>Retake with camera</item>
         <item>Reupload from gallery</item>
     </string-array>
+
+    <string name="take_photo_with_camera_failed">
+        Sorry, we are unable to process your device\'s camera photos.
+    </string>
 </resources>

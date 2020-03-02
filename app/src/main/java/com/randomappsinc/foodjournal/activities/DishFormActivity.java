@@ -3,7 +3,6 @@ package com.randomappsinc.foodjournal.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +25,7 @@ import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
+import com.randomappsinc.foodjournal.photo.PhotoTakerManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
@@ -37,13 +37,13 @@ import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DishFormActivity extends StandardActivity implements DishPhotoOptionsDialog.Listener {
+public class DishFormActivity extends StandardActivity
+        implements DishPhotoOptionsDialog.Listener, PhotoTakerManager.Listener {
 
     public static final String NEW_DISH_KEY = "newDish";
     public static final String URI_KEY = "uri";
@@ -87,7 +87,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     private DateTimeAdder dateTimeAdder;
     private boolean newDishMode;
     private DishPhotoOptionsDialog photoOptionsDialog;
-    private Uri takenPhotoUri;
+    private PhotoTakerManager photoTakerManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +111,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
 
         newDishMode = getIntent().getBooleanExtra(NEW_DISH_KEY, false);
         photoOptionsDialog = new DishPhotoOptionsDialog(this, this);
+        photoTakerManager = new PhotoTakerManager(this);
 
         // Adding a new dish
         if (newDishMode) {
@@ -139,6 +140,19 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
 
         originalDish = new Dish(dish);
         loadDishPhoto();
+    }
+
+    @Override
+    public void onTakePhotoFailure() {
+        UIUtils.showLongToast(R.string.take_photo_with_camera_failed);
+    }
+
+    @Override
+    public void onTakePhotoSuccess(Uri takenPhotoUri) {
+        runOnUiThread(() -> {
+            dish.setUriString(takenPhotoUri.toString());
+            loadDishPhoto();
+        });
     }
 
     private void loadDishPhoto() {
@@ -171,34 +185,12 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     }
 
     private void startCameraPage() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if (takePictureIntent.resolveActivity(getPackageManager()) == null) {
-            return;
-        }
-
-        File photoFile = PictureUtils.createImageFile();
-        if (photoFile != null) {
-            takenPhotoUri = FileProvider.getUriForFile(this,
-                    "com.randomappsinc.foodjournal.fileprovider",
-                    photoFile);
-
-            // Grant access to content URI so camera app doesn't crash
-            List<ResolveInfo> resolvedIntentActivities = getPackageManager()
-                    .queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
-
-            for (ResolveInfo resolvedIntentInfo : resolvedIntentActivities) {
-                String packageName = resolvedIntentInfo.activityInfo.packageName;
-                grantUriPermission(
-                        packageName,
-                        takenPhotoUri,
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, takenPhotoUri);
-            startActivityForResult(takePictureIntent, CAMERA_SOURCE_CODE);
+        Intent takePhotoIntent = photoTakerManager.getPhotoTakingIntent(this);
+        if (takePhotoIntent == null) {
+            UIUtils.showLongToast(
+                    R.string.take_photo_with_camera_failed);
         } else {
-            UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
+            startActivityForResult(takePhotoIntent, CAMERA_SOURCE_CODE);
         }
     }
 
@@ -284,40 +276,40 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-
         switch(requestCode) {
             case CAMERA_SOURCE_CODE:
-                deleteOldPhoto();
-                revokeUriPermission(
-                        takenPhotoUri,
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                String photoUriString = takenPhotoUri.toString();
-                dish.setUriString(photoUriString);
+                if (resultCode == RESULT_OK) {
+                    deleteOldPhoto();
+                    photoTakerManager.processTakenPhoto(this);
+                } else if (resultCode == RESULT_CANCELED) {
+                    photoTakerManager.deleteLastTakenPhoto();
+                }
                 loadDishPhoto();
                 break;
             case GALLERY_SOURCE_CODE:
-                deleteOldPhoto();
-                File photoFile = PictureUtils.createImageFile();
-                if (photoFile == null) {
-                    UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
-                    return;
+                if (resultCode == RESULT_OK) {
+                    deleteOldPhoto();
+                    File photoFile = PictureUtils.createImageFile();
+                    if (photoFile == null) {
+                        UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
+                        return;
+                    }
+                    Uri copyUri = FileProvider.getUriForFile(this,
+                            Constants.FILE_PROVIDER_AUTHORITY,
+                            photoFile);
+                    if (!PictureUtils.copyFromUriIntoFile(getContentResolver(), data.getData(), copyUri)) {
+                        UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
+                        return;
+                    }
+                    dish.setUriString(copyUri.toString());
+                    loadDishPhoto();
                 }
-                Uri copyUri = FileProvider.getUriForFile(this,
-                        Constants.FILE_PROVIDER_AUTHORITY,
-                        photoFile);
-                if (!PictureUtils.copyFromUriIntoFile(getContentResolver(), data.getData(), copyUri)) {
-                    UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
-                    return;
-                }
-                dish.setUriString(copyUri.toString());
-                loadDishPhoto();
                 break;
             case RESTAURANT_SOURCE_CODE:
-                restaurant = data.getParcelableExtra(Constants.RESTAURANT_KEY);
-                loadRestaurantInfo();
+                if (resultCode == RESULT_OK) {
+                    restaurant = data.getParcelableExtra(Constants.RESTAURANT_KEY);
+                    loadRestaurantInfo();
+                }
                 break;
         }
     }
@@ -333,7 +325,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -416,13 +408,9 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (confirmExit()) {
-                    return true;
-                }
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            return confirmExit();
         }
+        return super.onOptionsItemSelected(item);
     }
 }

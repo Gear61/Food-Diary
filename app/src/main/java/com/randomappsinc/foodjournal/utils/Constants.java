@@ -17,6 +17,6 @@ public class Constants {
     public static final int CAMERA_CODE = 1;
     public static final int GALLERY_CODE = 2;
 
-    public static final String FILE_PROVIDER_AUTHORITY = "com.randomappsinc.simpleflashcards.provider";
+    public static final String FILE_PROVIDER_AUTHORITY = "com.randomappsinc.foodjournal.provider";
     static final String FILE_PROVIDER_PATH = "/Android/data/com.randomappsinc.foodjournal/files/Pictures";
 }

@@ -116,7 +116,7 @@ public class HomeFeedFragment extends Fragment
                 return;
             }
             Uri copyUri = FileProvider.getUriForFile(context,
-                    "com.randomappsinc.foodjournal.fileprovider",
+                    Constants.FILE_PROVIDER_AUTHORITY,
                     photoFile);
             if (!PictureUtils.copyFromUriIntoFile(context.getContentResolver(), data.getData(), copyUri)) {
                 UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
