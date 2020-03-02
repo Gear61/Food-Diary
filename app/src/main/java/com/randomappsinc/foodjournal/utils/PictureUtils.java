@@ -76,9 +76,13 @@ public class PictureUtils {
     }
 
     @Nullable
-    public static Uri processImage(Context context, Uri takenPhotoUri)
+    public static Uri processImage(Context context, Uri takenPhotoUri, boolean fromCamera)
             throws IOException {
-        InputStream input = context.getContentResolver().openInputStream(takenPhotoUri);
+        ContentResolver contentResolver = context.getContentResolver();
+        InputStream input = contentResolver.openInputStream(takenPhotoUri);
+        if (input == null) {
+            return null;
+        }
         ExifInterface exifInterface = new ExifInterface(input);
         int orientation = exifInterface.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
@@ -94,7 +98,17 @@ public class PictureUtils {
                 rotatedBitmap = rotateImage(context, takenPhotoUri,270);
                 break;
             default:
-                // If no need for rotation, just return passed in URI
+                // If photo was taken with camera and no rotation needed, just return it
+                if (fromCamera) {
+                    return takenPhotoUri;
+                }
+                // Otherwise, we need to copy the contents of the passed in URI into a file we control
+                File photoFile = PictureUtils.createImageFile();
+                if (photoFile == null) {
+                    return null;
+                }
+                Uri targetUri = FileProvider.getUriForFile(context, Constants.FILE_PROVIDER_AUTHORITY, photoFile);
+                PictureUtils.copyFromUriIntoFile(contentResolver, takenPhotoUri, targetUri);
                 return takenPhotoUri;
         }
 

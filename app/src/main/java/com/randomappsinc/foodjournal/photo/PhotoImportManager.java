@@ -79,13 +79,10 @@ public class PhotoImportManager {
 
         backgroundHandler.post(() -> {
             try {
-                currentPhotoUri = PictureUtils.processImage(context, currentPhotoUri);
+                currentPhotoUri = PictureUtils.processImage(context, currentPhotoUri, true);
                 if (currentPhotoUri == null) {
                     listener.onAddPhotoFailure();
                 } else {
-                    context.revokeUriPermission(
-                            currentPhotoUri,
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     listener.onAddPhotoSuccess(currentPhotoUri);
                 }
             } catch (IOException exception) {
@@ -106,13 +103,10 @@ public class PhotoImportManager {
                 context.getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
 
                 try {
-                    currentPhotoUri = PictureUtils.processImage(context, data.getData());
+                    currentPhotoUri = PictureUtils.processImage(context, data.getData(), false);
                     if (currentPhotoUri == null) {
                         listener.onAddPhotoFailure();
                     } else {
-                        context.revokeUriPermission(
-                                data.getData(),
-                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         listener.onAddPhotoSuccess(currentPhotoUri);
                     }
                 } catch (IOException exception) {
