@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -17,27 +16,28 @@ import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-/** Utility class to take photos via a camera intent and do the necessary post-processing */
-public class PhotoTakerManager {
+/**
+ * Utility class to take photos via a camera intent or pick a photo from storage.
+ * Also responsible for the necessary post-processing (undoing rotation).
+ */
+public class PhotoImportManager {
 
     public interface Listener {
-        void onTakePhotoFailure();
+        void onAddPhotoFailure();
 
-        void onTakePhotoSuccess(Uri takenPhotoUri);
+        void onAddPhotoSuccess(Uri takenPhotoUri);
     }
 
     private Listener listener;
     private Handler backgroundHandler;
     private @Nullable Uri currentPhotoUri;
-    private File currentPhotoFile;
 
-    public PhotoTakerManager(Listener listener) {
+    public PhotoImportManager(Listener listener) {
         this.listener = listener;
-        HandlerThread handlerThread = new HandlerThread("Camera Photos Processor");
+        HandlerThread handlerThread = new HandlerThread("Photo Processor");
         handlerThread.start();
         backgroundHandler = new Handler(handlerThread.getLooper());
     }
@@ -48,7 +48,7 @@ public class PhotoTakerManager {
         if (takePictureIntent.resolveActivity(context.getPackageManager()) == null) {
             return null;
         }
-        currentPhotoFile = PictureUtils.createImageFile();
+        File currentPhotoFile = PictureUtils.createImageFile();
         if (currentPhotoFile != null) {
             currentPhotoUri = FileProvider.getUriForFile(
                     context,
@@ -79,22 +79,49 @@ public class PhotoTakerManager {
 
         backgroundHandler.post(() -> {
             try {
-                Bitmap bitmap = PictureUtils.rotateImageIfRequired(context, currentPhotoFile, currentPhotoUri);
-                if (bitmap == null) {
-                    listener.onTakePhotoFailure();
+                currentPhotoUri = PictureUtils.processImage(context, currentPhotoUri);
+                if (currentPhotoUri == null) {
+                    listener.onAddPhotoFailure();
                 } else {
-                    try (FileOutputStream out = new FileOutputStream(currentPhotoFile)) {
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                    } catch (final Exception ignored) {}
                     context.revokeUriPermission(
                             currentPhotoUri,
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    listener.onTakePhotoSuccess(currentPhotoUri);
+                    listener.onAddPhotoSuccess(currentPhotoUri);
                 }
             } catch (IOException exception) {
-                listener.onTakePhotoFailure();
+                listener.onAddPhotoFailure();
             }
         });
+    }
+
+    public void processSelectedPhoto(Context context, Intent data) {
+        if (data != null && data.getData() != null) {
+            backgroundHandler.post(() -> {
+                data.getData();
+
+                // Persist ability to read from this file
+                int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                context.getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+
+                try {
+                    currentPhotoUri = PictureUtils.processImage(context, data.getData());
+                    if (currentPhotoUri == null) {
+                        listener.onAddPhotoFailure();
+                    } else {
+                        context.revokeUriPermission(
+                                data.getData(),
+                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        listener.onAddPhotoSuccess(currentPhotoUri);
+                    }
+                } catch (IOException exception) {
+                    listener.onAddPhotoFailure();
+                }
+            });
+        } else {
+            listener.onAddPhotoFailure();
+        }
     }
 
     public void deleteLastTakenPhoto() {

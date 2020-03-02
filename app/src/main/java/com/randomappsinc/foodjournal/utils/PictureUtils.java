@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
 import java.io.File;
@@ -58,45 +59,33 @@ public class PictureUtils {
         }
     }
 
-    public static boolean copyFromUriIntoFile(ContentResolver contentResolver, Uri sourceUri, Uri targetUri) {
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-        try {
-            inputStream = contentResolver.openInputStream(sourceUri);
-            outputStream = contentResolver.openOutputStream(targetUri);
+    private static void copyFromUriIntoFile(ContentResolver contentResolver, Uri sourceUri, Uri targetUri) {
+        try (InputStream inputStream = contentResolver.openInputStream(sourceUri);
+             OutputStream outputStream = contentResolver.openOutputStream(targetUri)) {
             if (inputStream == null || outputStream == null) {
-                return false;
+                return;
             }
             byte[] buf = new byte[1024];
             if (inputStream.read(buf) <= 0) {
-                return false;
+                return;
             }
             do {
                 outputStream.write(buf);
             } while (inputStream.read(buf) != -1);
-        } catch (IOException ignored) {
-            return false;
-        } finally {
-            try {
-                if (inputStream != null) inputStream.close();
-                if (outputStream != null) outputStream.close();
-            } catch (IOException ignored) {}
-        }
-        return true;
+        } catch (IOException ignored) {}
     }
 
     @Nullable
-    public static Bitmap rotateImageIfRequired(Context context, File photoFile, Uri takenPhotoUri)
+    public static Uri processImage(Context context, Uri takenPhotoUri)
             throws IOException {
         InputStream input = context.getContentResolver().openInputStream(takenPhotoUri);
         ExifInterface exifInterface = new ExifInterface(input);
-
         int orientation = exifInterface.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
         Bitmap rotatedBitmap;
         switch (orientation) {
             case ExifInterface.ORIENTATION_ROTATE_90:
-                rotatedBitmap =  rotateImage(context, takenPhotoUri,90);
+                rotatedBitmap = rotateImage(context, takenPhotoUri,90);
                 break;
             case ExifInterface.ORIENTATION_ROTATE_180:
                 rotatedBitmap = rotateImage(context, takenPhotoUri,180);
@@ -105,16 +94,24 @@ public class PictureUtils {
                 rotatedBitmap = rotateImage(context, takenPhotoUri,270);
                 break;
             default:
-                return getBitmapFromFileProviderUri(context, takenPhotoUri);
-        }
-        if (rotatedBitmap != null) {
-            FileOutputStream out = new FileOutputStream(photoFile);
-            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
-            out.flush();
-            out.close();
+                // If no need for rotation, just return passed in URI
+                return takenPhotoUri;
         }
 
-        return rotatedBitmap;
+        // If rotation was necessary, write rotated bitmap into a new file and return the URI for that file
+        if (rotatedBitmap != null) {
+            File photoFile = PictureUtils.createImageFile();
+            if (photoFile == null) {
+                return null;
+            }
+            FileOutputStream out = new FileOutputStream(photoFile);
+            rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            return FileProvider.getUriForFile(context, Constants.FILE_PROVIDER_AUTHORITY, photoFile);
+        }
+
+        return null;
     }
 
     @Nullable

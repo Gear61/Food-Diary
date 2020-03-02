@@ -6,16 +6,13 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
@@ -25,7 +22,7 @@ import com.randomappsinc.foodjournal.models.CheckIn;
 import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
-import com.randomappsinc.foodjournal.photo.PhotoTakerManager;
+import com.randomappsinc.foodjournal.photo.PhotoImportManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
@@ -36,14 +33,12 @@ import com.randomappsinc.foodjournal.views.DishPhotoOptionsDialog;
 import com.randomappsinc.foodjournal.views.RatingView;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DishFormActivity extends StandardActivity
-        implements DishPhotoOptionsDialog.Listener, PhotoTakerManager.Listener {
+        implements DishPhotoOptionsDialog.Listener, PhotoImportManager.Listener {
 
     public static final String CAMERA_MODE_KEY = "cameraMode";
     public static final String GALLERY_MODE_KEY = "galleryMode";
@@ -55,9 +50,9 @@ public class DishFormActivity extends StandardActivity
     private static final int GALLERY_PERMISSION_CODE = 2;
 
     // Activity request codes
-    private static final int CAMERA_SOURCE_CODE = 1;
-    private static final int GALLERY_SOURCE_CODE = 2;
-    private static final int RESTAURANT_SOURCE_CODE = 3;
+    private static final int CAMERA_REQUEST_CODE = 1;
+    private static final int GALLERY_REQUEST_CODE = 2;
+    private static final int RESTAURANT_REQUEST_CODE = 3;
 
     private final DateTimeAdder.Listener mDateTimeListener = new DateTimeAdder.Listener() {
         @Override
@@ -88,7 +83,7 @@ public class DishFormActivity extends StandardActivity
     private DateTimeAdder dateTimeAdder;
     private boolean newDishMode;
     private DishPhotoOptionsDialog photoOptionsDialog;
-    private PhotoTakerManager photoTakerManager;
+    private PhotoImportManager photoImportManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +107,7 @@ public class DishFormActivity extends StandardActivity
 
         newDishMode = getIntent().getBooleanExtra(NEW_DISH_KEY, false);
         photoOptionsDialog = new DishPhotoOptionsDialog(this, this);
-        photoTakerManager = new PhotoTakerManager(this);
+        photoImportManager = new PhotoImportManager(this);
 
         // Adding a new dish
         if (newDishMode) {
@@ -147,12 +142,12 @@ public class DishFormActivity extends StandardActivity
     }
 
     @Override
-    public void onTakePhotoFailure() {
+    public void onAddPhotoFailure() {
         UIUtils.showLongToast(R.string.take_photo_with_camera_failed);
     }
 
     @Override
-    public void onTakePhotoSuccess(Uri takenPhotoUri) {
+    public void onAddPhotoSuccess(Uri takenPhotoUri) {
         runOnUiThread(() -> {
             dish.setUriString(takenPhotoUri.toString());
             loadDishPhoto();
@@ -189,12 +184,12 @@ public class DishFormActivity extends StandardActivity
     }
 
     private void startCameraPage() {
-        Intent takePhotoIntent = photoTakerManager.getPhotoTakingIntent(this);
+        Intent takePhotoIntent = photoImportManager.getPhotoTakingIntent(this);
         if (takePhotoIntent == null) {
             UIUtils.showLongToast(
                     R.string.take_photo_with_camera_failed);
         } else {
-            startActivityForResult(takePhotoIntent, CAMERA_SOURCE_CODE);
+            startActivityForResult(takePhotoIntent, CAMERA_REQUEST_CODE);
         }
     }
 
@@ -215,10 +210,10 @@ public class DishFormActivity extends StandardActivity
     }
 
     private void openFilePicker() {
-        Intent getIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        getIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        Intent chooserIntent = Intent.createChooser(getIntent, getString(R.string.choose_image_from));
-        startActivityForResult(chooserIntent, GALLERY_SOURCE_CODE);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
     }
 
     @Override
@@ -269,7 +264,7 @@ public class DishFormActivity extends StandardActivity
     @OnClick(R.id.restaurant_info_section)
     public void chooseRestaurant() {
         Intent intent = new Intent(this, FindRestaurantActivity.class);
-        startActivityForResult(intent, RESTAURANT_SOURCE_CODE);
+        startActivityForResult(intent, RESTAURANT_REQUEST_CODE);
     }
 
     @OnClick(R.id.date_text)
@@ -281,35 +276,22 @@ public class DishFormActivity extends StandardActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case CAMERA_SOURCE_CODE:
+            case CAMERA_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     deleteOldPhoto();
-                    photoTakerManager.processTakenPhoto(this);
+                    photoImportManager.processTakenPhoto(this);
                 } else if (resultCode == RESULT_CANCELED) {
-                    photoTakerManager.deleteLastTakenPhoto();
+                    photoImportManager.deleteLastTakenPhoto();
                 }
                 loadDishPhoto();
                 break;
-            case GALLERY_SOURCE_CODE:
+            case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     deleteOldPhoto();
-                    File photoFile = PictureUtils.createImageFile();
-                    if (photoFile == null) {
-                        UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
-                        return;
-                    }
-                    Uri copyUri = FileProvider.getUriForFile(this,
-                            Constants.FILE_PROVIDER_AUTHORITY,
-                            photoFile);
-                    if (!PictureUtils.copyFromUriIntoFile(getContentResolver(), data.getData(), copyUri)) {
-                        UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);
-                        return;
-                    }
-                    dish.setUriString(copyUri.toString());
-                    loadDishPhoto();
+                    photoImportManager.processSelectedPhoto(this, data);
                 }
                 break;
-            case RESTAURANT_SOURCE_CODE:
+            case RESTAURANT_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
                     restaurant = data.getParcelableExtra(Constants.RESTAURANT_KEY);
                     loadRestaurantInfo();
