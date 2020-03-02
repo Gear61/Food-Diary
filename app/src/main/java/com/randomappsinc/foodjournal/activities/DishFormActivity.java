@@ -45,8 +45,9 @@ import butterknife.OnClick;
 public class DishFormActivity extends StandardActivity
         implements DishPhotoOptionsDialog.Listener, PhotoTakerManager.Listener {
 
+    public static final String CAMERA_MODE_KEY = "cameraMode";
+    public static final String GALLERY_MODE_KEY = "galleryMode";
     public static final String NEW_DISH_KEY = "newDish";
-    public static final String URI_KEY = "uri";
     public static final String DISH_KEY = "dish";
 
     // Permission request codes
@@ -115,12 +116,15 @@ public class DishFormActivity extends StandardActivity
 
         // Adding a new dish
         if (newDishMode) {
+            if (getIntent().getBooleanExtra(CAMERA_MODE_KEY, false)) {
+                addWithCamera();
+            } else if (getIntent().getBooleanExtra(GALLERY_MODE_KEY, false)) {
+                addWithGallery();
+            }
+
             dish = new Dish();
             dish.setTimeAdded(System.currentTimeMillis());
             dateTimeText.setText(TimeUtils.getDefaultTimeText(dish.getTimeAdded()));
-
-            String pictureUri = getIntent().getStringExtra(URI_KEY);
-            dish.setUriString(pictureUri);
 
             Restaurant autoFill = DatabaseManager.get().getCheckInsDBManager().getAutoFillRestaurant();
             if (autoFill == null) {
