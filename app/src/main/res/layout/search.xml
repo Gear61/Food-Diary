@@ -3,12 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/app_red">
+        android:background="@color/app_red"
+        >
 
         <EditText
             android:id="@+id/search_input"
@@ -24,55 +26,66 @@
             android:paddingRight="40dp"
             android:maxLines="1"
             android:singleLine="true"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            />
 
         <com.joanzapata.iconify.widget.IconTextView
             android:text="@string/search_icon"
             android:layout_height="?attr/actionBarSize"
             android:layout_width="?attr/actionBarSize"
             android:layout_gravity="start|center_vertical"
-            style="@style/toolbar_icon"/>
+            style="@style/toolbar_icon"
+            />
 
         <com.joanzapata.iconify.widget.IconTextView
             android:id="@+id/clear_search"
-            style="@style/clear_icon"/>
+            style="@style/clear_icon"
+            />
     </FrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <TextView
                 android:text="@string/dishes"
-                style="@style/search_results_title"/>
+                style="@style/search_results_title"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dishes"
-                style="@style/horizontal_gallery"/>
+                style="@style/horizontal_gallery"
+                />
 
             <TextView
                 android:text="@string/restaurants"
                 android:layout_marginTop="12dp"
-                style="@style/search_results_title"/>
+                style="@style/search_results_title"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/restaurants"
-                style="@style/horizontal_gallery"/>
+                style="@style/horizontal_gallery"
+                />
 
             <TextView
                 android:text="@string/check_ins"
                 android:layout_marginTop="12dp"
-                style="@style/search_results_title"/>
+                style="@style/search_results_title"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/check_ins"
                 android:layout_marginBottom="4dp"
-                style="@style/horizontal_gallery"/>
+                style="@style/horizontal_gallery"
+                />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

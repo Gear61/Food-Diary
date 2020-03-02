@@ -1,6 +1,6 @@
 package com.randomappsinc.foodjournal.utils;
 
-public class TextUtils {
+public class StringUtils {
 
     /** Safe way to compare strings which accounts for nulls */
     public static boolean compareStrings(String first, String second) {

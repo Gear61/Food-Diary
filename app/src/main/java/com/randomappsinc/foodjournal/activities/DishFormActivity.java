@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.IoniconsIcons;
@@ -104,12 +103,9 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                 .content(R.string.confirm_form_exit)
                 .negativeText(android.R.string.no)
                 .positiveText(R.string.yes)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        deleteOldPhoto();
-                        finish();
-                    }
+                .onPositive((dialog, which) -> {
+                    deleteOldPhoto();
+                    finish();
                 })
                 .build();
 
@@ -310,7 +306,7 @@ public class DishFormActivity extends StandardActivity implements DishPhotoOptio
                     return;
                 }
                 Uri copyUri = FileProvider.getUriForFile(this,
-                        "com.randomappsinc.foodjournal.fileprovider",
+                        Constants.FILE_PROVIDER_AUTHORITY,
                         photoFile);
                 if (!PictureUtils.copyFromUriIntoFile(getContentResolver(), data.getData(), copyUri)) {
                     UIUtils.showToast(R.string.image_file_failed, Toast.LENGTH_LONG);

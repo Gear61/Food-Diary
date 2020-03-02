@@ -8,7 +8,7 @@ import com.randomappsinc.foodjournal.R;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
 import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.MyApplication;
-import com.randomappsinc.foodjournal.utils.TextUtils;
+import com.randomappsinc.foodjournal.utils.StringUtils;
 
 public class Dish implements Parcelable {
 
@@ -174,12 +174,12 @@ public class Dish implements Parcelable {
 
     /** As of now, title, rating, restaurant, time added, and description can change. */
     public boolean hasChangedInForm(Dish other) {
-        return !(TextUtils.compareStrings(mTitle, other.getTitle())
+        return !(StringUtils.compareStrings(mTitle, other.getTitle())
                 && mRating == other.getRating()
-                && TextUtils.compareStrings(mRestaurantId, other.getRestaurantId())
+                && StringUtils.compareStrings(mRestaurantId, other.getRestaurantId())
                 && mTimeAdded == other.getTimeAdded()
-                && TextUtils.compareStrings(mDescription, other.getDescription())
-                && TextUtils.compareStrings(mUriString, other.getUriString()));
+                && StringUtils.compareStrings(mDescription, other.getDescription())
+                && StringUtils.compareStrings(mUriString, other.getUriString()));
     }
 
     @Override

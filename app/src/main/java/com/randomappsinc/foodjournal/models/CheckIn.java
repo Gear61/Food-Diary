@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.randomappsinc.foodjournal.persistence.models.CheckInDO;
 import com.randomappsinc.foodjournal.persistence.models.DishDO;
-import com.randomappsinc.foodjournal.utils.TextUtils;
+import com.randomappsinc.foodjournal.utils.StringUtils;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 
 import java.util.ArrayList;
@@ -112,13 +112,13 @@ public class CheckIn implements Parcelable {
 
     /** Restaurant, time added, experience, and tagged dishes can change */
     public boolean hasChangedFromForm(CheckIn other) {
-        if (!TextUtils.compareStrings(restaurantId, other.getRestaurantId())) {
+        if (!StringUtils.compareStrings(restaurantId, other.getRestaurantId())) {
             return true;
         }
         if (timeAdded != other.getTimeAdded()) {
             return true;
         }
-        if (!TextUtils.compareStrings(message, other.getMessage())) {
+        if (!StringUtils.compareStrings(message, other.getMessage())) {
             return true;
         }
         if (taggedDishes.size() != other.getTaggedDishes().size()) {
