@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="speech_not_supported">
+        Sorry, but your Android device doesn\'t support speech recognition.
+    </string>
+    <string name="speech_unrecognized">
+        We couldn\'t recognize what you said. Please try again.
+    </string>
+    <string name="try_again">Try again</string>
+    <string name="did_not_catch_speech">We didn\'t catch what you said, please try again.</string>
+
+    <string name="voice_icon">{ion-android-microphone}</string>
+    <string name="speech_to_text_listening_mic_icon">{ion-android-microphone 40dp #FFFFFF}</string>
+    <string name="speech_to_text_retry_mic_icon">{ion-android-microphone 40dp #1976D2}</string>
+</resources>

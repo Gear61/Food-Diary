@@ -62,7 +62,6 @@ public class DishFormActivity extends StandardActivity
         }
     };
 
-    @BindView(R.id.parent) View parent;
     @BindView(R.id.dish_picture) ImageView dishPicture;
     @BindView(R.id.rating_widget) View ratingLayout;
     @BindView(R.id.dish_name_input) EditText dishNameInput;
@@ -100,7 +99,7 @@ public class DishFormActivity extends StandardActivity
                 .negativeText(android.R.string.no)
                 .positiveText(R.string.yes)
                 .onPositive((dialog, which) -> {
-                    deleteOldPhoto();
+                    deleteOldPhotoIfNecessary();
                     finish();
                 })
                 .build();
@@ -278,7 +277,7 @@ public class DishFormActivity extends StandardActivity
         switch(requestCode) {
             case CAMERA_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    deleteOldPhoto();
+                    deleteOldPhotoIfNecessary();
                     photoImportManager.processTakenPhoto(this);
                 } else if (resultCode == RESULT_CANCELED) {
                     photoImportManager.deleteLastTakenPhoto();
@@ -287,7 +286,7 @@ public class DishFormActivity extends StandardActivity
                 break;
             case GALLERY_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
-                    deleteOldPhoto();
+                    deleteOldPhotoIfNecessary();
                     photoImportManager.processSelectedPhoto(this, data);
                 }
                 break;
@@ -300,18 +299,15 @@ public class DishFormActivity extends StandardActivity
         }
     }
 
-    private void deleteOldPhoto() {
-        if (newDishMode) {
+    private void deleteOldPhotoIfNecessary() {
+        if (newDishMode || !originalDish.getUriString().equals(dish.getUriString())) {
             PictureUtils.deleteFileWithUri(dish.getUriString());
-        } else {
-            if (!originalDish.getUriString().equals(dish.getUriString())) {
-                PictureUtils.deleteFileWithUri(dish.getUriString());
-            }
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -335,13 +331,12 @@ public class DishFormActivity extends StandardActivity
     @OnClick(R.id.save)
     public void saveDish() {
         String title = dishNameInput.getText().toString().trim();
-
         if (title.isEmpty()) {
-            UIUtils.showSnackbar(parent, getString(R.string.dish_title_needed));
+            UIUtils.showLongToast(R.string.dish_title_needed, this);
             return;
         }
         if (restaurant == null) {
-            UIUtils.showSnackbar(parent, getString(R.string.dish_restaurant_needed));
+            UIUtils.showLongToast(R.string.dish_restaurant_needed, this);
             return;
         }
 
@@ -380,9 +375,8 @@ public class DishFormActivity extends StandardActivity
         if (newDishMode || dish.hasChangedInForm(originalDish)) {
             leaveDialog.show();
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override

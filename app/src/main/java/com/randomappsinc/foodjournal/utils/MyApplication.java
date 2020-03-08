@@ -17,6 +17,7 @@ public final class MyApplication extends Application {
         instance = getApplicationContext();
     }
 
+    @Deprecated
     public static Context getAppContext() {
         return instance;
     }

@@ -102,8 +102,13 @@ public class UIUtils {
         }
     }
 
+    @Deprecated
     public static void showLongToast(@StringRes int stringId) {
         Toast.makeText(MyApplication.getAppContext(), stringId, Toast.LENGTH_LONG).show();
+    }
+
+    public static void showLongToast(@StringRes int stringId, Context context) {
+        Toast.makeText(context, stringId, Toast.LENGTH_LONG).show();
     }
 
     public static void showToast(@StringRes int stringId, int length) {

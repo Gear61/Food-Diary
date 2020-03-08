@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="28dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    >
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/voice_icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:padding="16dp"
+        />
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textSize="19sp"
+        android:textColor="@color/dark_gray"
+        android:gravity="center_horizontal"
+        />
+
+    <TextView
+        android:id="@+id/try_again"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/white_rectangle_with_blue_border"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:textSize="17sp"
+        android:text="@string/try_again"
+        android:textColor="@color/blue"
+        />
+</LinearLayout>
