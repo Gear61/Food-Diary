@@ -71,7 +71,14 @@
 
                     <com.joanzapata.iconify.widget.IconTextView
                         android:id="@+id/dish_name_voice_entry"
-                        style="@style/voice_input_icon"
+                        android:text="@string/voice_icon"
+                        style="@style/dish_form_icon"
+                        />
+
+                    <com.joanzapata.iconify.widget.IconTextView
+                        android:id="@+id/clear_dish_name"
+                        android:text="@string/clear_icon"
+                        style="@style/dish_form_icon"
                         />
                 </FrameLayout>
             </androidx.cardview.widget.CardView>

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 public class DishFormActivity extends StandardActivity
         implements DishPhotoOptionsDialog.Listener, PhotoImportManager.Listener,
@@ -70,6 +72,8 @@ public class DishFormActivity extends StandardActivity
     @BindView(R.id.dish_picture) ImageView dishPicture;
     @BindView(R.id.rating_widget) View ratingLayout;
     @BindView(R.id.dish_name_input) EditText dishNameInput;
+    @BindView(R.id.dish_name_voice_entry) View dishNameVoiceEntry;
+    @BindView(R.id.clear_dish_name) View clearDishName;
     @BindView(R.id.base_restaurant_cell) View restaurantInfo;
     @BindView(R.id.restaurant_thumbnail) ImageView restaurantThumbnail;
     @BindView(R.id.restaurant_name) TextView restaurantName;
@@ -145,6 +149,18 @@ public class DishFormActivity extends StandardActivity
 
         originalDish = new Dish(dish);
         loadDishPhoto();
+
+        setDishNameInputAction();
+    }
+
+    private void setDishNameInputAction() {
+        if (dishNameInput.getText().length() > 0) {
+            dishNameVoiceEntry.setVisibility(View.GONE);
+            clearDishName.setVisibility(View.VISIBLE);
+        } else {
+            clearDishName.setVisibility(View.GONE);
+            dishNameVoiceEntry.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.dish_name_voice_entry)
@@ -159,9 +175,20 @@ public class DishFormActivity extends StandardActivity
         }
     }
 
+    @OnTextChanged(value = R.id.dish_name_input, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void afterDishNameChanged(Editable input) {
+        setDishNameInputAction();
+    }
+
+    @OnClick(R.id.clear_dish_name)
+    public void clearDishName() {
+        dishNameInput.setText("");
+    }
+
     @Override
     public void onTextSpoken(String spokenText) {
         dishNameInput.setText(spokenText);
+        dishNameInput.setSelection(spokenText.length());
     }
 
     @Override
@@ -199,7 +226,7 @@ public class DishFormActivity extends StandardActivity
     }
 
     public void addWithCamera() {
-        if (PermissionUtils.isPermissionGranted(Manifest.permission.CAMERA)) {
+        if (PermissionUtils.isPermissionGranted(Manifest.permission.CAMERA, this)) {
             startCameraPage();
         } else {
             PermissionUtils.requestPermission(this, Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
@@ -222,7 +249,7 @@ public class DishFormActivity extends StandardActivity
     }
 
     private void addWithGallery() {
-        if (PermissionUtils.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (PermissionUtils.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE, this)) {
             openFilePicker();
         } else {
             PermissionUtils.requestPermission(
@@ -335,7 +362,6 @@ public class DishFormActivity extends StandardActivity
         if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
         switch (requestCode) {
             case CAMERA_PERMISSION_CODE:
                 startCameraPage();
@@ -416,7 +442,9 @@ public class DishFormActivity extends StandardActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            return confirmExit();
+            if (confirmExit()) {
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
