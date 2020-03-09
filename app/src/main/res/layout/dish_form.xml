@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="ContentDescription"
+    tools:ignore="ContentDescription, RtlSymmetry"
     >
 
     <TextView
@@ -49,15 +49,31 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/dish_name_section"
                 android:layout_below="@id/rating_section"
+                card_view:contentPadding="0dp"
                 style="@style/form_card"
                 >
 
-                <EditText
-                    android:id="@+id/dish_name_input"
-                    android:hint="@string/dish_name_hint"
-                    android:inputType="textCapWords"
-                    style="@style/form_input"
-                    />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <EditText
+                        android:id="@+id/dish_name_input"
+                        android:hint="@string/dish_name_hint"
+                        android:inputType="textCapWords"
+                        android:importantForAutofill="no"
+                        android:paddingLeft="8dp"
+                        android:paddingEnd="40dp"
+                        android:layout_gravity="center_vertical"
+                        style="@style/form_input"
+                        />
+
+                    <com.joanzapata.iconify.widget.IconTextView
+                        android:id="@+id/dish_name_voice_entry"
+                        style="@style/voice_input_icon"
+                        />
+                </FrameLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.joanzapata.iconify.IconDrawable;
@@ -23,9 +24,11 @@ import com.randomappsinc.foodjournal.models.Dish;
 import com.randomappsinc.foodjournal.models.Restaurant;
 import com.randomappsinc.foodjournal.persistence.DatabaseManager;
 import com.randomappsinc.foodjournal.photo.PhotoImportManager;
+import com.randomappsinc.foodjournal.speech.SpeechToTextManager;
 import com.randomappsinc.foodjournal.utils.Constants;
 import com.randomappsinc.foodjournal.utils.PermissionUtils;
 import com.randomappsinc.foodjournal.utils.PictureUtils;
+import com.randomappsinc.foodjournal.utils.StringUtils;
 import com.randomappsinc.foodjournal.utils.TimeUtils;
 import com.randomappsinc.foodjournal.utils.UIUtils;
 import com.randomappsinc.foodjournal.views.DateTimeAdder;
@@ -38,7 +41,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class DishFormActivity extends StandardActivity
-        implements DishPhotoOptionsDialog.Listener, PhotoImportManager.Listener {
+        implements DishPhotoOptionsDialog.Listener, PhotoImportManager.Listener,
+        SpeechToTextManager.Listener {
 
     public static final String CAMERA_MODE_KEY = "cameraMode";
     public static final String GALLERY_MODE_KEY = "galleryMode";
@@ -48,6 +52,7 @@ public class DishFormActivity extends StandardActivity
     // Permission request codes
     private static final int CAMERA_PERMISSION_CODE = 1;
     private static final int GALLERY_PERMISSION_CODE = 2;
+    private static final int AUDIO_PERMISSION_CODE = 3;
 
     // Activity request codes
     private static final int CAMERA_REQUEST_CODE = 1;
@@ -83,6 +88,7 @@ public class DishFormActivity extends StandardActivity
     private boolean newDishMode;
     private DishPhotoOptionsDialog photoOptionsDialog;
     private PhotoImportManager photoImportManager;
+    private SpeechToTextManager speechToTextManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +109,7 @@ public class DishFormActivity extends StandardActivity
                     finish();
                 })
                 .build();
+        speechToTextManager = new SpeechToTextManager(this, this);
 
         newDishMode = getIntent().getBooleanExtra(NEW_DISH_KEY, false);
         photoOptionsDialog = new DishPhotoOptionsDialog(this, this);
@@ -140,9 +147,26 @@ public class DishFormActivity extends StandardActivity
         loadDishPhoto();
     }
 
+    @OnClick(R.id.dish_name_voice_entry)
+    public void enterDishNameWithVoice() {
+        speechToTextManager.setListeningPrompt(R.string.dish_name_voice_hint);
+        speechToTextManager.setStringFormatter(StringUtils::capitalizeWords);
+        if (PermissionUtils.isPermissionGranted(Manifest.permission.RECORD_AUDIO, this)) {
+            speechToTextManager.startSpeechToTextFlow();
+        } else {
+            ActivityCompat.requestPermissions(
+                    this, new String[]{Manifest.permission.RECORD_AUDIO}, AUDIO_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onTextSpoken(String spokenText) {
+        dishNameInput.setText(spokenText);
+    }
+
     @Override
     public void onAddPhotoFailure() {
-        UIUtils.showLongToast(R.string.take_photo_with_camera_failed);
+        UIUtils.showLongToast(R.string.take_photo_with_camera_failed, this);
     }
 
     @Override
@@ -318,6 +342,9 @@ public class DishFormActivity extends StandardActivity
                 break;
             case GALLERY_PERMISSION_CODE:
                 openFilePicker();
+                break;
+            case AUDIO_PERMISSION_CODE:
+                speechToTextManager.startSpeechToTextFlow();
                 break;
         }
     }

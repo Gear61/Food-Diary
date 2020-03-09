@@ -127,4 +127,15 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_from_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_from_top</item>
     </style>
+
+    <style name="voice_input_icon">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_gravity">end|center_vertical</item>
+        <item name="android:text">@string/voice_icon</item>
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
 </resources>
